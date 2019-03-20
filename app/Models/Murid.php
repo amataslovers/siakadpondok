@@ -216,7 +216,7 @@ class Murid extends Model
      **/
     public function keluargaMurid()
     {
-        return $this->belongsToMany(\App\Models\KeluargaMurid::class, 'detail_keluarga');
+        return $this->belongsToMany(\App\Models\KeluargaMurid::class, 'detail_keluarga', 'NIS', 'ID_KELUARGA_MURID');
     }
 
     /**

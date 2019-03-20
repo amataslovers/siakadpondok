@@ -29,7 +29,7 @@ use App\Models\DetailKeluarga;
  */
 class KeluargaMurid extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     public $table = 'keluarga_murid';
     
@@ -99,9 +99,9 @@ class KeluargaMurid extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      **/
-    public function murids()
+    public function murid()
     {
-        return $this->belongsToMany(\App\Models\Murid::class, 'detail_keluarga', 'NIS', 'ID_DETAIL_KELUARGA');
+        return $this->belongsToMany(\App\Models\Murid::class, 'detail_keluarga', 'ID_KELUARGA_MURID', 'NIS');
     }
 
     public function setTanggalLahirAttribute($data)

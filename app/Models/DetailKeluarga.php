@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class DetailKeluarga extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     public $table = 'detail_keluarga';
     

@@ -96,10 +96,10 @@
     </div>
 
     <div class="card card-primary">
-        <table class="table table-responsive">
+        <table class="table table-responsive" style="width: 100%">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th>#</th>
                     <th>Jenis</th>
                     <th>Nama</th>
                     <th>Tempat Lahir</th>
@@ -112,8 +112,30 @@
                     <th>#</th>
                 </tr>
             </thead>
+            <tbody id="daftar-keluarga-ada">
+                @if (isset($murid))
+                    @foreach ($murid->keluargaMurid as $key => $item)
+                        <tr id="row-{{$key}}">
+                            <td>
+                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                {!! Form::hidden('_id_keluarga_murid', $item->ID_KELUARGA_MURID, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+                            </td>
+                            <td>{{ $item->jenisKeluarga->NAMA }}</td>
+                            <td>{{ $item->NAMA }}</td>
+                            <td>{{ $item->TANGGAL_LAHIR }}</td>
+                            <td>{{ $item->TEMPAT_LAHIR }}</td>
+                            <td>{{ $item->agama->NAMA }}</td>
+                            <td>{{ $item->ALAMAT }}</td>
+                            <td>{{ $item->NOTELP }}</td>
+                            <td>{{ $item->EMAIL }}</td>
+                            <td>{{ $item->PEKERJAAN }}</td>
+                            <td><button type="button" class="btn btn-danger" onclick="deleteKeluarga({{$item->ID_KELUARGA_MURID}}, {{$murid->NIS}}, 'row-{{$key}}')"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button></td>
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
             <tbody id="daftar-keluarga">
-
+                
             </tbody>
         </table>
     </div>

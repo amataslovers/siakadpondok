@@ -78,7 +78,7 @@
                     
                     $('#daftar-keluarga').append(
                         '<tr>' +
-                            '<td>'+(i+1)+'</td>'+
+                            '<td><i class="fa fa-circle-o" aria-hidden="true"></i></td>'+
                             '<td> ' + 
                                 '<input type="hidden" readonly class="form-control" name="_id_keluarga_murid[]" value="'+keluarga[i]['idKeluargaMurid']+'">'+
                                 '<input type="hidden" readonly class="form-control" name="_jenis_keluarga_id[]" value="'+keluarga[i]['idJenis']+'">'+

@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('api/keluarga/{id}', 'KeluargaMuridController@getDetailKeluargaById')->name('get-detail-keluarga');
     Route::get('api/peraturan/{id}', 'PelanggaranMuridController@getPeraturanByIdSanksi')->name('get-peraturan');
+    Route::delete('api/keluarga/{id}/{nis}', 'KeluargaMuridController@deleteKeluargaViaAjax');
 
     Route::post('nilaiAkademiks/form-nilai', 'NilaiAkademikController@formNilai')->name('form-isi-nilai-akademik');
     Route::resource('nilaiAkademiks', 'NilaiAkademikController');

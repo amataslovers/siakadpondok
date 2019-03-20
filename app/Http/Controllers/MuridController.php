@@ -47,6 +47,7 @@ class MuridController extends AppBaseController
             $murid = $this->muridRepository->with('agama')->all();
             return DataTables::of($murid)
                 ->addColumn('action', 'murids.datatables_actions')
+                ->addIndexColumn()
                 ->make();
         }
         return view('murids.index');
@@ -173,8 +174,12 @@ class MuridController extends AppBaseController
         }
         
         $agama = Agama::pluck('NAMA', 'ID_AGAMA');
+        $dataJenisKeluarga = JenisKeluarga::pluck('NAMA', 'ID_JENIS_KELUARGA');
+        $dataKeluargaAll = KeluargaMurid::whereDoesntHave('murid', function($q) use($murid){
+                            $q->where('murid.NIS', $murid->NIS);
+                        })->get()->pluck('nama_keluarga_lengkap', 'ID_KELUARGA_MURID');
 
-        return view('murids.edit')->with(compact('murid', 'agama'));
+        return view('murids.edit')->with(compact('murid', 'agama', 'dataJenisKeluarga', 'dataKeluargaAll'));
     }
 
     /**
@@ -200,6 +205,34 @@ class MuridController extends AppBaseController
             $input = $murid->uploadGambar($request);
 
             $murid = $this->muridRepository->update($input, $id);
+
+            if (isset($input['_nama'])) {
+                foreach ($input['_nama'] as $key => $row) {
+                    if ($input['_id_keluarga_murid'][$key] !== 'undefined') {
+                        $detailKeluarga = new DetailKeluarga();
+                        $detailKeluarga->NIS = $murid->NIS;
+                        $detailKeluarga->ID_KELUARGA_MURID = $input['_id_keluarga_murid'][$key];
+                        $detailKeluarga->save();
+                    }else{
+                        $keluargaMurid = new KeluargaMurid();
+                        $keluargaMurid->NAMA = $input['_nama'][$key];
+                        $keluargaMurid->TANGGAL_LAHIR = $input['_tanggal_lahir'][$key];
+                        $keluargaMurid->TEMPAT_LAHIR = $input['_tempat_lahir'][$key];
+                        $keluargaMurid->ID_AGAMA = $input['_agama_id'][$key];
+                        $keluargaMurid->ID_JENIS_KELUARGA = $input['_jenis_keluarga_id'][$key];
+                        $keluargaMurid->ALAMAT = $input['_alamat'][$key];
+                        $keluargaMurid->NOTELP = $input['_notelp'][$key];
+                        $keluargaMurid->EMAIL = $input['_email'][$key];
+                        $keluargaMurid->PEKERJAAN = $input['_pekerjaan'][$key];
+                        $keluargaMurid->save();
+
+                        $detailKeluarga = new DetailKeluarga();
+                        $detailKeluarga->NIS = $murid->NIS;
+                        $detailKeluarga->ID_KELUARGA_MURID = $keluargaMurid->ID_KELUARGA_MURID;
+                        $detailKeluarga->save();
+                    }
+                }
+            }
             
             DB::commit();
         } catch (Exception $e) {
@@ -228,20 +261,20 @@ class MuridController extends AppBaseController
             return redirect(route('murids.index'));
         }
 
-        if (!empty($this->FOTO)) {
-            File::delete(public_path("upload/profile/".$this->FOTO));
+        if (!empty($murid->FOTO)) {
+            File::delete(public_path("upload/profile/".$murid->FOTO));
         }
-        if (!empty($this->IJAZAH_SD)) {
-            File::delete(public_path("upload/ijazah_sd/".$this->IJAZAH_SD));
+        if (!empty($murid->IJAZAH_SD)) {
+            File::delete(public_path("upload/ijazah_sd/".$murid->IJAZAH_SD));
         }
-        if (!empty($this->IJAZAH_SMP)) {
-            File::delete(public_path("upload/ijazah_smp/".$this->IJAZAH_SMP));
+        if (!empty($murid->IJAZAH_SMP)) {
+            File::delete(public_path("upload/ijazah_smp/".$murid->IJAZAH_SMP));
         }
-        if (!empty($this->IJAZAH_SMA)) {
-            File::delete(public_path("upload/ijazah_sma/".$this->IJAZAH_SMA));
+        if (!empty($murid->IJAZAH_SMA)) {
+            File::delete(public_path("upload/ijazah_sma/".$murid->IJAZAH_SMA));
         }
-        if (!empty($this->FOTO_AKTE_LAHIR)) {
-            File::delete(public_path("upload/akte_lahir/".$this->FOTO_AKTE_LAHIR));
+        if (!empty($murid->FOTO_AKTE_LAHIR)) {
+            File::delete(public_path("upload/akte_lahir/".$murid->FOTO_AKTE_LAHIR));
         }
 
         $this->muridRepository->delete($id);

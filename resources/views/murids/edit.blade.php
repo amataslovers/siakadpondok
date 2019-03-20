@@ -13,8 +13,14 @@
                     <div class="box-body">
                         <div class="row">
                             @include('murids.fields')
-                            @include('murids.fields_button_submit')
                         </div>
+                    </div>
+                </div>
+
+                <div class="box box-primary">
+                    <div class="box-body">
+                            @include('murids.fields_keluarga')
+                            @include('murids.fields_button_submit')
                     </div>
                 </div>
             {!! Form::close() !!}
@@ -66,8 +72,9 @@
                     
                     $('#daftar-keluarga').append(
                         '<tr>' +
-                            '<td>'+(i+1)+'</td>'+
+                            '<td><i class="fa fa-circle-o" aria-hidden="true"></i></td>'+
                             '<td> ' + 
+                                '<input type="hidden" readonly class="form-control" name="_id_keluarga_murid[]" value="'+keluarga[i]['idKeluargaMurid']+'">'+
                                 '<input type="hidden" readonly class="form-control" name="_jenis_keluarga_id[]" value="'+keluarga[i]['idJenis']+'">'+
                                 '<input type="text" readonly class="form-control" name="_jenis_keluarga_nama[]" value="'+keluarga[i]['namaJenis']+'">'+
                             '</td>'+
@@ -97,7 +104,7 @@
                                 '<input type="text" readonly class="form-control" name="_pekerjaan[]" value="'+keluarga[i]['pekerjaan']+'">'+
                             '</td>'+
                             '<td> ' + 
-                                '<button type="button" onclick="hapusKeluarga('+(i-1)+')"  class="glyphicon glyphicon-trash">'+i+'</button>'+
+                                '<button type="button" onclick="hapusKeluarga('+(i-1)+')"  class="glyphicon glyphicon-trash btn btn-danger"></button>'+
                             '</td>'+
                         '</tr>');
                 }
@@ -133,6 +140,54 @@
                     pekerjaan: $('#PEKERJAAN_KELUARGA').val()
                 };
                 return keluarga.push(keluarga_murid);
+            }
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#btn-tambah-keluarga-ygada').on('click', function(e){
+                var id = $('#ID_KELUARGA_MURID').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '{{url('api/keluarga')}}/' + id
+                }).then(function (data) {
+                    var keluarga_murid = {
+                        idKeluargaMurid: data.ID_KELUARGA_MURID,
+                        idJenis: data.ID_JENIS_KELUARGA,
+                        namaJenis: data.jenis_keluarga.NAMA,
+                        nama: data.NAMA,
+                        tempatLahir: data.TEMPAT_LAHIR,
+                        tanggalLahir: data.TANGGAL_LAHIR,
+                        idAgama: data.ID_AGAMA,
+                        namaAgama: data.agama.NAMA,
+                        alamat: data.ALAMAT,
+                        notelp: data.NOTELP,
+                        email: data.EMAIL,
+                        pekerjaan: data.PEKERJAAN
+                    };
+                    keluarga.push(keluarga_murid);
+
+                    tampilData();
+                });
+            });
+
+            window.deleteKeluarga = function(id, nis, rowid)
+            {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '{{url('api/keluarga')}}/' + id + '/' + nis
+                }).then(function (data) {
+                    var row = document.getElementById(rowid);
+                    row.parentNode.removeChild(row);
+                   if(data){
+                        alert('Data Keluarga berhasil dihapus');
+                    }else{
+                        alert('Data Keluarga tersebut masih memiliki murid yang lain');
+                    }
+                });
             }
         });
     </script>

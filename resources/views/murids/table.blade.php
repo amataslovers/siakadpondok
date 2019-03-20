@@ -12,22 +12,16 @@
 <table class="table table-responsive table-hover table-bordered" id="murids-table"  style="width: 100%">
     <thead>
         <tr>
+            <th>#</th>
             <th>NIS</th>
             <th>Nama</th>
             <th>Nama Arab</th>
-            <th>Jenis Kelamin</th>
             <th>Tempat Lahir</th>
             <th>Tanggal Lahir</th>
-            <th>Alamat</th>
-            <th>Email</th>
-            <th>Notelp</th>
-            <th>Asal Sekolah</th>
-            <th>Alamat Sekolah</th>
             <th>Tgl Masuk</th>
-            <th>Tgl Keluar</th>
             <th>Angkatan</th>
             <th>Status</th>
-            <th>Action</th>
+            <th width="100px">Action</th>
         </tr>
     </thead>
 </table>
@@ -41,19 +35,13 @@
             serverSide: true,
             ajax: '{!! route('murids.index') !!}',
             columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'NIS', name: 'NIS' },
                 { data: 'NAMA', name: 'NAMA' },
                 { data: 'NAMA_ARAB', name: 'NAMA_ARAB' },
-                { data: 'JENIS_KELAMIN', name: 'JENIS_KELAMIN' },
                 { data: 'TEMPAT_LAHIR', name: 'TEMPAT_LAHIR' },
                 { data: 'TANGGAL_LAHIR', name: 'TANGGAL_LAHIR' },
-                { data: 'ALAMAT', name: 'ALAMAT' },
-                { data: 'EMAIL', name: 'EMAIL' },
-                { data: 'NOTELP', name: 'NOTELP' },
-                { data: 'NAMA_ASAL_SEKOLAH', name: 'NAMA_ASAL_SEKOLAH' },
-                { data: 'ALAMAT_ASAL_SEKOLAH', name: 'ALAMAT_ASAL_SEKOLAH' },
                 { data: 'TANGGAL_MASUK', name: 'TANGGAL_MASUK' },
-                { data: 'TANGGAL_KELUAR', name: 'TANGGAL_KELUAR' },
                 { data: 'ANGKATAN', name: 'ANGKATAN' },
                 { data: 'STATUS_AKTIF', name: 'STATUS_AKTIF' },
                 { data: 'action', name: 'murids.action', orderable: false, searchable: false}
@@ -72,7 +60,12 @@
                 buttons: {
                     colvis: 'Ganti Kolom'
                 }
-            }
+            },
+            "columnDefs": [ {
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            } ],
         });
     </script>
 @endsection

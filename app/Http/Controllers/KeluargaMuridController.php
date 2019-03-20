@@ -11,6 +11,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\KeluargaMurid;
+use App\Models\DetailKeluarga;
 
 class KeluargaMuridController extends AppBaseController
 {
@@ -155,5 +156,17 @@ class KeluargaMuridController extends AppBaseController
         $keluarga = KeluargaMurid::with('agama', 'jenisKeluarga')->find($id);
 
         return response()->json($keluarga);
+    }
+
+    public function deleteKeluargaViaAjax($id, $nis)
+    {
+        $keluarga = KeluargaMurid::where('ID_KELUARGA_MURID', $id)->has('murid', '>', 1)->get();
+        if (!$keluarga->isEmpty()) {
+            DetailKeluarga::where(['ID_KELUARGA_MURID' => $id, 'NIS' => $nis])->delete();
+            return response()->json(false);
+        }else{
+            KeluargaMurid::find($id)->delete();
+            return response()->json(true);
+        }
     }
 }
