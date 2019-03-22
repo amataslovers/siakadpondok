@@ -10,6 +10,12 @@
     <p>{!! $tingkat->TINGKAT !!}</p>
 </div>
 
+<!-- Tingkat Field -->
+<div class="form-group">
+    {!! Form::label('SETARA', 'Kesetaraan:') !!}
+    <p>{!! $tingkat->SETARA !!}</p>
+</div>
+
 <!-- Kode Lulus Field -->
 <div class="form-group">
     {!! Form::label('KODE_LULUS', 'Kode Lulus:') !!}

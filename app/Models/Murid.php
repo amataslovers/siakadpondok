@@ -45,7 +45,7 @@ class Murid extends Model
 {
 
     public $table = 'murid';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -87,6 +87,7 @@ class Murid extends Model
      */
     protected $casts = [
         'NIS' => 'string',
+        'NIK' => 'string',
         'ID_AGAMA' => 'integer',
         'NAMA' => 'string',
         'NAMA_ARAB' => 'string',
@@ -116,6 +117,7 @@ class Murid extends Model
      */
     public static $rules = [
         'NIS' => 'required',
+        'NIK' => 'required',
         'TANGGAL_LAHIR' => 'required',
         'FOTO' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:20048',
         'IJAZAH_SD' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:20048',
@@ -124,17 +126,16 @@ class Murid extends Model
         'FOTO_AKTE_LAHIR' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:20048',
     ];
 
-    protected static function boot() 
+    protected static function boot()
     {
         parent::boot();
 
-        static::deleting(function($murid) {
+        static::deleting(function ($murid) {
             User::where('name', $murid->NIS)->delete();
         });
 
-        static::updating(function($murid)
-        {
-           User::where('name', $murid->NIS)->update(['name' => $murid->NIS]); 
+        static::updating(function ($murid) {
+            User::where('name', $murid->NIS)->update(['name' => $murid->NIS]);
         });
     }
 
@@ -154,41 +155,41 @@ class Murid extends Model
         $nis = $input['NIS'];
         if ($request->file('FOTO')) {
             if (!empty($this->FOTO)) {
-                File::delete(public_path("upload/profile/".$this->FOTO));
+                File::delete(public_path("upload/profile/" . $this->FOTO));
             }
-            $input['FOTO'] = $nis.'-'.date('d-m-Y').'.'.request()->FOTO->getClientOriginalExtension();
+            $input['FOTO'] = $nis . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
             $image = $request->file('FOTO');
             $image->move(public_path('upload/profile/'), $input['FOTO']);
         }
         if ($request->file('IJAZAH_SD')) {
             if (!empty($this->IJAZAH_SD)) {
-                File::delete(public_path("upload/ijazah_sd/".$this->IJAZAH_SD));
+                File::delete(public_path("upload/ijazah_sd/" . $this->IJAZAH_SD));
             }
-            $input['IJAZAH_SD'] = $nis.'- IJAZAH SD -'.date('d-m-Y').'.'.request()->IJAZAH_SD->getClientOriginalExtension();
+            $input['IJAZAH_SD'] = $nis . '- IJAZAH SD -' . date('d-m-Y') . '.' . request()->IJAZAH_SD->getClientOriginalExtension();
             $image = $request->file('IJAZAH_SD');
             $image->move(public_path('upload/ijazah_sd/'), $input['IJAZAH_SD']);
         }
         if ($request->file('IJAZAH_SMP')) {
             if (!empty($this->IJAZAH_SMP)) {
-                File::delete(public_path("upload/ijazah_smp/".$this->IJAZAH_SMP));
+                File::delete(public_path("upload/ijazah_smp/" . $this->IJAZAH_SMP));
             }
-            $input['IJAZAH_SMP'] = $nis.'- IJAZAH SMP -'.date('d-m-Y').'.'.request()->IJAZAH_SMP->getClientOriginalExtension();
+            $input['IJAZAH_SMP'] = $nis . '- IJAZAH SMP -' . date('d-m-Y') . '.' . request()->IJAZAH_SMP->getClientOriginalExtension();
             $image = $request->file('IJAZAH_SMP');
             $image->move(public_path('upload/ijazah_smp/'), $input['IJAZAH_SMP']);
         }
         if ($request->file('IJAZAH_SMA')) {
             if (!empty($this->IJAZAH_SMA)) {
-                File::delete(public_path("upload/ijazah_sma/".$this->IJAZAH_SMA));
+                File::delete(public_path("upload/ijazah_sma/" . $this->IJAZAH_SMA));
             }
-            $input['IJAZAH_SMA'] = $nis.'- IJAZAH SMA -'.date('d-m-Y').'.'.request()->IJAZAH_SMA->getClientOriginalExtension();
+            $input['IJAZAH_SMA'] = $nis . '- IJAZAH SMA -' . date('d-m-Y') . '.' . request()->IJAZAH_SMA->getClientOriginalExtension();
             $image = $request->file('IJAZAH_SMA');
             $image->move(public_path('upload/ijazah_sma/'), $input['IJAZAH_SMA']);
         }
         if ($request->file('FOTO_AKTE_LAHIR')) {
             if (!empty($this->FOTO_AKTE_LAHIR)) {
-                File::delete(public_path("upload/akte_lahir/".$this->FOTO_AKTE_LAHIR));
+                File::delete(public_path("upload/akte_lahir/" . $this->FOTO_AKTE_LAHIR));
             }
-            $input['FOTO_AKTE_LAHIR'] = $nis.'- AKTE LAHIR -'.date('d-m-Y').'.'.request()->FOTO_AKTE_LAHIR->getClientOriginalExtension();
+            $input['FOTO_AKTE_LAHIR'] = $nis . '- AKTE LAHIR -' . date('d-m-Y') . '.' . request()->FOTO_AKTE_LAHIR->getClientOriginalExtension();
             $image = $request->file('FOTO_AKTE_LAHIR');
             $image->move(public_path('upload/akte_lahir/'), $input['FOTO_AKTE_LAHIR']);
         }
@@ -238,7 +239,7 @@ class Murid extends Model
      **/
     public function pengampu()
     {
-        return $this->belongsToMany(\App\Models\Pengampu::class, 'nilai_akademik', 'NIS', 'ID_PENGAMPU')->withPivot('NILAI_UTS','NILAI_UAS');
+        return $this->belongsToMany(\App\Models\Pengampu::class, 'nilai_akademik', 'NIS', 'ID_PENGAMPU')->withPivot('NILAI_UTS', 'NILAI_UAS');
     }
 
     public function kelas()

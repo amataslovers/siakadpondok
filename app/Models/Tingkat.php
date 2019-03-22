@@ -23,7 +23,7 @@ class Tingkat extends Model
     use SoftDeletes;
 
     public $table = 'tingkat';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -34,6 +34,7 @@ class Tingkat extends Model
 
     public $fillable = [
         'TINGKAT',
+        'SETARA',
         'KODE_LULUS'
     ];
 
@@ -45,6 +46,7 @@ class Tingkat extends Model
     protected $casts = [
         'ID_TINGKAT' => 'integer',
         'TINGKAT' => 'integer',
+        'SETARA' => 'integer',
         'KODE_LULUS' => 'integer'
     ];
 
@@ -53,9 +55,7 @@ class Tingkat extends Model
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
