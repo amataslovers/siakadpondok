@@ -4,6 +4,12 @@
     <p>{!! $murid->NIS !!}</p>
 </div>
 
+<!-- NIK Field -->
+<div class="form-group">
+    {!! Form::label('NIK', 'NIK:') !!}
+    <p>{!! $murid->NIK !!}</p>
+</div>
+
 <!-- Id Agama Field -->
 <div class="form-group">
     {!! Form::label('ID_AGAMA', 'Id Agama:') !!}

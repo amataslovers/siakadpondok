@@ -4,6 +4,12 @@
     {!! Form::text('NIS', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- NIK Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('NIK', 'NIK:') !!}
+    {!! Form::text('NIK', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Id Agama Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('ID_AGAMA', 'Id Agama:') !!}

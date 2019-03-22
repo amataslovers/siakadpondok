@@ -57,6 +57,7 @@ class Murid extends Model
 
     public $fillable = [
         'NIS',
+        'NIK',
         'ID_AGAMA',
         'NAMA',
         'NAMA_ARAB',
