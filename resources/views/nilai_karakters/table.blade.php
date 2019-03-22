@@ -8,6 +8,7 @@
             <th>AKHLAQ</th>
             <th>KEBERSIHAN</th>
             <th>KERAJINAN</th>
+            <th>KETEKUNAN</th>
             <th>Action</th>
         </tr>
     </thead>

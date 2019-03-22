@@ -63,6 +63,7 @@
                 { data: 'AKHLAQ', name: 'AKHLAQ' },
                 { data: 'KEBERSIHAN', name: 'KEBERSIHAN' },
                 { data: 'KERAJINAN', name: 'KERAJINAN' },
+                { data: 'KETEKUNAN', name: 'KETEKUNAN' },
                 { data: 'action', name: 'nilai_akademik.action', orderable: false, searchable: false}
 
             ],

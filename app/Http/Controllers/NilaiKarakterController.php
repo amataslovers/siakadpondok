@@ -66,12 +66,12 @@ class NilaiKarakterController extends AppBaseController
         ])->get();
 
         $cekNilaiKarakter = NilaiKarakter::whereIn('ID_HISTORY_KELAS', $cekHistoryKelas->pluck('ID_HISTORY_KELAS'))->get();
-        
+
         if (!$cekNilaiKarakter->isEmpty()) {
             Flash::success('Nilai Karakter sudah terisi.');
             return redirect(route('nilaiKarakters.index'));
         }
-        
+
         return view('nilai_karakters.create')->with(['history' => $cekHistoryKelas]);
     }
 
@@ -99,7 +99,8 @@ class NilaiKarakterController extends AppBaseController
                         'ALFA' => $input['_ALFA'][$key],
                         'AKHLAQ' => $input['_AKHLAQ'][$key],
                         'KEBERSIHAN' => $input['_KEBERSIHAN'][$key],
-                        'KERAJINAN' => $input['_KERAJINAN'][$key]
+                        'KERAJINAN' => $input['_KERAJINAN'][$key],
+                        'KETEKUNAN' => $input['_KETEKUNAN'][$key]
                     ]
                 );
             }

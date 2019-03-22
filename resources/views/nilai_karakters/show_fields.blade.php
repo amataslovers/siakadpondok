@@ -46,6 +46,13 @@
     <p>{!! $nilaiKarakter->KERAJINAN !!}</p>
 </div>
 
+<!-- Kerajinan Field -->
+<div class="form-group">
+    {!! Form::label('KETEKUNAN', 'Ketekunan:') !!}
+    <p>{!! $nilaiKarakter->KETEKUNAN !!}</p>
+</div>
+
+
 <!-- Created At Field -->
 <div class="form-group">
     {!! Form::label('created_at', 'Created At:') !!}
