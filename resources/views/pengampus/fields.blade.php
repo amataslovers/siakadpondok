@@ -12,7 +12,7 @@
 
 <!-- Id Semester Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('ID_TAHUN_AJARAN', 'Id Semester:') !!}
+    {!! Form::label('ID_TAHUN_AJARAN', 'Tahun Ajaran:') !!}
     {!! Form::select('ID_TAHUN_AJARAN', $tahun, null, ['class' => 'form-control form-select2']) !!}
 </div>
 
@@ -20,6 +20,12 @@
 <div class="form-group col-sm-6">
     {!! Form::label('KKM', 'Kkm:') !!}
     {!! Form::number('KKM', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Kkm Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('STATUS_KKM', 'Status Kkm:') !!}
+    {!! Form::select('STATUS_KKM', [0 => 'Non Wajib', 1 => 'Wajib'], null, ['class' => 'form-control', 'placeholder' => 'Pilih Status KKM']) !!}
 </div>
 
 <!-- Id Kelas Field -->

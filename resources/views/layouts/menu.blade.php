@@ -146,6 +146,19 @@
 </li>
 
 <li class="treeview">
+    <a href="#"><i class="fa fa-link"></i> <span>Cetak</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::is('cetak/rapot*') ? 'active' : '' }}">
+            <a href="{!! route('cetakRapotIndex') !!}"><i class="fa fa-edit"></i><span>Cetak Rapot</span></a>
+        </li>
+    </ul>
+</li>
+
+<li class="treeview">
     <a href="#"><i class="fa fa-link"></i> <span>Keuangan</span>
         <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>

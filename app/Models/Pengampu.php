@@ -31,7 +31,7 @@ class Pengampu extends Model
     use SoftDeletes;
 
     public $table = 'pengampu';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -45,6 +45,7 @@ class Pengampu extends Model
         'NIP_GURU',
         'ID_TAHUN_AJARAN',
         'KKM',
+        'STATUS_KKM',
         'ID_KELAS',
         'HARI',
         'JAM'
@@ -61,7 +62,9 @@ class Pengampu extends Model
         'NIP_GURU' => 'string',
         'ID_TAHUN_AJARAN' => 'integer',
         'ID_KELAS' => 'integer',
-        'HARI' => 'string'
+        'HARI' => 'string',
+        'KKM' => 'integer',
+        'STATUS_KKM' => 'integer'
     ];
 
     /**
@@ -69,9 +72,7 @@ class Pengampu extends Model
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -18,7 +18,7 @@
 
 <!-- Id Semester Field -->
 <div class="form-group">
-    {!! Form::label('ID_TAHUN_AJARAN', 'Id Semester:') !!}
+    {!! Form::label('ID_TAHUN_AJARAN', 'Tahun Ajaran:') !!}
     <p>{!! $pengampu->ID_TAHUN_AJARAN !!}</p>
 </div>
 
@@ -26,6 +26,12 @@
 <div class="form-group">
     {!! Form::label('KKM', 'Kkm:') !!}
     <p>{!! $pengampu->KKM !!}</p>
+</div>
+
+<!-- Kkm Field -->
+<div class="form-group">
+    {!! Form::label('STATUS_KKM', 'Status Kkm:') !!}
+    <p>{!! $pengampu->STATUS_KKM !!}</p>
 </div>
 
 <!-- Id Kelas Field -->

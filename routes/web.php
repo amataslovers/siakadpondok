@@ -22,7 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::resource('agamas', 'AgamaController');
 
     Route::resource('detailKeluargas', 'DetailKeluargaController');
@@ -56,9 +56,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('tenagaUmums', 'TenagaUmumController');
 
     Route::resource('catatanSpps', 'CatatanSppController');
-    
+
     Route::resource('gurus', 'GuruController');
-    
+
     Route::get('api/keluarga/{id}', 'KeluargaMuridController@getDetailKeluargaById')->name('get-detail-keluarga');
     Route::get('api/peraturan/{id}', 'PelanggaranMuridController@getPeraturanByIdSanksi')->name('get-peraturan');
     Route::delete('api/keluarga/{id}/{nis}', 'KeluargaMuridController@deleteKeluargaViaAjax');
