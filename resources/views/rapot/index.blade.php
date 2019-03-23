@@ -39,7 +39,7 @@
             serverSide: true,
             ajax: '{!! route('cetakRapotIndex') !!}',
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'NIS', name: 'NIS' },
                 { data: 'murid.NAMA', name: 'murid.NAMA' },
                 { data: 'kelas.tingkat.TINGKAT', name: 'tingkat.TINGKAT' },
@@ -59,12 +59,7 @@
                 buttons: {
                     colvis: 'Ganti Kolom'
                 }
-            },
-            "columnDefs": [ {
-                "searchable": false,
-                "orderable": false,
-                "targets": 0
-            } ],
+            }
         });
     </script>
 @endsection
