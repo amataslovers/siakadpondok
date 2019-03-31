@@ -32,6 +32,8 @@
         var hapusKeluarga;
         var keluarga = [];
 
+        
+
         $(document).ready(function(){
             $('.tanggal').datepicker({
                autoclose : true,
@@ -49,6 +51,12 @@
             });
 
             var i = 1;
+            
+            var dataKeluargaMurid = {!! json_encode($murid->keluargaMurid->toArray()) !!};
+            if (dataKeluargaMurid != null) {
+                inputArrayMurid();
+                tampilData();
+            }
 
             $('#btn-tambah-keluarga').on('click', function(e){
 
@@ -104,7 +112,7 @@
                                 '<input type="text" readonly class="form-control" name="_pekerjaan[]" value="'+keluarga[i]['pekerjaan']+'">'+
                             '</td>'+
                             '<td> ' + 
-                                '<button type="button" onclick="hapusKeluarga('+(i-1)+')"  class="glyphicon glyphicon-trash btn btn-danger"></button>'+
+                                '<button type="button" onclick="hapusKeluarga('+(i)+')"  class="glyphicon glyphicon-trash btn btn-danger"></button>'+
                             '</td>'+
                         '</tr>');
                 }
@@ -142,11 +150,24 @@
                 return keluarga.push(keluarga_murid);
             }
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            function inputArrayMurid() {
+                for (var i = 0; i < dataKeluargaMurid.length; i++) {
+                    var keluarga_murid = {
+                        idJenis: dataKeluargaMurid[i]['ID_JENIS_KELUARGA'],
+                        namaJenis: dataKeluargaMurid[i].jenis_keluarga['NAMA'],
+                        nama: dataKeluargaMurid[i]['NAMA'],
+                        tempatLahir: dataKeluargaMurid[i]['TEMPAT_LAHIR'],
+                        tanggalLahir: dataKeluargaMurid[i]['TANGGAL_LAHIR'],
+                        idAgama: dataKeluargaMurid[i]['ID_AGAMA'],
+                        namaAgama: dataKeluargaMurid[i].agama['NAMA'],
+                        alamat: dataKeluargaMurid[i]['ALAMAT'],
+                        notelp: dataKeluargaMurid[i]['NOTELP'],
+                        email: dataKeluargaMurid[i]['EMAIL'],
+                        pekerjaan: dataKeluargaMurid[i]['PEKERJAAN']
+                    };
+                    keluarga.push(keluarga_murid);
                 }
-            });
+            }
 
             $('#btn-tambah-keluarga-ygada').on('click', function(e){
                 var id = $('#ID_KELUARGA_MURID').val();
@@ -173,22 +194,29 @@
                     tampilData();
                 });
             });
+            
+            // $.ajaxSetup({
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     }
+            // });
 
-            window.deleteKeluarga = function(id, nis, rowid)
-            {
-                $.ajax({
-                    type: 'DELETE',
-                    url: '{{url('api/keluarga')}}/' + id + '/' + nis
-                }).then(function (data) {
-                    var row = document.getElementById(rowid);
-                    row.parentNode.removeChild(row);
-                   if(data){
-                        alert('Data Keluarga berhasil dihapus');
-                    }else{
-                        alert('Data Keluarga tersebut masih memiliki murid yang lain');
-                    }
-                });
-            }
+
+            // window.deleteKeluarga = function(id, nis, rowid)
+            // {
+            //     $.ajax({
+            //         type: 'DELETE',
+            //         url: '{{url('api/keluarga')}}/' + id + '/' + nis
+            //     }).then(function (data) {
+            //         var row = document.getElementById(rowid);
+            //         row.parentNode.removeChild(row);
+            //        if(data){
+            //             alert('Data Keluarga berhasil dihapus');
+            //         }else{
+            //             alert('Data Keluarga tersebut masih memiliki murid yang lain');
+            //         }
+            //     });
+            // }
         });
     </script>
 @endsection

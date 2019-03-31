@@ -112,7 +112,7 @@
                     <th>#</th>
                 </tr>
             </thead>
-            <tbody id="daftar-keluarga-ada">
+            {{-- <tbody id="daftar-keluarga-ada">
                 @if (isset($murid))
                     @foreach ($murid->keluargaMurid as $key => $item)
                         <tr id="row-{{$key}}">
@@ -133,7 +133,7 @@
                         </tr>
                     @endforeach
                 @endif
-            </tbody>
+            </tbody> --}}
             <tbody id="daftar-keluarga">
                 
             </tbody>
