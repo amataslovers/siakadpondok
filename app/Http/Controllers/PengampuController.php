@@ -15,6 +15,7 @@ use App\Models\MataPelajaran;
 use App\Models\Guru;
 use App\Models\TahunAjaran;
 use App\Models\Kelas;
+use App\Models\Pengampu;
 
 class PengampuController extends AppBaseController
 {
@@ -38,6 +39,7 @@ class PengampuController extends AppBaseController
         if ($request->ajax()) {
             $pengampu = $this->pengampuRepository->with(['mataPelajaran', 'guru', 'kelas', 'tahunAjaran'])->all();
             return DataTables::of($pengampu)
+                ->addIndexColumn()
                 ->addColumn('action', 'pengampus.datatables_actions')
                 ->make();
         }
@@ -53,8 +55,8 @@ class PengampuController extends AppBaseController
     {
         $mapel = MataPelajaran::all()->pluck('kode_nama', 'ID_MATA_PELAJARAN');
         $guru = Guru::all()->pluck('nama_lengkap', 'NIP_GURU');
-        $tahun = TahunAjaran::pluck('NAMA', 'ID_TAHUN_AJARAN');
-        $kelas = Kelas::all()->pluck('nama_lengkap', 'ID_KELAS');
+        $tahun = TahunAjaran::orderBy('created_at', 'desc')->get()->pluck('NAMA', 'ID_TAHUN_AJARAN');
+        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
         return view('pengampus.create')->with(compact('mapel', 'guru', 'tahun', 'kelas'));
     }
 
@@ -68,8 +70,11 @@ class PengampuController extends AppBaseController
     public function store(CreatePengampuRequest $request)
     {
         $input = $request->all();
-
-        $pengampu = $this->pengampuRepository->create($input);
+        $pengampu = Pengampu::updateOrCreate(
+            ['ID_MATA_PELAJARAN' => $input['ID_MATA_PELAJARAN'], 'ID_TAHUN_AJARAN' => $input['ID_TAHUN_AJARAN'], 'ID_KELAS' => $input['ID_KELAS']],
+            ['NIP_GURU' => $input['NIP_GURU'], 'KKM' => $input['KKM'], 'JAM' => $input['JAM'], 'HARI' => $input['HARI']]
+        );
+        // $pengampu = $this->pengampuRepository->create($input);
 
         Flash::success('Pengampu saved successfully.');
 

@@ -3,17 +3,13 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Kelas
+            Kelas <a href="{!! route('kelas.index') !!}" class="btn btn-default"><i class="fa fa-arrow-left"> </i> Back</a>
         </h1>
     </section>
     <div class="content">
-        <div class="box box-primary">
-            <div class="box-body">
-                <div class="row" style="padding-left: 20px">
-                    @include('kelas.show_fields')
-                    <a href="{!! route('kelas.index') !!}" class="btn btn-default">Back</a>
-                </div>
-            </div>
+        <div class="row">
+            @include('kelas.show_fields')
+            
         </div>
     </div>
 @endsection

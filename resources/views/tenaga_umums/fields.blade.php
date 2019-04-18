@@ -1,7 +1,7 @@
-<!-- Id Agama Field -->
+<!-- Nama Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('ID_AGAMA', 'Id Agama:') !!}
-    {!! Form::number('ID_AGAMA', null, ['class' => 'form-control']) !!}
+    {!! Form::label('NIP', 'NIP:') !!}
+    {!! Form::text('NIP', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Nama Field -->
@@ -10,10 +10,16 @@
     {!! Form::text('NAMA', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Id Agama Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('ID_AGAMA', 'Agama:') !!}
+    {!! Form::select('ID_AGAMA', $agama, null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Jenis Kelamin Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('JENIS_KELAMIN', 'Jenis Kelamin:') !!}
-    {!! Form::text('JENIS_KELAMIN', null, ['class' => 'form-control']) !!}
+    {!! Form::select('JENIS_KELAMIN', ['L' => 'Laki-laki', 'P' => 'Perempuan'], null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Tempat Lahir Field -->
@@ -25,13 +31,13 @@
 <!-- Tanggal Lahir Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('TANGGAL_LAHIR', 'Tanggal Lahir:') !!}
-    {!! Form::date('TANGGAL_LAHIR', null, ['class' => 'form-control']) !!}
+    {!! Form::text('TANGGAL_LAHIR', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Alamat Field -->
 <div class="form-group col-sm-12 col-lg-12">
     {!! Form::label('ALAMAT', 'Alamat:') !!}
-    {!! Form::textarea('ALAMAT', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('ALAMAT', null, ['class' => 'form-control', 'rows' => 2]) !!}
 </div>
 
 <!-- Notelp Field -->
@@ -49,7 +55,13 @@
 <!-- Foto Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('FOTO', 'Foto:') !!}
-    {!! Form::text('FOTO', null, ['class' => 'form-control']) !!}
+    {!! Form::file('FOTO', null, ['class' => 'form-control']) !!}
+    @if(isset($tenagaUmum) && !is_null($tenagaUmum->FOTO))
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#picFoto">
+            Lihat Foto
+        </button>
+    @endif
 </div>
 
 <!-- Submit Field -->
@@ -57,3 +69,23 @@
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
     <a href="{!! route('tenagaUmums.index') !!}" class="btn btn-default">Cancel</a>
 </div>
+
+@if(!empty($tenagaUmum->FOTO))
+    <!-- Modal FOTO -->
+    <div class="modal fade" id="picFoto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Foto</h4>
+                </div>
+                <div class="modal-body">
+                    <img src="{!! asset('/upload/profile/'. $tenagaUmum->FOTO) !!}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif

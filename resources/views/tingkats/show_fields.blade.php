@@ -1,9 +1,3 @@
-<!-- Id Tingkat Field -->
-<div class="form-group">
-    {!! Form::label('ID_TINGKAT', 'Id Tingkat:') !!}
-    <p>{!! $tingkat->ID_TINGKAT !!}</p>
-</div>
-
 <!-- Tingkat Field -->
 <div class="form-group">
     {!! Form::label('TINGKAT', 'Tingkat:') !!}
@@ -13,30 +7,27 @@
 <!-- Tingkat Field -->
 <div class="form-group">
     {!! Form::label('SETARA', 'Kesetaraan:') !!}
-    <p>{!! $tingkat->SETARA !!}</p>
+    <p> @if($tingkat->SETARA == 0) 
+            -----
+        @elseif($tingkat->SETARA == 1) 
+            Ibtidaiyah
+        @elseif($tingkat->SETARA == 2) 
+            Tsanawiyah
+        @elseif($tingkat->SETARA == 3) 
+            Aliyah
+        @endif</p>
 </div>
 
 <!-- Kode Lulus Field -->
 <div class="form-group">
     {!! Form::label('KODE_LULUS', 'Kode Lulus:') !!}
-    <p>{!! $tingkat->KODE_LULUS !!}</p>
+    <p>@if($tingkat->KODE_LULUS == 0) 
+            -----
+        @elseif($tingkat->KODE_LULUS == 1) 
+            Ibtidaiyah
+        @elseif($tingkat->KODE_LULUS == 2) 
+            Tsanawiyah
+        @elseif($tingkat->KODE_LULUS == 3) 
+            Aliyah
+        @endif</p>
 </div>
-
-<!-- Created At Field -->
-<div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
-    <p>{!! $tingkat->created_at !!}</p>
-</div>
-
-<!-- Updated At Field -->
-<div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
-    <p>{!! $tingkat->updated_at !!}</p>
-</div>
-
-<!-- Deleted At Field -->
-<div class="form-group">
-    {!! Form::label('deleted_at', 'Deleted At:') !!}
-    <p>{!! $tingkat->deleted_at !!}</p>
-</div>
-

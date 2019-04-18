@@ -46,7 +46,19 @@ class MataPelajaranDataTable extends DataTable
             ->parameters([
                 'dom'     => 'lfrtip',
                 'order'   => [[0, 'desc']],
-                
+                'language' => [
+                    'buttons' => [
+                        'colvis' => 'Ganti Kolom'
+                    ],
+                    'search' => 'Cari:',
+                    'zeroRecords' => 'Data tidak ditemukan',
+                    'paginate' => [
+                        'first' => 'Awal',
+                        'last' => 'Terakhir',
+                        'next' => 'Selanjutnya',
+                        'previous' => 'Sebelumnya'
+                    ],
+                ],
             ]);
     }
 
@@ -58,9 +70,8 @@ class MataPelajaranDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'KODE_MAPEL',
-            'NAMA',
-            'NAMA_ARAB'
+            'KODE_MAPEL' => ['title' => 'Kode Mapel'],
+            'NAMA' => ['title' => 'Nama Mapel']
         ];
     }
 

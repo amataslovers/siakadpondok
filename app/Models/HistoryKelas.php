@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @package App\Models
  * @version February 23, 2019, 3:24 pm UTC
  *
- * @property \App\Models\Kela kela
+ * @property \App\Models\Kela kelas
  * @property \App\Models\Murid murid
  * @property \App\Models\Semester semester
  * @property \Illuminate\Database\Eloquent\Collection detailKeluarga
@@ -27,7 +27,7 @@ class HistoryKelas extends Model
     use SoftDeletes;
 
     public $table = 'history_kelas';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -59,9 +59,7 @@ class HistoryKelas extends Model
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -115,7 +113,13 @@ class HistoryKelas extends Model
 
     public function getFullNameAttribute()
     {
-        return $this->murid->NAMA . ' | Kelas ' . $this->kelas->tingkat->TINGKAT . 
-                ' | ' . $this->kelas->NAMA . ' | Semester ' . $this->semester->SEMESTER;
+        return $this->murid->NIS . ' | ' . $this->murid->NAMA . ' | ' . $this->kelas->tingkat->TINGKAT .
+            ' ' . $this->kelas->NAMA . ' | ' . $this->semester->SEMESTER . ' - ' . $this->semester->tahunAjaran->NAMA;
+    }
+
+    public function getFullNameSppAttribute()
+    {
+        return $this->murid->NIS . ' | ' . $this->murid->NAMA . ' | Kelas ' . $this->kelas->tingkat->TINGKAT .
+            ' ' . $this->kelas->NAMA . ' | Semester ' . $this->semester->SEMESTER . ' ' . $this->semester->tahunAjaran->NAMA;
     }
 }

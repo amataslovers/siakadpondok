@@ -11,7 +11,7 @@
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
                     @include('agamas.show_fields')
-                    <a href="{!! route('agamas.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('agamas.index') !!}" class="btn btn-default"><i class="fa fa-arrow-left"> </i> Back</a>
                 </div>
             </div>
         </div>

@@ -46,7 +46,20 @@ class SanksiDataTable extends DataTable
             ->parameters([
                 'dom'     => 'lfrtip',
                 'order'   => [[0, 'desc']],
-                
+                'language' => [
+                    'buttons' => [
+                        'colvis' => 'Ganti Kolom'
+                    ],
+                    'search' => 'Cari:',
+                    'zeroRecords' => 'Data tidak ditemukan',
+                    'paginate' => [
+                        'first' => 'Awal',
+                        'last' => 'Terakhir',
+                        'next' => 'Selanjutnya',
+                        'previous' => 'Sebelumnya'
+                    ],
+                ],
+
             ]);
     }
 
@@ -58,7 +71,7 @@ class SanksiDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'NAMA_SANKSI'
+            'NAMA_SANKSI' => ['title' => 'Sanksi']
         ];
     }
 

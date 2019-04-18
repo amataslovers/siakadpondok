@@ -12,14 +12,18 @@
 
 <!-- Id History Kelas Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('ID_HISTORY_KELAS', 'Id History Kelas:') !!}
-    {!! Form::select('ID_HISTORY_KELAS', $murid, null, ['class' => 'form-control form-select2']) !!}
+    {!! Form::label('ID_HISTORY_KELAS', 'Nama Murid | Kelas | Semester:') !!}
+    {!! Form::select('ID_HISTORY_KELAS', $murid, null, ['class' => 'form-control form-select2', 'placeholder' => 'Pilih Murid']) !!}
 </div>
 
 <!-- Tanggal Melanggar Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('TANGGAL_MELANGGAR', 'Tanggal Melanggar:') !!}
-    {!! Form::text('TANGGAL_MELANGGAR', null, ['class' => 'form-control', 'required']) !!}
+    {!! Form::text('TANGGAL_MELANGGAR', null, ['class' => 'form-control', 'required', 'autocomplete' => 'off']) !!}
+</div>
+
+<div class="form-group col-md-12" id="show-info">
+
 </div>
 
 <!-- Keterangan Field -->

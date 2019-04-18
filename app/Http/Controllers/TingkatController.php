@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TingkatDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTingkatRequest;
 use App\Http\Requests\UpdateTingkatRequest;
 use App\Repositories\TingkatRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class TingkatController extends AppBaseController
 {
@@ -27,9 +28,38 @@ class TingkatController extends AppBaseController
      * @param TingkatDataTable $tingkatDataTable
      * @return Response
      */
-    public function index(TingkatDataTable $tingkatDataTable)
+    public function index(Request $request)
     {
-        return $tingkatDataTable->render('tingkats.index');
+        if ($request->ajax()) {
+            $tingkats = $this->tingkatRepository->all();
+            return DataTables::of($tingkats)
+                ->addColumn('action', 'tingkats.datatables_actions')
+                ->editColumn('KODE_LULUS', function ($tingkats) {
+                    if ($tingkats->KODE_LULUS == 0) {
+                        return '<span class="label label-primary"> ----- </span>';
+                    } elseif ($tingkats->KODE_LULUS == 1) {
+                        return '<span class="label label-primary"> Ibtidaiyah </span>';
+                    } elseif ($tingkats->KODE_LULUS == 2) {
+                        return '<span class="label label-primary"> Tsanawiyah </span>';
+                    } elseif ($tingkats->KODE_LULUS == 3) {
+                        return '<span class="label label-primary"> Aliyah </span>';
+                    }
+                })
+                ->editColumn('SETARA', function ($tingkats) {
+                    if ($tingkats->SETARA == 0) {
+                        return '-----';
+                    } elseif ($tingkats->SETARA == 1) {
+                        return 'Ibtidaiyah';
+                    } elseif ($tingkats->SETARA == 2) {
+                        return 'Tsanawiyah';
+                    } elseif ($tingkats->SETARA == 3) {
+                        return 'Aliyah';
+                    }
+                })
+                ->rawColumns(['KODE_LULUS', 'action'])
+                ->make();
+        }
+        return view('tingkats.index');
     }
 
     /**

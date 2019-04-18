@@ -62,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('api/keluarga/{id}', 'KeluargaMuridController@getDetailKeluargaById')->name('get-detail-keluarga');
     Route::get('api/peraturan/{id}', 'PelanggaranMuridController@getPeraturanByIdSanksi')->name('get-peraturan');
     Route::delete('api/keluarga/{id}/{nis}', 'KeluargaMuridController@deleteKeluargaViaAjax');
-
+    Route::get('api/infopelanggaran/{id}', 'PelanggaranMuridController@getInfoPelanggaranMurid');
     Route::post('nilaiAkademiks/form-nilai', 'NilaiAkademikController@formNilai')->name('form-isi-nilai-akademik');
     Route::resource('nilaiAkademiks', 'NilaiAkademikController');
 
@@ -76,5 +76,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('cetak/rapot/', 'CetakController@lihatRapot')->name('cetakRapotIndex');
     Route::get('cetak/rapot/{id}', 'CetakController@downloadRapot')->name('cetakRapotDownload');
+    Route::get('cetak/ijazah/', 'CetakController@lihatIjazah')->name('cetakIjazahIndex');
+    Route::get('cetak/ijazah/{id}', 'CetakController@downloadIjazah')->name('cetakIjazahDownload');
     // Route::post('users/ganti-password', );
 });
+
+
+
+
+Route::resource('perizinanMurids', 'PerizinanMuridController');

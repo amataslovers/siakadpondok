@@ -1,13 +1,13 @@
 <!-- Id Kelas Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('ID_KELAS', 'Id Kelas:') !!}
-    {!! Form::number('ID_KELAS', null, ['class' => 'form-control']) !!}
+    {!! Form::select('ID_KELAS', $kelas, null, ['class' => 'form-control form-select2']) !!}
 </div>
 
 <!-- Id Semester Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('ID_SEMESTER', 'Id Semester:') !!}
-    {!! Form::number('ID_SEMESTER', null, ['class' => 'form-control']) !!}
+    {!! Form::select('ID_SEMESTER', $semester, null, ['class' => 'form-control form-select2']) !!}
 </div>
 
 <!-- Nis Field -->

@@ -14,7 +14,7 @@
 
                     <!-- Id Agama Field -->
                     <div class="form-group col-sm-3">
-                        {!! Form::label('ID_AGAMA_KELUARGA', 'Id Agama:') !!}
+                        {!! Form::label('ID_AGAMA_KELUARGA', 'Agama:') !!}
                         {!! Form::select('ID_AGAMA_KELUARGA', $agama, null, ['class' => 'form-control form-select2', 'autocomplete' => 'off']) !!}
                     </div>
 
@@ -44,7 +44,7 @@
 
                     <!-- Notelp Field -->
                     <div class="form-group col-sm-3">
-                        {!! Form::label('NOTELP_KELUARGA', 'Notelp:') !!}
+                        {!! Form::label('NOTELP_KELUARGA', 'No Telepon:') !!}
                         {!! Form::text('NOTELP_KELUARGA', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
                     </div>
 
@@ -106,7 +106,7 @@
                     <th>Tanggal Lahir</th>
                     <th>Agama</th>
                     <th>Alamat</th>
-                    <th>No Telp</th>
+                    <th>No Telepon</th>
                     <th>Email</th>
                     <th>Pekerjaan</th>
                     <th>#</th>

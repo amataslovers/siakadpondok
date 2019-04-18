@@ -18,7 +18,15 @@ class TahunAjaranDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'tahun_ajarans.datatables_actions');
+        return $dataTable->addColumn('action', 'tahun_ajarans.datatables_actions')
+            ->editColumn('STATUS', function ($query) {
+                if ($query->STATUS) {
+                    return '<span class="label label-success"> Aktif </span>';
+                } else {
+                    return '<span class="label label-danger"> NonAktif </span>';
+                }
+            })
+            ->rawColumns(['STATUS', 'action']);
     }
 
     /**
@@ -46,7 +54,20 @@ class TahunAjaranDataTable extends DataTable
             ->parameters([
                 'dom'     => 'lfrtip',
                 'order'   => [[0, 'desc']],
-                
+                'language' => [
+                    'buttons' => [
+                        'colvis' => 'Ganti Kolom'
+                    ],
+                    'search' => 'Cari:',
+                    'zeroRecords' => 'Data tidak ditemukan',
+                    'paginate' => [
+                        'first' => 'Awal',
+                        'last' => 'Terakhir',
+                        'next' => 'Selanjutnya',
+                        'previous' => 'Sebelumnya'
+                    ],
+                ],
+
             ]);
     }
 
@@ -58,8 +79,8 @@ class TahunAjaranDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'NAMA',
-            'STATUS'
+            'NAMA' => ['title' => 'Tahun Ajaran'],
+            'STATUS' => ['title' => 'Status']
         ];
     }
 

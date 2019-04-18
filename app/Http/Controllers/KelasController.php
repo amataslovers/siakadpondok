@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\KelasDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateKelasRequest;
 use App\Http\Requests\UpdateKelasRequest;
 use App\Repositories\KelasRepository;
@@ -13,6 +12,8 @@ use Response;
 use App\Models\Guru;
 use App\Models\TahunAjaran;
 use App\Models\Tingkat;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class KelasController extends AppBaseController
 {
@@ -30,9 +31,19 @@ class KelasController extends AppBaseController
      * @param KelasDataTable $kelasDataTable
      * @return Response
      */
-    public function index(KelasDataTable $kelasDataTable)
+    public function index(Request $request)
     {
-        return $kelasDataTable->render('kelas.index');
+        if ($request->ajax()) {
+            $kelas = $this->kelasRepository->with(['tingkat', 'guru', 'tahunAjaran'])->all();
+            return DataTables::of($kelas)
+                ->addColumn('action', 'kelas.datatables_actions')
+                ->addIndexColumn()
+                ->editColumn('STATUS', function ($kelas) {
+                    return (int)$kelas->STATUS == 1 ? 'Aktif' : 'NonAktif';
+                })
+                ->make();
+        }
+        return view('kelas.index');
     }
 
     /**
@@ -44,7 +55,7 @@ class KelasController extends AppBaseController
     {
         $guru = Guru::all()->pluck('nama_lengkap', 'NIP_GURU');
         $tingkat = Tingkat::pluck('TINGKAT', 'ID_TINGKAT');
-        $tahun = TahunAjaran::pluck('NAMA', 'ID_TAHUN_AJARAN');
+        $tahun = TahunAjaran::orderBy('created_at', 'desc')->get()->pluck('NAMA', 'ID_TAHUN_AJARAN');
         return view('kelas.create')->with(compact('guru', 'tingkat', 'tahun'));
     }
 

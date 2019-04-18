@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\DetailKeluargaDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateDetailKeluargaRequest;
 use App\Http\Requests\UpdateDetailKeluargaRequest;
 use App\Repositories\DetailKeluargaRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class DetailKeluargaController extends AppBaseController
 {
@@ -27,9 +28,22 @@ class DetailKeluargaController extends AppBaseController
      * @param DetailKeluargaDataTable $detailKeluargaDataTable
      * @return Response
      */
-    public function index(DetailKeluargaDataTable $detailKeluargaDataTable)
+    public function index(Request $request)
     {
-        return $detailKeluargaDataTable->render('detail_keluargas.index');
+        if ($request->ajax()) {
+            $detailKeluarga = $this->detailKeluargaRepository
+                ->with([
+                    'murid:NIS,NAMA',
+                    'keluargaMurid:ID_KELUARGA_MURID,ID_JENIS_KELUARGA,NAMA',
+                    'keluargaMurid.jenisKeluarga:ID_JENIS_KELUARGA,NAMA',
+                ])
+                ->all();
+            return DataTables::of($detailKeluarga)
+                ->addColumn('action', 'detail_keluargas.datatables_actions')
+                ->addIndexColumn()
+                ->make();
+        }
+        return view('detail_keluargas.index');
     }
 
     /**

@@ -37,14 +37,33 @@ class NilaiKarakterController extends AppBaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $nilai = $this->nilaiKarakterRepository->all();
+            $nilai = $this->nilaiKarakterRepository
+                ->with([
+                    'historyKelas.murid:NIS,NAMA',
+                    'historyKelas.kelas.tingkat',
+                    'historyKelas.semester:ID_SEMESTER,SEMESTER'
+                ])
+                ->all();
             return DataTables::of($nilai)
+                ->addIndexColumn()
                 ->addColumn('action', 'nilai_karakters.datatables_actions')
+                ->addColumn('nisMurid', function ($nilai) {
+                    return $nilai->historyKelas->murid->NIS;
+                })
+                ->addColumn('namaMurid', function ($nilai) {
+                    return $nilai->historyKelas->murid->NAMA;
+                })
+                ->addColumn('kelasMurid', function ($nilai) {
+                    return $nilai->historyKelas->kelas->tingkat->TINGKAT . ' ' . $nilai->historyKelas->kelas->NAMA;
+                })
+                ->addColumn('semester', function ($nilai) {
+                    return $nilai->historyKelas->semester->SEMESTER;
+                })
                 ->make();
         }
 
-        $semester = Semester::all()->pluck('nama_lengkap', 'ID_SEMESTER');
-        $kelas = Kelas::all()->pluck('nama_lengkap', 'ID_KELAS');
+        $semester = Semester::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_SEMESTER');
+        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
         return view('nilai_karakters.index')->with(compact('semester', 'kelas'));
     }
 
@@ -68,7 +87,7 @@ class NilaiKarakterController extends AppBaseController
         $cekNilaiKarakter = NilaiKarakter::whereIn('ID_HISTORY_KELAS', $cekHistoryKelas->pluck('ID_HISTORY_KELAS'))->get();
 
         if (!$cekNilaiKarakter->isEmpty()) {
-            Flash::success('Nilai Karakter sudah terisi.');
+            Flash::warning('Nilai Karakter sudah terisi.');
             return redirect(route('nilaiKarakters.index'));
         }
 

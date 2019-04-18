@@ -1,19 +1,13 @@
-<!-- Id Keluarga Murid Field -->
-<div class="form-group">
-    {!! Form::label('ID_KELUARGA_MURID', 'Id Keluarga Murid:') !!}
-    <p>{!! $keluargaMurid->ID_KELUARGA_MURID !!}</p>
-</div>
-
 <!-- Id Jenis Keluarga Field -->
 <div class="form-group">
-    {!! Form::label('ID_JENIS_KELUARGA', 'Id Jenis Keluarga:') !!}
-    <p>{!! $keluargaMurid->ID_JENIS_KELUARGA !!}</p>
+    {!! Form::label('ID_JENIS_KELUARGA', 'Hubungan Keluarga:') !!}
+    <p>{!! $keluargaMurid->jenisKeluarga->NAMA !!}</p>
 </div>
 
 <!-- Id Agama Field -->
 <div class="form-group">
-    {!! Form::label('ID_AGAMA', 'Id Agama:') !!}
-    <p>{!! $keluargaMurid->ID_AGAMA !!}</p>
+    {!! Form::label('ID_AGAMA', 'Agama:') !!}
+    <p>{!! $keluargaMurid->agama->NAMA !!}</p>
 </div>
 
 <!-- Nama Field -->
@@ -57,22 +51,3 @@
     {!! Form::label('PEKERJAAN', 'Pekerjaan:') !!}
     <p>{!! $keluargaMurid->PEKERJAAN !!}</p>
 </div>
-
-<!-- Created At Field -->
-<div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
-    <p>{!! $keluargaMurid->created_at !!}</p>
-</div>
-
-<!-- Updated At Field -->
-<div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
-    <p>{!! $keluargaMurid->updated_at !!}</p>
-</div>
-
-<!-- Deleted At Field -->
-<div class="form-group">
-    {!! Form::label('deleted_at', 'Deleted At:') !!}
-    <p>{!! $keluargaMurid->deleted_at !!}</p>
-</div>
-

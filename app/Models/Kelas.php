@@ -29,7 +29,7 @@ class Kelas extends Model
     use SoftDeletes;
 
     public $table = 'kelas';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -67,9 +67,7 @@ class Kelas extends Model
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -113,6 +111,6 @@ class Kelas extends Model
 
     public function getNamaLengkapAttribute()
     {
-        return 'Kelas '. $this->tingkat->TINGKAT . ' | ' . $this->NAMA . ' | ' . $this->tahunAjaran->NAMA;
+        return 'Kelas ' . $this->tingkat->TINGKAT . ' | ' . $this->NAMA . ' | ' . $this->tahunAjaran->NAMA . ' | ' . $this->TAHUN_ANGKATAN;
     }
 }

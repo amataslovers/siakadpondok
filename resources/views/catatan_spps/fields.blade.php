@@ -1,37 +1,31 @@
 <!-- Id History Kelas Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('ID_HISTORY_KELAS', 'Id History Kelas:') !!}
-    {!! Form::number('ID_HISTORY_KELAS', null, ['class' => 'form-control']) !!}
+<div class="form-group col-sm-9">
+    {!! Form::label('ID_HISTORY_KELAS', 'NIS | Nama | Kelas | Semester :') !!}
+    {!! Form::select('ID_HISTORY_KELAS', $murid, null, ['class' => 'form-control form-select2', 'required']) !!}
+</div>
+
+<!-- Bulan  Field -->
+<div class="form-group col-sm-3">
+    {!! Form::label('BULAN', 'Bulan :') !!}
+    {!! Form::text('BULAN', null, ['class' => 'form-control', 'required', 'autocomplete' => 'off']) !!}
 </div>
 
 <!-- Tanggal Bayar Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('TANGGAL_BAYAR', 'Tanggal Bayar:') !!}
-    {!! Form::date('TANGGAL_BAYAR', null, ['class' => 'form-control']) !!}
+    {!! Form::text('TANGGAL_BAYAR', null, ['class' => 'form-control', 'required', 'autocomplete' => 'off']) !!}
 </div>
 
-<!-- Jenis Pembayaran Field -->
+<!-- Total Bayar Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('JENIS_PEMBAYARAN', 'Jenis Pembayaran:') !!}
-    {!! Form::text('JENIS_PEMBAYARAN', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- No Referensi Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('NO_REFERENSI', 'No Referensi:') !!}
-    {!! Form::text('NO_REFERENSI', null, ['class' => 'form-control']) !!}
+    {!! Form::label('TOTAL_BAYAR', 'Bayar:') !!}
+    {!! Form::number('TOTAL_BAYAR', null, ['class' => 'form-control', 'required', 'autocomplete' => 'off']) !!}
 </div>
 
 <!-- Keterangan Field -->
 <div class="form-group col-sm-12 col-lg-12">
     {!! Form::label('KETERANGAN', 'Keterangan:') !!}
-    {!! Form::textarea('KETERANGAN', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Total Bayar Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('TOTAL_BAYAR', 'Total Bayar:') !!}
-    {!! Form::number('TOTAL_BAYAR', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('KETERANGAN', null, ['class' => 'form-control', 'rows' => 2]) !!}
 </div>
 
 <!-- Submit Field -->

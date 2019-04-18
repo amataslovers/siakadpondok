@@ -30,30 +30,31 @@
             $('.form-select2').select2({
                 width : '100%'
             });
-        });
+            
+            $('#TANGGAL_MELANGGAR').datepicker({
+                autoclose : true,
+                format: 'dd/mm/yyyy'
+            });
 
-        $('#TANGGAL_MELANGGAR').datepicker({
-            autoclose : true,
-            format: 'dd/mm/yyyy'
-        });
+            $('#ID_SANKSI').on('change', function(e){
+                $('#ID_PERATURAN').empty().trigger("change");
+                var idSanksi = $('#ID_SANKSI').val();
+                var peraturanDropDown = $('#ID_PERATURAN');
+                $.ajax({
+                    type: 'GET',
+                    url: '{{url('api/peraturan')}}/' + idSanksi
+                }).then(function (data) {
 
-        $('#ID_SANKSI').on('change', function(e){
-            $('#ID_PERATURAN').empty().trigger("change");
-            var idSanksi = $('#ID_SANKSI').val();
-            var peraturanDropDown = $('#ID_PERATURAN');
-            $.ajax({
-                type: 'GET',
-                url: '{{url('api/peraturan')}}/' + idSanksi
-            }).then(function (data) {
+                    for(var k in data) {
+                        var option = new Option(data[k].NAMA_PERATURAN, data[k].ID_PERATURAN, true, true);
+                        peraturanDropDown.append(option).trigger('change');
+                    }
 
-                for(var k in data) {
-                    var option = new Option(data[k].NAMA_PERATURAN, data[k].ID_PERATURAN, true, true);
-                    peraturanDropDown.append(option).trigger('change');
-                }
-
-                $('#ID_PERATURAN').val(null).trigger('change');
+                    $('#ID_PERATURAN').val(null).trigger('change');
+                });
             });
         });
+
 
     </script>
 @endsection

@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Database\Eloquent\Collection pelanggaranMurid
  * @property integer ID_HISTORY_KELAS
  * @property date TANGGAL_BAYAR
- * @property string JENIS_PEMBAYARAN
- * @property string NO_REFERENSI
  * @property string KETERANGAN
  * @property bigInteger TOTAL_BAYAR
  */
@@ -27,7 +25,7 @@ class CatatanSpp extends Model
     use SoftDeletes;
 
     public $table = 'catatan_spp';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -39,8 +37,7 @@ class CatatanSpp extends Model
     public $fillable = [
         'ID_HISTORY_KELAS',
         'TANGGAL_BAYAR',
-        'JENIS_PEMBAYARAN',
-        'NO_REFERENSI',
+        'BULAN',
         'KETERANGAN',
         'TOTAL_BAYAR'
     ];
@@ -54,8 +51,7 @@ class CatatanSpp extends Model
         'ID_CATATAN_SPP' => 'integer',
         'ID_HISTORY_KELAS' => 'integer',
         'TANGGAL_BAYAR' => 'date',
-        'JENIS_PEMBAYARAN' => 'string',
-        'NO_REFERENSI' => 'string',
+        'BULAN' => 'integer',
         'KETERANGAN' => 'string'
     ];
 
@@ -65,8 +61,20 @@ class CatatanSpp extends Model
      * @var array
      */
     public static $rules = [
-        
+        'ID_HISTORY_KELAS' => 'required',
+        'TANGGAL_BAYAR' => 'required',
+        'BULAN' => 'required',
     ];
+
+    public function setTanggalBayarAttribute($data)
+    {
+        $this->attributes['TANGGAL_BAYAR'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data);
+    }
+
+    public function getTanggalBayarAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -3,27 +3,30 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Murid
+            Form Tambah Murid
         </h1>
     </section>
     <div class="content">
         @include('adminlte-templates::common.errors')
         {!! Form::open(['route' => 'murids.store', 'files' => true]) !!}
-            <div class="box box-primary">
-                <div class="box-body">
+            {{-- <div class="box box-primary">
+                <div class="box-body"> --}}
                     <div class="row">
                         @include('murids.fields')
-                    </div>
-                </div>
-            </div>
-            <div class="box box-primary">
-                <div class="box-body">
-                    <div class="row">
                         @include('murids.fields_kelas')
                     </div>
+                {{-- </div>
+            </div> --}}
+            {{-- <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                    </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="box box-primary">
+                <div class="box-header">
+                    <h4><strong>Keluarga Murid</strong></h4>
+                </div>
                 <div class="box-body">
                         @include('murids.fields_keluarga')
                         @include('murids.fields_button_submit')

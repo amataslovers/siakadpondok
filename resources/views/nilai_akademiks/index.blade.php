@@ -6,10 +6,10 @@
 
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Nilai Akademik</h1>
-        <h1 class="pull-right">
+        <h1 class="pull-left">Nilai Akademik Murid</h1>
+        {{-- <h1 class="pull-right">
            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('nilaiAkademiks.create') !!}">Add New</a>
-        </h1>
+        </h1> --}}
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -56,14 +56,14 @@
             serverSide: true,
             ajax: '{!! route('nilaiAkademiks.index') !!}',
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'NIS', name: 'NIS' },
-                { data: 'murid.NAMA', name: 'murid.NAMA' },
-                { data: 'pengampu.mata_pelajaran.NAMA', name: 'pengampu.mata_pelajaran.NAMA' },
-                { data: 'pengampu.kelas.tingkat.TINGKAT', name: 'pengampu.kelas.tingkat.TINGKAT' },
-                { data: 'semester.SEMESTER', name: 'semester.SEMESTER' },
-                { data: 'NILAI_UTS', name: 'NILAI_UTS' },
-                { data: 'NILAI_UAS', name: 'NILAI_UAS' },
+                { data: 'namaMurid', name: 'namaMurid' },
+                { data: 'namaMapel', name: 'namaMapel' },
+                { data: 'tingkatKelas', name: 'tingkatKelas', orderable: false, searchable: false },
+                { data: 'semester.SEMESTER', name: 'semester.SEMESTER', searchable: false },
+                { data: 'NILAI_UTS', name: 'NILAI_UTS', orderable: false, searchable: false },
+                { data: 'NILAI_UAS', name: 'NILAI_UAS', orderable: false, searchable: false },
                 { data: 'action', name: 'nilai_akademik.action', orderable: false, searchable: false}
 
             ],
@@ -78,13 +78,26 @@
             language: {
                 buttons: {
                     colvis: 'Ganti Kolom'
-                }
+                },
+                search: 'Cari:',
+                zeroRecords: 'Data tidak ditemukan',
+                paginate: {
+                    first: 'Awal',
+                    last: 'Terakhir',
+                    next: 'Selanjutnya',
+                    previous: 'Sebelumnya'
+                },
             },
-            "columnDefs": [ {
-                "searchable": false,
-                "orderable": false,
-                "targets": 0
-            } ],
+            initComplete: function () {
+                this.api().columns([1,2,3]).every(function () {
+                    var column = this;
+                    var input = document.createElement("input");
+                    $(input).appendTo($(column.footer()).empty())
+                    .on('change', function () {
+                        column.search($(this).val(), false, false, true).draw();
+                    });
+                });
+            }
         });
     </script>
 @endsection

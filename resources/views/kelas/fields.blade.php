@@ -6,13 +6,13 @@
 
 <!-- Id Tingkat Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('ID_TINGKAT', 'Id Tingkat:') !!}
+    {!! Form::label('ID_TINGKAT', 'Tingkat:') !!}
     {!! Form::select('ID_TINGKAT', $tingkat, null, ['class' => 'form-control form-select2']) !!}
 </div>
 
 <!-- Id Tahun Ajaran Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('ID_TAHUN_AJARAN', 'Id Tahun Ajaran:') !!}
+    {!! Form::label('ID_TAHUN_AJARAN', 'Tahun Ajaran:') !!}
     {!! Form::select('ID_TAHUN_AJARAN', $tahun, null, ['class' => 'form-control form-select2']) !!}
 </div>
 

@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\HistoryKelasDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateHistoryKelasRequest;
 use App\Http\Requests\UpdateHistoryKelasRequest;
 use App\Repositories\HistoryKelasRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use App\Models\HistoryKelas;
+use App\Models\Kelas;
+use App\Models\Semester;
 
 class HistoryKelasController extends AppBaseController
 {
@@ -27,9 +31,27 @@ class HistoryKelasController extends AppBaseController
      * @param HistoryKelasDataTable $historyKelasDataTable
      * @return Response
      */
-    public function index(HistoryKelasDataTable $historyKelasDataTable)
+    public function index(Request $request)
     {
-        return $historyKelasDataTable->render('history_kelas.index');
+        if ($request->ajax()) {
+            $historyKelas = $this->historyKelasRepository
+                ->with([
+                    'murid:NIS,NAMA',
+                    'kelas:ID_KELAS,ID_TINGKAT,NAMA,TAHUN_ANGKATAN',
+                    'kelas.tingkat:ID_TINGKAT,TINGKAT',
+                    'semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
+                    'semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA'
+                ])
+                ->all();
+            return DataTables::of($historyKelas)
+                ->addColumn('action', 'history_kelas.datatables_actions')
+                ->addIndexColumn()
+                ->addColumn('namaKelas', function ($historyKelas) {
+                    return $historyKelas->kelas->tingkat->TINGKAT . ' ' . $historyKelas->kelas->NAMA;
+                })
+                ->make();
+        }
+        return view('history_kelas.index');
     }
 
     /**
@@ -96,8 +118,10 @@ class HistoryKelasController extends AppBaseController
 
             return redirect(route('historyKelas.index'));
         }
+        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
+        $semester = Semester::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_SEMESTER');
 
-        return view('history_kelas.edit')->with('historyKelas', $historyKelas);
+        return view('history_kelas.edit')->with(compact('historyKelas', 'kelas', 'semester'));
     }
 
     /**

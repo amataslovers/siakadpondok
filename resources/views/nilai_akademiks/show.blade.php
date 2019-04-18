@@ -11,7 +11,7 @@
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
                     @include('nilai_akademiks.show_fields')
-                    <a href="{!! route('nilaiAkademiks.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('nilaiAkademiks.index') !!}" class="btn btn-default"><i class="fa fa-arrow-left"> </i> Back</a>
                 </div>
             </div>
         </div>

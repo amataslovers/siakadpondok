@@ -41,22 +41,33 @@ class NilaiAkademikController extends AppBaseController
     {
         if ($request->ajax()) {
             // $nilai = $this->nilaiAkademikRepository->all();
-            $nilai = NilaiAkademik::with([
-                    'murid:NIS,NAMA',
-                    'pengampu.mataPelajaran:ID_MATA_PELAJARAN,NAMA',
-                    'pengampu.kelas.tingkat:ID_TINGKAT,TINGKAT',
-                    'semester:ID_SEMESTER,SEMESTER'
-                ])->get();
+            $nilai = NilaiAkademik::select(['ID_NILAI', 'NIS', 'ID_PENGAMPU', 'ID_SEMESTER', 'NILAI_UTS', 'NILAI_UAS'])->with([
+                'murid:NIS,NAMA',
+                'pengampu:ID_PENGAMPU,ID_KELAS,ID_MATA_PELAJARAN',
+                'pengampu.mataPelajaran:ID_MATA_PELAJARAN,NAMA',
+                'pengampu.kelas:ID_KELAS,ID_TINGKAT,NAMA',
+                'pengampu.kelas.tingkat:ID_TINGKAT,TINGKAT',
+                'semester:ID_SEMESTER,SEMESTER'
+            ])->get();
             return DataTables::of($nilai)
                 ->addColumn('action', 'nilai_akademiks.datatables_actions')
+                ->addColumn('namaMurid', function ($nilai) {
+                    return $nilai->murid->NAMA;
+                })
+                ->addColumn('namaMapel', function ($nilai) {
+                    return $nilai->pengampu->mataPelajaran->NAMA;
+                })
+                ->addColumn('tingkatKelas', function ($nilai) {
+                    return $nilai->pengampu->kelas->tingkat->TINGKAT . ' ' . $nilai->pengampu->kelas->NAMA;
+                })
                 ->addIndexColumn()
                 ->make();
         }
 
         $mapel = MataPelajaran::all()->pluck('kode_nama', 'ID_MATA_PELAJARAN');
         $guru = Guru::all()->pluck('nama_lengkap', 'NIP_GURU');
-        $semester = Semester::all()->pluck('nama_lengkap', 'ID_SEMESTER');
-        $kelas = Kelas::all()->pluck('nama_lengkap', 'ID_KELAS');
+        $semester = Semester::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_SEMESTER');
+        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
         return view('nilai_akademiks.index')->with(compact('mapel', 'guru', 'semester', 'kelas'));
     }
 
@@ -80,74 +91,73 @@ class NilaiAkademikController extends AppBaseController
         $cat = $request->get('CAT');
         $semester = Semester::find($request->get('ID_SEMESTER'));
         $detail = Pengampu::with(['mataPelajaran', 'guru', 'kelas', 'tahunAjaran'])->where([
-                                ['ID_MATA_PELAJARAN', $request->get('ID_MATA_PELAJARAN')],
-                                ['NIP_GURU', $request->get('NIP_GURU')],
-                                ['ID_TAHUN_AJARAN', $semester->tahunAjaran->ID_TAHUN_AJARAN],
-                                ['ID_KELAS', $request->get('ID_KELAS')]
-                            ])->first();
+            ['ID_MATA_PELAJARAN', $request->get('ID_MATA_PELAJARAN')],
+            ['NIP_GURU', $request->get('NIP_GURU')],
+            ['ID_TAHUN_AJARAN', $semester->tahunAjaran->ID_TAHUN_AJARAN],
+            ['ID_KELAS', $request->get('ID_KELAS')]
+        ])->first();
         if (empty($detail)) {
             Flash::error('Maaf, data tidak cocok');
             return redirect(route('nilaiAkademiks.index'));
         }
-        $murid = Murid::whereIn('NIS', 
-                                HistoryKelas::where([
-                                                    ['ID_KELAS', $request->get('ID_KELAS')],
-                                                    ['ID_SEMESTER', $semester->ID_SEMESTER]
-                                                    ]
-                                                    )->select('NIS')
-                                )->select('NIS', 'NAMA')->get();
+        $murid = Murid::whereIn(
+            'NIS',
+            HistoryKelas::where(
+                [
+                    ['ID_KELAS', $request->get('ID_KELAS')],
+                    ['ID_SEMESTER', $semester->ID_SEMESTER]
+                ]
+            )->select('NIS')
+        )->select('NIS', 'NAMA')->get();
         $idMurid = collect($murid);
-        
+
         if ($cat == 1) {
             $nilai = NilaiAkademik::where([
-                                        ['ID_PENGAMPU', $detail->ID_PENGAMPU],
-                                        ['ID_SEMESTER', $semester->ID_SEMESTER]
-                                    ])
-                                    ->whereNotNull('NILAI_UTS')
-                                    ->whereIn('NIS', $idMurid->pluck('NIS'))
-                                    ->get();
-            if(!$nilai->isEmpty())
-            {
+                ['ID_PENGAMPU', $detail->ID_PENGAMPU],
+                ['ID_SEMESTER', $semester->ID_SEMESTER]
+            ])
+                ->whereNotNull('NILAI_UTS')
+                ->whereIn('NIS', $idMurid->pluck('NIS'))
+                ->get();
+            if (!$nilai->isEmpty()) {
                 Flash::error('Maaf, data nilai UTS sudah tersedia');
                 return redirect(route('nilaiAkademiks.index'));
             }
         }
         if ($cat == 2) {
             $nilai = NilaiAkademik::where([
-                                        ['ID_PENGAMPU', $detail->ID_PENGAMPU],
-                                        ['ID_SEMESTER', $semester->ID_SEMESTER]
-                                    ])
-                                    ->whereNotNull('NILAI_UTS')
-                                    ->whereIn('NIS', $idMurid->pluck('NIS'))
-                                    ->get();
-            if(!$nilai->isEmpty())
-            {
+                ['ID_PENGAMPU', $detail->ID_PENGAMPU],
+                ['ID_SEMESTER', $semester->ID_SEMESTER]
+            ])
+                ->whereNotNull('NILAI_UTS')
+                ->whereIn('NIS', $idMurid->pluck('NIS'))
+                ->get();
+            if (!$nilai->isEmpty()) {
                 $hasil = NilaiAkademik::where([
-                                        ['ID_PENGAMPU', $detail->ID_PENGAMPU],
-                                        ['ID_SEMESTER', $semester->ID_SEMESTER]
-                                    ])
-                                    ->whereNull('NILAI_UAS')
-                                    ->whereIn('NIS', $idMurid->pluck('NIS'))
-                                    ->get();
+                    ['ID_PENGAMPU', $detail->ID_PENGAMPU],
+                    ['ID_SEMESTER', $semester->ID_SEMESTER]
+                ])
+                    ->whereNull('NILAI_UAS')
+                    ->whereIn('NIS', $idMurid->pluck('NIS'))
+                    ->get();
                 if ($hasil->isEmpty()) {
                     Flash::error('Maaf, data nilai UAS sudah tersedia');
                     return redirect(route('nilaiAkademiks.index'));
                 }
-            }else{
+            } else {
                 Flash::error('Maaf, data nilai UTS belum diinputkan');
                 return redirect(route('nilaiAkademiks.index'));
             }
         }
         if ($cat == 3) {
             $nilai = NilaiAkademik::where([
-                                ['ID_PENGAMPU', $detail->ID_PENGAMPU],
-                                ['ID_SEMESTER', $semester->ID_SEMESTER]
-                            ])
-                            ->whereNotNull('NILAI_UTS')
-                            ->whereIn('NIS', $idMurid->pluck('NIS'))
-                            ->get();
-            if(!$nilai->isEmpty())
-            {
+                ['ID_PENGAMPU', $detail->ID_PENGAMPU],
+                ['ID_SEMESTER', $semester->ID_SEMESTER]
+            ])
+                ->whereNotNull('NILAI_UTS')
+                ->whereIn('NIS', $idMurid->pluck('NIS'))
+                ->get();
+            if (!$nilai->isEmpty()) {
                 Flash::error('Maaf, data nilai UTS - UAS sudah tersedia');
                 return redirect(route('nilaiAkademiks.index'));
             }
@@ -170,10 +180,9 @@ class NilaiAkademikController extends AppBaseController
             $cat = $request->get('CAT');
             // dd();
             //inputberdasarkan cat
-            
+
             if ($cat == 1) {
-                if(isset($input['NIS'], $input['NAMA'], $input['NILAI_UTS']))
-                {
+                if (isset($input['NIS'], $input['NAMA'], $input['NILAI_UTS'])) {
                     foreach ($input['NIS'] as $key => $value) {
                         NilaiAkademik::updateOrCreate(
                             [
@@ -188,8 +197,7 @@ class NilaiAkademikController extends AppBaseController
                     }
                 }
             } else if ($cat == 2) {
-                if(isset($input['NIS'], $input['NAMA'], $input['NILAI_UAS']))
-                {
+                if (isset($input['NIS'], $input['NAMA'], $input['NILAI_UAS'])) {
                     foreach ($input['NIS'] as $key => $value) {
                         NilaiAkademik::updateOrCreate(
                             [
@@ -204,8 +212,7 @@ class NilaiAkademikController extends AppBaseController
                     }
                 }
             } else if ($cat == 3) {
-                if(isset($input['NIS'], $input['NAMA'], $input['NILAI_UTS'], $input['NILAI_UAS']))
-                {
+                if (isset($input['NIS'], $input['NAMA'], $input['NILAI_UTS'], $input['NILAI_UAS'])) {
                     foreach ($input['NIS'] as $key => $value) {
                         NilaiAkademik::updateOrCreate(
                             [
@@ -268,7 +275,7 @@ class NilaiAkademikController extends AppBaseController
             return redirect(route('nilaiAkademiks.index'));
         }
 
-        return view('nilai_akademiks.edit')->with('nilaiAkademik', $nilaiAkademik);
+        return view('nilai_akademiks.edit')->with('nilai', $nilaiAkademik);
     }
 
     /**

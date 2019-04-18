@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\GuruDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateGuruRequest;
 use App\Http\Requests\UpdateGuruRequest;
 use App\Repositories\GuruRepository;
@@ -13,6 +12,8 @@ use Response;
 use DB;
 use App\Models\Agama;
 use App\User;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class GuruController extends AppBaseController
 {
@@ -30,9 +31,19 @@ class GuruController extends AppBaseController
      * @param GuruDataTable $guruDataTable
      * @return Response
      */
-    public function index(GuruDataTable $guruDataTable)
+    public function index(Request $request)
     {
-        return $guruDataTable->render('gurus.index');
+        if ($request->ajax()) {
+            $guru = $this->guruRepository->all();
+            return DataTables::of($guru)
+                ->addColumn('action', 'gurus.datatables_actions')
+                ->addIndexColumn()
+                ->addColumn('TANGGAL_LAHIR', function ($guru) {
+                    return $guru->TANGGAL_LAHIR;
+                })
+                ->make();
+        }
+        return view('gurus.index');
     }
 
     /**
@@ -60,7 +71,7 @@ class GuruController extends AppBaseController
             $input = $request->all();
             $nip = $input['NIP_GURU'];
             if (!$input['EMAIL']) {
-                $input['EMAIL'] = $nip.'@pondok.com';
+                $input['EMAIL'] = $nip . '@pondok.com';
             }
             $buatUser = User::create([
                 'name' => $nip,
@@ -68,9 +79,9 @@ class GuruController extends AppBaseController
                 'email' => $input['EMAIL'],
                 'password' => bcrypt('gurupondok')
             ]);
-            
+
             if ($request->file('FOTO')) {
-                $input['FOTO'] = $nip.'-'.date('d-m-Y').'.'.request()->FOTO->getClientOriginalExtension();
+                $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
                 $image = $request->file('FOTO');
                 $image->move(public_path('upload/profile/'), $input['FOTO']);
             }
@@ -148,11 +159,11 @@ class GuruController extends AppBaseController
 
         $input = $request->all();
         $nip = $input['NIP_GURU'];
-        if($request->file('FOTO')){
+        if ($request->file('FOTO')) {
             if (!empty($guru->FOTO)) {
-                File::delete(public_path("upload/profile/".$guru->FOTO));
+                File::delete(public_path("upload/profile/" . $guru->FOTO));
             }
-            $input['FOTO'] = $nip.'-'.date('d-m-Y').'.'.request()->FOTO->getClientOriginalExtension();
+            $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
             $image = $request->file('FOTO');
             $image->move(public_path('upload/profile/'), $input['FOTO']);
         }
@@ -182,7 +193,7 @@ class GuruController extends AppBaseController
         }
 
         if (!empty($guru->FOTO)) {
-            File::delete(public_path("upload/profile/".$guru->FOTO));
+            File::delete(public_path("upload/profile/" . $guru->FOTO));
         }
 
         $this->guruRepository->delete($id);

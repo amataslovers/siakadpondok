@@ -1,9 +1,9 @@
 {!! Form::open(['route' => ['catatanSpps.destroy', $ID_CATATAN_SPP], 'method' => 'delete']) !!}
-<div class='btn-group'>
-    <a href="{{ route('catatanSpps.show', $ID_CATATAN_SPP) }}" class='btn btn-default btn-xs'>
+<div class='btn-group' style="width: 100px">
+    {{-- <a href="{{ route('catatanSpps.show', $ID_CATATAN_SPP) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
-    </a>
-    <a href="{{ route('catatanSpps.edit', $ID_CATATAN_SPP) }}" class='btn btn-default btn-xs'>
+    </a> --}}
+    <a href="{{ route('catatanSpps.edit', $ID_CATATAN_SPP) }}" class='btn btn-warning btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [

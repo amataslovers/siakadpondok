@@ -8,16 +8,35 @@
    </section>
    <div class="content">
        @include('adminlte-templates::common.errors')
-       <div class="box box-primary">
-           <div class="box-body">
-               <div class="row">
-                   {!! Form::model($tenagaUmum, ['route' => ['tenagaUmums.update', $tenagaUmum->ID_TENAGA_UMUM], 'method' => 'patch']) !!}
-
-                        @include('tenaga_umums.fields')
-
-                   {!! Form::close() !!}
-               </div>
-           </div>
-       </div>
+       <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            {!! Form::model($tenagaUmum, ['route' => ['tenagaUmums.update', $tenagaUmum->NIP], 'method' => 'patch', 'files' => true]) !!}
+         
+                                 @include('tenaga_umums.fields')
+         
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
    </div>
+@endsection
+@section('scripts')
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            $('#TANGGAL_LAHIR').datepicker({
+                autoclose : true,
+                format: 'dd/mm/yyyy'
+            });
+        });
+
+
+    </script>
 @endsection

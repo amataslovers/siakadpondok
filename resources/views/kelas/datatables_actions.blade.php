@@ -1,9 +1,9 @@
 {!! Form::open(['route' => ['kelas.destroy', $ID_KELAS], 'method' => 'delete']) !!}
-<div class='btn-group'>
+<div class='btn-group' style="width: 100px">
     <a href="{{ route('kelas.show', $ID_KELAS) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
-    <a href="{{ route('kelas.edit', $ID_KELAS) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('kelas.edit', $ID_KELAS) }}" class='btn btn-warning btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [

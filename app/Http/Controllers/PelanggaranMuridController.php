@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\PelanggaranMuridDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreatePelanggaranMuridRequest;
 use App\Http\Requests\UpdatePelanggaranMuridRequest;
 use App\Repositories\PelanggaranMuridRepository;
@@ -13,6 +12,10 @@ use Response;
 use App\Models\Sanksi;
 use App\Models\Peraturan;
 use App\Models\HistoryKelas;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+use Carbon\Carbon;
+use App\Models\PelanggaranMurid;
 
 class PelanggaranMuridController extends AppBaseController
 {
@@ -30,9 +33,41 @@ class PelanggaranMuridController extends AppBaseController
      * @param PelanggaranMuridDataTable $pelanggaranMuridDataTable
      * @return Response
      */
-    public function index(PelanggaranMuridDataTable $pelanggaranMuridDataTable)
+    public function index(Request $request)
     {
-        return $pelanggaranMuridDataTable->render('pelanggaran_murids.index');
+        if ($request->ajax()) {
+            $pelanggaranMurid = $this->pelanggaranMuridRepository
+                ->with([
+                    'historyKelas.murid:NIS,NAMA',
+                    'historyKelas.kelas:ID_KELAS,ID_TINGKAT,NAMA,TAHUN_ANGKATAN',
+                    'historyKelas.kelas.tingkat:ID_TINGKAT,TINGKAT',
+                    'historyKelas.semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
+                    'historyKelas.semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA',
+                    'peraturan:ID_PERATURAN,ID_SANKSI,NAMA_PERATURAN',
+                    'peraturan.sanksi:ID_SANKSI,NAMA_SANKSI'
+                ])
+                ->all();
+            return DataTables::of($pelanggaranMurid)
+                ->addIndexColumn()
+                ->addColumn('action', 'pelanggaran_murids.datatables_actions')
+                ->addColumn('nisMurid', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->historyKelas->murid->NIS;
+                })
+                ->addColumn('namaMurid', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->historyKelas->murid->NAMA;
+                })
+                ->addColumn('namaKelas', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->historyKelas->kelas->tingkat->TINGKAT . ' ' . $pelanggaranMurid->historyKelas->kelas->NAMA;
+                })
+                ->addColumn('semester', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->historyKelas->semester->SEMESTER . ' - ' . $pelanggaranMurid->historyKelas->semester->tahunAjaran->NAMA;
+                })
+                ->editColumn('TANGGAL_MELANGGAR', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->TANGGAL_MELANGGAR;
+                })
+                ->make();
+        }
+        return view('pelanggaran_murids.index');
     }
 
     /**
@@ -43,7 +78,12 @@ class PelanggaranMuridController extends AppBaseController
     public function create()
     {
         $sanksi = Sanksi::pluck('NAMA_SANKSI', 'ID_SANKSI');
-        $murid = HistoryKelas::all()->pluck('full_name', 'ID_HISTORY_KELAS');
+        $murid = HistoryKelas::orderByDesc('created_at')
+            ->whereHas('murid', function ($q) {
+                $q->where('STATUS_AKTIF', 1);
+            })
+            ->get()
+            ->pluck('full_name', 'ID_HISTORY_KELAS');
         return view('pelanggaran_murids.create')->with(compact('sanksi', 'murid'));
     }
 
@@ -102,7 +142,12 @@ class PelanggaranMuridController extends AppBaseController
             return redirect(route('pelanggaranMurids.index'));
         }
         $sanksi = Sanksi::pluck('NAMA_SANKSI', 'ID_SANKSI');
-        $murid = HistoryKelas::all()->pluck('full_name', 'ID_HISTORY_KELAS');
+        $murid = HistoryKelas::orderByDesc('created_at')
+            ->whereHas('murid', function ($q) {
+                $q->where('STATUS_AKTIF', 1);
+            })
+            ->get()
+            ->pluck('full_name', 'ID_HISTORY_KELAS');
         return view('pelanggaran_murids.edit')->with(['pelanggaranMurid' => $pelanggaranMurid, 'sanksi' => $sanksi, 'murid' => $murid]);
     }
 
@@ -159,5 +204,16 @@ class PelanggaranMuridController extends AppBaseController
     {
         $peraturan = Peraturan::where('ID_SANKSI', $id)->get();
         return $peraturan;
+    }
+
+    public function getInfoPelanggaranMurid($id)
+    {
+        $tglNow = Carbon::now();
+        $tglLast = Carbon::now()->addMonthNoOverflow(-1);
+        $pelanggaran = PelanggaranMurid::whereBetween('TANGGAL_MELANGGAR', [$tglLast, $tglNow])
+            ->with('historyKelas.murid:NIS,NAMA', 'peraturan.sanksi')
+            ->where('ID_HISTORY_KELAS', $id)
+            ->get();
+        return response()->json($pelanggaran);
     }
 }

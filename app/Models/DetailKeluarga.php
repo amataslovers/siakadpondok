@@ -23,7 +23,7 @@ class DetailKeluarga extends Model
     // use SoftDeletes;
 
     public $table = 'detail_keluarga';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -53,9 +53,7 @@ class DetailKeluarga extends Model
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

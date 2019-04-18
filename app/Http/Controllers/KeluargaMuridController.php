@@ -12,6 +12,10 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\KeluargaMurid;
 use App\Models\DetailKeluarga;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+use App\Models\Agama;
+use App\Models\JenisKeluarga;
 
 class KeluargaMuridController extends AppBaseController
 {
@@ -29,9 +33,23 @@ class KeluargaMuridController extends AppBaseController
      * @param KeluargaMuridDataTable $keluargaMuridDataTable
      * @return Response
      */
-    public function index(KeluargaMuridDataTable $keluargaMuridDataTable)
+    public function index(Request $request)
     {
-        return $keluargaMuridDataTable->render('keluarga_murids.index');
+        if ($request->ajax()) {
+            $keluargaMurid = $this->keluargaMuridRepository
+                ->with([
+                    'jenisKeluarga:ID_JENIS_KELUARGA,NAMA',
+                ])
+                ->all();
+            return DataTables::of($keluargaMurid)
+                ->addColumn('action', 'keluarga_murids.datatables_actions')
+                ->addIndexColumn()
+                ->editColumn('TANGGAL_LAHIR', function ($keluargaMurid) {
+                    return $keluargaMurid->TANGGAL_LAHIR;
+                })
+                ->make();
+        }
+        return view('keluarga_murids.index');
     }
 
     /**
@@ -41,7 +59,9 @@ class KeluargaMuridController extends AppBaseController
      */
     public function create()
     {
-        return view('keluarga_murids.create');
+        $agama = Agama::pluck('NAMA', 'ID_AGAMA');
+        $jenisKeluarga = JenisKeluarga::pluck('NAMA', 'ID_JENIS_KELUARGA');
+        return view('keluarga_murids.create')->with(compact('agama', 'jenisKeluarga'));
     }
 
     /**
@@ -98,8 +118,9 @@ class KeluargaMuridController extends AppBaseController
 
             return redirect(route('keluargaMurids.index'));
         }
-
-        return view('keluarga_murids.edit')->with('keluargaMurid', $keluargaMurid);
+        $agama = Agama::pluck('NAMA', 'ID_AGAMA');
+        $jenisKeluarga = JenisKeluarga::pluck('NAMA', 'ID_JENIS_KELUARGA');
+        return view('keluarga_murids.edit')->with(compact('keluargaMurid', 'agama', 'jenisKeluarga'));
     }
 
     /**
@@ -164,7 +185,7 @@ class KeluargaMuridController extends AppBaseController
         if (!$keluarga->isEmpty()) {
             DetailKeluarga::where(['ID_KELUARGA_MURID' => $id, 'NIS' => $nis])->delete();
             return response()->json(false);
-        }else{
+        } else {
             KeluargaMurid::find($id)->delete();
             return response()->json(true);
         }

@@ -26,7 +26,7 @@ class PelanggaranMurid extends Model
     use SoftDeletes;
 
     public $table = 'pelanggaran_murid';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -55,14 +55,14 @@ class PelanggaranMurid extends Model
         'KETERANGAN' => 'string'
     ];
 
+    protected $appends = ['TANGGAL_MELANGGAR'];
+
     /**
      * Validation rules
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -85,8 +85,8 @@ class PelanggaranMurid extends Model
         $this->attributes['TANGGAL_MELANGGAR'] = Carbon::createFromFormat('d/m/Y', $data);
     }
 
-    public function getTanggalMelanggarAttribute($value)
+    public function getTanggalMelanggarAttribute()
     {
-        return Carbon::parse($value)->format('d/m/Y');
+        return Carbon::parse($this->attributes['TANGGAL_MELANGGAR'])->format('d/m/Y');
     }
 }

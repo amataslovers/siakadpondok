@@ -42,12 +42,26 @@ class MuridController extends AppBaseController
     // public function index(MuridDataTable $muridDataTable)
     public function index(Request $request)
     {
-        // return $muridDataTable->render('murids.index');
         if ($request->ajax()) {
-            $murid = $this->muridRepository->with('agama')->all();
+            if (is_null($request->get('status'))) {
+                $murid = $this->muridRepository->with('agama')->all();
+            } else {
+                $murid = Murid::where('STATUS_AKTIF', 0)->get();
+            }
             return DataTables::of($murid)
                 ->addColumn('action', 'murids.datatables_actions')
                 ->addIndexColumn()
+                ->editColumn('STATUS_AKTIF', function ($murid) {
+                    if ($murid->STATUS_AKTIF) {
+                        return '<span class="label label-success"> Aktif </span>';
+                    } else {
+                        return '<span class="label label-danger"> Non Aktif </span>';
+                    }
+                })
+                ->editColumn('TANGGAL_LAHIR', function ($murid) {
+                    return $murid->TANGGAL_LAHIR;
+                })
+                ->rawColumns(['STATUS_AKTIF', 'action'])
                 ->make();
         }
         return view('murids.index');
@@ -61,7 +75,7 @@ class MuridController extends AppBaseController
     public function create()
     {
         $agama = Agama::pluck('NAMA', 'ID_AGAMA');
-        $kelas = Kelas::all()->pluck('nama_lengkap_kelas', 'ID_KELAS');
+        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
         $dataJenisKeluarga = JenisKeluarga::pluck('NAMA', 'ID_JENIS_KELUARGA');
         $dataKeluargaAll = KeluargaMurid::all()->pluck('nama_keluarga_lengkap', 'ID_KELUARGA_MURID');
         return view('murids.create', compact('agama', 'kelas', 'dataJenisKeluarga', 'dataKeluargaAll'));

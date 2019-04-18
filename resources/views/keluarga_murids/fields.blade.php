@@ -1,13 +1,7 @@
 <!-- Id Jenis Keluarga Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('ID_JENIS_KELUARGA', 'Id Jenis Keluarga:') !!}
-    {!! Form::number('ID_JENIS_KELUARGA', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Id Agama Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('ID_AGAMA', 'Id Agama:') !!}
-    {!! Form::number('ID_AGAMA', null, ['class' => 'form-control']) !!}
+    {!! Form::label('ID_JENIS_KELUARGA', 'Jenis Keluarga:') !!}
+    {!! Form::select('ID_JENIS_KELUARGA', $jenisKeluarga, null, ['class' => 'form-control form-select2']) !!}
 </div>
 
 <!-- Nama Field -->
@@ -16,10 +10,16 @@
     {!! Form::text('NAMA', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Id Agama Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('ID_AGAMA', 'Agama:') !!}
+    {!! Form::select('ID_AGAMA', $agama, null, ['class' => 'form-control form-select2']) !!}
+</div>
+
 <!-- Tanggal Lahir Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('TANGGAL_LAHIR', 'Tanggal Lahir:') !!}
-    {!! Form::date('TANGGAL_LAHIR', null, ['class' => 'form-control']) !!}
+    {!! Form::text('TANGGAL_LAHIR', null, ['class' => 'form-control tanggal']) !!}
 </div>
 
 <!-- Tempat Lahir Field -->

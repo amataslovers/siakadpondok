@@ -32,7 +32,7 @@ class KeluargaMurid extends Model
     // use SoftDeletes;
 
     public $table = 'keluarga_murid';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -76,9 +76,7 @@ class KeluargaMurid extends Model
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -106,7 +104,8 @@ class KeluargaMurid extends Model
 
     public function setTanggalLahirAttribute($data)
     {
-        $this->attributes['TANGGAL_LAHIR'] = Carbon::createFromFormat('d/m/Y', $data);
+        $value = Carbon::parse($data)->format('d/m/Y');
+        $this->attributes['TANGGAL_LAHIR'] = Carbon::createFromFormat('d/m/Y', $value);
     }
 
     public function getTanggalLahirAttribute($value)

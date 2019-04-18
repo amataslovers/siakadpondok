@@ -25,7 +25,7 @@ class NilaiAkademik extends Model
     use SoftDeletes;
 
     public $table = 'nilai_akademik';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -39,7 +39,8 @@ class NilaiAkademik extends Model
         'NIS',
         'ID_SEMESTER',
         'NILAI_UTS',
-        'NILAI_UAS'
+        'NILAI_UAS',
+        'ID_HISTORY_KELAS'
     ];
 
     /**
@@ -51,7 +52,8 @@ class NilaiAkademik extends Model
         'ID_NILAI' => 'integer',
         'ID_PENGAMPU' => 'integer',
         'ID_SEMESTER' => 'integer',
-        'NIS' => 'string'
+        'NIS' => 'string',
+        'ID_HISTORY_KELAS' => 'integer'
     ];
 
     /**
@@ -59,9 +61,7 @@ class NilaiAkademik extends Model
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

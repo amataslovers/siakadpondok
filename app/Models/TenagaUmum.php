@@ -31,18 +31,18 @@ class TenagaUmum extends Model
     use SoftDeletes;
 
     public $table = 'tenaga_umum';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
 
     protected $dates = ['deleted_at'];
 
-    protected $primaryKey = 'ID_TENAGA_UMUM';
-    public $incrementing = false;
+    protected $primaryKey = 'NIP';
 
     public $fillable = [
         'ID_AGAMA',
+        'NIP',
         'NAMA',
         'JENIS_KELAMIN',
         'TEMPAT_LAHIR',
@@ -77,7 +77,7 @@ class TenagaUmum extends Model
      * @var array
      */
     public static $rules = [
-        
+        'NIP' => 'required'
     ];
 
     /**
@@ -91,5 +91,10 @@ class TenagaUmum extends Model
     public function setTanggalLahirAttribute($data)
     {
         $this->attributes['TANGGAL_LAHIR'] = Carbon::createFromFormat('d/m/Y', $data);
+    }
+
+    public function getTanggalLahirAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
     }
 }

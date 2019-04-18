@@ -1,17 +1,17 @@
 <!-- Kode Mapel Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('KODE_MAPEL', 'Kode Mapel:') !!}
     {!! Form::text('KODE_MAPEL', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Nama Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('NAMA', 'Nama:') !!}
     {!! Form::text('NAMA', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Nama Arab Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('NAMA_ARAB', 'Nama Arab:') !!}
     {!! Form::text('NAMA_ARAB', null, ['class' => 'form-control']) !!}
 </div>

@@ -1,9 +1,9 @@
 {!! Form::open(['route' => ['detailKeluargas.destroy', $ID_DETAIL_KELUARGA], 'method' => 'delete']) !!}
-<div class='btn-group'>
+<div class='btn-group' style="width: 100px">
     <a href="{{ route('detailKeluargas.show', $ID_DETAIL_KELUARGA) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
-    <a href="{{ route('detailKeluargas.edit', $ID_DETAIL_KELUARGA) }}" class='btn btn-default btn-xs'>
+    <a href="{{ route('detailKeluargas.edit', $ID_DETAIL_KELUARGA) }}" class='btn btn-warning btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [

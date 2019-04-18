@@ -6,10 +6,10 @@
 
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Nilai Karakters</h1>
-        <h1 class="pull-right">
+        <h1 class="pull-left">Nilai Karakter Murid</h1>
+        {{-- <h1 class="pull-right">
            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('nilaiKarakters.create') !!}">Add New</a>
-        </h1>
+        </h1> --}}
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -56,14 +56,18 @@
             serverSide: true,
             ajax: '{!! route('nilaiKarakters.index') !!}',
             columns: [
-                { data: 'ID_HISTORY_KELAS', name: 'ID_HISTORY_KELAS'},
-                { data: 'IJIN', name: 'IJIN' },
-                { data: 'SAKIT', name: 'SAKIT' },
-                { data: 'ALFA', name: 'ALFA' },
-                { data: 'AKHLAQ', name: 'AKHLAQ' },
-                { data: 'KEBERSIHAN', name: 'KEBERSIHAN' },
-                { data: 'KERAJINAN', name: 'KERAJINAN' },
-                { data: 'KETEKUNAN', name: 'KETEKUNAN' },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                { data: 'nisMurid', name: 'nisMurid'},
+                { data: 'namaMurid', name: 'namaMurid'},
+                { data: 'kelasMurid', name: 'kelasMurid'},
+                { data: 'semester', name: 'semester', orderable: false, searchable: false  },
+                { data: 'IJIN', name: 'IJIN', orderable: false, searchable: false  },
+                { data: 'SAKIT', name: 'SAKIT', orderable: false, searchable: false  },
+                { data: 'ALFA', name: 'ALFA', orderable: false, searchable: false  },
+                { data: 'AKHLAQ', name: 'AKHLAQ', orderable: false, searchable: false  },
+                { data: 'KEBERSIHAN', name: 'KEBERSIHAN', orderable: false, searchable: false  },
+                { data: 'KERAJINAN', name: 'KERAJINAN', orderable: false, searchable: false  },
+                { data: 'KETEKUNAN', name: 'KETEKUNAN', orderable: false, searchable: false  },
                 { data: 'action', name: 'nilai_akademik.action', orderable: false, searchable: false}
 
             ],
@@ -78,8 +82,16 @@
             language: {
                 buttons: {
                     colvis: 'Ganti Kolom'
-                }
-            }
+                },
+                search: 'Cari:',
+                zeroRecords: 'Data tidak ditemukan',
+                paginate: {
+                    first: 'Awal',
+                    last: 'Terakhir',
+                    next: 'Selanjutnya',
+                    previous: 'Sebelumnya'
+                },
+            },
         });
     </script>
 @endsection

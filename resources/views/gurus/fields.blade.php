@@ -1,12 +1,12 @@
 <!-- Id Agama Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('ID_AGAMA', 'Id Agama:') !!}
+    {!! Form::label('ID_AGAMA', 'Agama:') !!}
     {!! Form::select('ID_AGAMA', $agama, null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- NIP_GURU Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('NIP_GURU', 'NIP_GURU:') !!}
+    {!! Form::label('NIP_GURU', 'NIP:') !!}
     {!! Form::text('NIP_GURU', null, ['class' => 'form-control']) !!}
 </div>
 
@@ -22,12 +22,6 @@
     {!! Form::text('NAMA_ARAB', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Jenis Kelamin Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('JENIS_KELAMIN', 'Jenis Kelamin:') !!}
-    {!! Form::select('JENIS_KELAMIN', ['L' => 'Laki-laki', 'P' => 'Perempuan'] ,null, ['class' => 'form-control']) !!}
-</div>
-
 <!-- Gelar Depan Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('GELAR_DEPAN', 'Gelar Depan:') !!}
@@ -40,10 +34,16 @@
     {!! Form::text('GELAR_BELAKANG', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Jenis Kelamin Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('JENIS_KELAMIN', 'Jenis Kelamin:') !!}
+    {!! Form::select('JENIS_KELAMIN', ['L' => 'Laki-laki', 'P' => 'Perempuan'] ,null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Alamat Field -->
 <div class="form-group col-sm-6 col-lg-6">
     {!! Form::label('ALAMAT', 'Alamat:') !!}
-    {!! Form::textarea('ALAMAT', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('ALAMAT', null, ['class' => 'form-control', 'rows' => 2]) !!}
 </div>
 
 <!-- Tanggal Lahir Field -->
@@ -95,7 +95,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    <h4 class="modal-title" id="myModalLabel">Foto</h4>
                 </div>
                 <div class="modal-body">
                     <img src="{!! asset('/upload/profile/'. $guru->FOTO) !!}">

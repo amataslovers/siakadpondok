@@ -18,7 +18,11 @@ class TenagaUmumDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'tenaga_umums.datatables_actions');
+        return $dataTable
+            ->addColumn('action', 'tenaga_umums.datatables_actions')
+            ->editColumn('TANGGAL_LAHIR', function ($query) {
+                return $query->TANGGAL_LAHIR;
+            });
     }
 
     /**
@@ -46,7 +50,7 @@ class TenagaUmumDataTable extends DataTable
             ->parameters([
                 'dom'     => 'lfrtip',
                 'order'   => [[0, 'desc']],
-                
+
             ]);
     }
 
@@ -58,15 +62,12 @@ class TenagaUmumDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'ID_AGAMA',
-            'NAMA',
-            'JENIS_KELAMIN',
-            'TEMPAT_LAHIR',
-            'TANGGAL_LAHIR',
-            'ALAMAT',
-            'NOTELP',
-            'EMAIL',
-            'FOTO'
+            'NIP' => ['title' => 'NIP'],
+            'NAMA' => ['title' => 'Nama'],
+            'TEMPAT_LAHIR' => ['title' => 'Tempat Lahir'],
+            'TANGGAL_LAHIR' => ['title' => 'Tanggal Lahir'],
+            'ALAMAT' => ['title' => 'Alamat'],
+            'NOTELP' => ['title' => 'No Telepon']
         ];
     }
 

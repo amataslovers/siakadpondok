@@ -1,96 +1,72 @@
-<!-- Nip Guru Field -->
-<div class="form-group">
-    {!! Form::label('NIP_GURU', 'Nip Guru:') !!}
-    <p>{!! $guru->NIP_GURU !!}</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4><strong>Data Pribadi Guru</strong></h4>
+            </div>
+            <div class="box-body">
+                <table class="table">
+                    <tr>
+                        <td><strong>NIP</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->NIP_GURU }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nama</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->GELAR_DEPAN . ' ' . $guru->NAMA . ' ' . $guru->GELAR_BELAKANG }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nama</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->NAMA_ARAB }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agama</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->agama->NAMA }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jenis Kelamin</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->JENIS_KELAMIN }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tempat Lahir</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->TEMPAT_LAHIR }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tanggal Lahir</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->TANGGAL_LAHIR }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alamat</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->ALAMAT }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>No Telepon</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->NOTELP }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email</strong></td>
+                        <td>:</td>
+                        <td>{{ $guru->EMAIL }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Foto</strong></td>
+                        <td>:</td>
+                        <td>
+                            @if ($guru->FOTO)
+                                <img src="{!! asset('/upload/profile/'. $guru->FOTO) !!}" width="200px" height="250px">
+                            @endif
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-
-<!-- Id Agama Field -->
-<div class="form-group">
-    {!! Form::label('ID_AGAMA', 'Id Agama:') !!}
-    <p>{!! $guru->ID_AGAMA !!}</p>
-</div>
-
-<!-- Nama Field -->
-<div class="form-group">
-    {!! Form::label('NAMA', 'Nama:') !!}
-    <p>{!! $guru->NAMA !!}</p>
-</div>
-
-<!-- Nama Arab Field -->
-<div class="form-group">
-    {!! Form::label('NAMA_ARAB', 'Nama Arab:') !!}
-    <p>{!! $guru->NAMA_ARAB !!}</p>
-</div>
-
-<!-- Jenis Kelamin Field -->
-<div class="form-group">
-    {!! Form::label('JENIS_KELAMIN', 'Jenis Kelamin:') !!}
-    <p>{!! $guru->JENIS_KELAMIN !!}</p>
-</div>
-
-<!-- Gelar Depan Field -->
-<div class="form-group">
-    {!! Form::label('GELAR_DEPAN', 'Gelar Depan:') !!}
-    <p>{!! $guru->GELAR_DEPAN !!}</p>
-</div>
-
-<!-- Gelar Belakang Field -->
-<div class="form-group">
-    {!! Form::label('GELAR_BELAKANG', 'Gelar Belakang:') !!}
-    <p>{!! $guru->GELAR_BELAKANG !!}</p>
-</div>
-
-<!-- Alamat Field -->
-<div class="form-group">
-    {!! Form::label('ALAMAT', 'Alamat:') !!}
-    <p>{!! $guru->ALAMAT !!}</p>
-</div>
-
-<!-- Tanggal Lahir Field -->
-<div class="form-group">
-    {!! Form::label('TANGGAL_LAHIR', 'Tanggal Lahir:') !!}
-    <p>{!! $guru->TANGGAL_LAHIR !!}</p>
-</div>
-
-<!-- Tempat Lahir Field -->
-<div class="form-group">
-    {!! Form::label('TEMPAT_LAHIR', 'Tempat Lahir:') !!}
-    <p>{!! $guru->TEMPAT_LAHIR !!}</p>
-</div>
-
-<!-- Notelp Field -->
-<div class="form-group">
-    {!! Form::label('NOTELP', 'Notelp:') !!}
-    <p>{!! $guru->NOTELP !!}</p>
-</div>
-
-<!-- Email Field -->
-<div class="form-group">
-    {!! Form::label('EMAIL', 'Email:') !!}
-    <p>{!! $guru->EMAIL !!}</p>
-</div>
-
-<!-- Foto Field -->
-<div class="form-group">
-    {!! Form::label('FOTO', 'Foto:') !!}
-    <p>{!! $guru->FOTO !!}</p>
-</div>
-
-<!-- Created At Field -->
-<div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
-    <p>{!! $guru->created_at !!}</p>
-</div>
-
-<!-- Updated At Field -->
-<div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
-    <p>{!! $guru->updated_at !!}</p>
-</div>
-
-<!-- Deleted At Field -->
-<div class="form-group">
-    {!! Form::label('deleted_at', 'Deleted At:') !!}
-    <p>{!! $guru->deleted_at !!}</p>
-</div>
-

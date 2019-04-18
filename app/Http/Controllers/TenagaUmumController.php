@@ -10,6 +10,10 @@ use App\Repositories\TenagaUmumRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Agama;
+use DB;
+use File;
+use App\User;
 
 class TenagaUmumController extends AppBaseController
 {
@@ -39,7 +43,8 @@ class TenagaUmumController extends AppBaseController
      */
     public function create()
     {
-        return view('tenaga_umums.create');
+        $agama = Agama::pluck('NAMA', 'ID_AGAMA');
+        return view('tenaga_umums.create', compact('agama'));
     }
 
     /**
@@ -51,9 +56,32 @@ class TenagaUmumController extends AppBaseController
      */
     public function store(CreateTenagaUmumRequest $request)
     {
-        $input = $request->all();
+        DB::beginTransaction();
+        try {
+            $input = $request->all();
+            $nip = $input['NIP'];
+            if (!$input['EMAIL']) {
+                $input['EMAIL'] = $nip . '@pondok.com';
+            }
+            $buatUser = User::create([
+                'name' => $nip,
+                'full_name' => $input['NAMA'],
+                'email' => $input['EMAIL'],
+                'password' => bcrypt('tupondok')
+            ]);
 
-        $tenagaUmum = $this->tenagaUmumRepository->create($input);
+            if ($request->file('FOTO')) {
+                $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
+                $image = $request->file('FOTO');
+                $image->move(public_path('upload/profile/'), $input['FOTO']);
+            }
+
+            $tenagaUmum = $this->tenagaUmumRepository->create($input);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+        }
 
         Flash::success('Tenaga Umum saved successfully.');
 
@@ -77,7 +105,8 @@ class TenagaUmumController extends AppBaseController
             return redirect(route('tenagaUmums.index'));
         }
 
-        return view('tenaga_umums.show')->with('tenagaUmum', $tenagaUmum);
+        $agama = Agama::pluck('NAMA', 'ID_AGAMA');
+        return view('tenaga_umums.show')->with(compact('tenagaUmum', 'agama'));
     }
 
     /**
@@ -97,7 +126,8 @@ class TenagaUmumController extends AppBaseController
             return redirect(route('tenagaUmums.index'));
         }
 
-        return view('tenaga_umums.edit')->with('tenagaUmum', $tenagaUmum);
+        $agama = Agama::pluck('NAMA', 'ID_AGAMA');
+        return view('tenaga_umums.edit')->with(compact('tenagaUmum', 'agama'));
     }
 
     /**
@@ -118,7 +148,18 @@ class TenagaUmumController extends AppBaseController
             return redirect(route('tenagaUmums.index'));
         }
 
-        $tenagaUmum = $this->tenagaUmumRepository->update($request->all(), $id);
+        $input = $request->all();
+        $nip = $input['NIP'];
+        if ($request->file('FOTO')) {
+            if (!empty($tenagaUmum->FOTO)) {
+                File::delete(public_path("upload/profile/" . $tenagaUmum->FOTO));
+            }
+            $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
+            $image = $request->file('FOTO');
+            $image->move(public_path('upload/profile/'), $input['FOTO']);
+        }
+
+        $tenagaUmum = $this->tenagaUmumRepository->update($input, $id);
 
         Flash::success('Tenaga Umum updated successfully.');
 
@@ -140,6 +181,10 @@ class TenagaUmumController extends AppBaseController
             Flash::error('Tenaga Umum not found');
 
             return redirect(route('tenagaUmums.index'));
+        }
+
+        if (!empty($tenagaUmum->FOTO)) {
+            File::delete(public_path("upload/profile/" . $tenagaUmum->FOTO));
         }
 
         $this->tenagaUmumRepository->delete($id);

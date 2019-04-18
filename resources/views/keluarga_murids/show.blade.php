@@ -10,8 +10,10 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
-                    @include('keluarga_murids.show_fields')
-                    <a href="{!! route('keluargaMurids.index') !!}" class="btn btn-default">Back</a>
+                    <div class="col-md-6">
+                        @include('keluarga_murids.show_fields')
+                        <a href="{!! route('keluargaMurids.index') !!}" class="btn btn-default"><i class="fa fa-arrow-left"> </i> Back</a>
+                    </div>
                 </div>
             </div>
         </div>

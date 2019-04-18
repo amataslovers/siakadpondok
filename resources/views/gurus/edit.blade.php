@@ -8,14 +8,18 @@
    </section>
    <div class="content">
        @include('adminlte-templates::common.errors')
-       <div class="box box-primary">
-           <div class="box-body">
-               <div class="row">
-                   {!! Form::model($guru, ['route' => ['gurus.update', $guru->NIP_GURU], 'method' => 'patch', 'files' => true]) !!}
-
-                        @include('gurus.fields')
-
-                   {!! Form::close() !!}
+       <div class="row">
+           <div class="col-md-6">
+               <div class="box box-primary">
+                   <div class="box-body">
+                       <div class="row">
+                           {!! Form::model($guru, ['route' => ['gurus.update', $guru->NIP_GURU], 'method' => 'patch', 'files' => true]) !!}
+        
+                                @include('gurus.fields')
+        
+                           {!! Form::close() !!}
+                       </div>
+                   </div>
                </div>
            </div>
        </div>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Murid;
+use App\Models\Guru;
 
 class HomeController extends Controller
 {
@@ -21,8 +23,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $murid = Murid::all()->count();
+        $guru = Guru::all()->count();
+        if ($request->ajax()) {
+            $tahun = Murid::select('ANGKATAN')->groupBy('ANGKATAN')->get();
+            $baru = collect();
+            foreach ($tahun as $value) {
+                $baru->push(['murid' => Murid::where('ANGKATAN', $value->ANGKATAN)->count()]);
+            }
+            return response()->json(['murid' => $baru, 'tahun' => $tahun]);
+        }
+        return view('home')->with(compact(['murid', 'guru']));
     }
 }

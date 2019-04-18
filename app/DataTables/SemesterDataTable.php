@@ -18,7 +18,15 @@ class SemesterDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'semesters.datatables_actions');
+        return $dataTable->addColumn('action', 'semesters.datatables_actions')
+            ->editColumn('STATUS', function ($query) {
+                if ($query->STATUS) {
+                    return '<span class="label label-success"> Aktif </span>';
+                } else {
+                    return '<span class="label label-danger"> NonAktif </span>';
+                }
+            })
+            ->rawColumns(['STATUS', 'action']);
     }
 
     /**
@@ -29,7 +37,7 @@ class SemesterDataTable extends DataTable
      */
     public function query(Semester $model)
     {
-        return $model->newQuery();
+        return $model->with('tahunAjaran')->newQuery();
     }
 
     /**
@@ -46,7 +54,20 @@ class SemesterDataTable extends DataTable
             ->parameters([
                 'dom'     => 'lfrtip',
                 'order'   => [[0, 'desc']],
-                
+                'language' => [
+                    'buttons' => [
+                        'colvis' => 'Ganti Kolom'
+                    ],
+                    'search' => 'Cari:',
+                    'zeroRecords' => 'Data tidak ditemukan',
+                    'paginate' => [
+                        'first' => 'Awal',
+                        'last' => 'Terakhir',
+                        'next' => 'Selanjutnya',
+                        'previous' => 'Sebelumnya'
+                    ],
+                ],
+
             ]);
     }
 
@@ -58,9 +79,9 @@ class SemesterDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'ID_TAHUN_AJARAN',
-            'SEMESTER',
-            'STATUS'
+            'SEMESTER' => ['title' => 'Semester'],
+            'ID_TAHUN_AJARAN' => ['title' => 'Tahun Ajaran', 'data' => 'tahun_ajaran.NAMA', 'name' => 'tahun_ajaran.NAMA'],
+            'STATUS' => ['title' => 'Status']
         ];
     }
 

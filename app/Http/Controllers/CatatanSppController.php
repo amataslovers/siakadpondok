@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\CatatanSppDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateCatatanSppRequest;
 use App\Http\Requests\UpdateCatatanSppRequest;
 use App\Repositories\CatatanSppRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\HistoryKelas;
+use App\Models\CatatanSpp;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class CatatanSppController extends AppBaseController
 {
@@ -27,9 +30,43 @@ class CatatanSppController extends AppBaseController
      * @param CatatanSppDataTable $catatanSppDataTable
      * @return Response
      */
-    public function index(CatatanSppDataTable $catatanSppDataTable)
+    public function index(Request $request)
     {
-        return $catatanSppDataTable->render('catatan_spps.index');
+        if ($request->ajax()) {
+            $catatanSpp = $this->catatanSppRepository
+                ->with([
+                    'historyKelas.murid:NIS,NAMA',
+                    'historyKelas.kelas:ID_KELAS,ID_TINGKAT,NAMA',
+                    'historyKelas.kelas.tingkat:ID_TINGKAT,TINGKAT',
+                    'historyKelas.semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
+                    'historyKelas.semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA'
+                ])
+                ->all();
+            return DataTables::of($catatanSpp)
+                ->addColumn('action', 'catatan_spps.datatables_actions')
+                ->addIndexColumn()
+                ->addColumn('nisMurid', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->historyKelas->murid->NIS;
+                })
+                ->addColumn('namaMurid', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->historyKelas->murid->NAMA;
+                })
+                ->addColumn('namaKelas', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->historyKelas->kelas->tingkat->TINGKAT . ' ' . $pelanggaranMurid->historyKelas->kelas->NAMA;
+                })
+                ->addColumn('semester', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->historyKelas->semester->SEMESTER . ' - ' . $pelanggaranMurid->historyKelas->semester->tahunAjaran->NAMA;
+                })
+                ->editColumn('TANGGAL_BAYAR', function ($pelanggaranMurid) {
+                    return $pelanggaranMurid->TANGGAL_BAYAR;
+                })
+                ->editColumn('BULAN', function ($pelanggaranMurid) {
+                    setlocale(LC_TIME, 'IND');
+                    return \Carbon\Carbon::createFromFormat('m', $pelanggaranMurid->BULAN)->localeMonth;
+                })
+                ->make();
+        }
+        return view('catatan_spps.index');
     }
 
     /**
@@ -39,7 +76,13 @@ class CatatanSppController extends AppBaseController
      */
     public function create()
     {
-        return view('catatan_spps.create');
+        $murid = HistoryKelas::orderByDesc('created_at')
+            ->whereHas('murid', function ($q) {
+                $q->where('STATUS_AKTIF', 1);
+            })
+            ->get()
+            ->pluck('full_name_spp', 'ID_HISTORY_KELAS');
+        return view('catatan_spps.create')->with(compact('murid'));
     }
 
     /**
@@ -53,9 +96,20 @@ class CatatanSppController extends AppBaseController
     {
         $input = $request->all();
 
+        $kelasMurid = HistoryKelas::where(['ID_HISTORY_KELAS' => $input['ID_HISTORY_KELAS']])
+            ->with('kelas.tingkat')->first();
+        $historyKelasMurid = HistoryKelas::where(['NIS' => $kelasMurid->NIS, 'ID_KELAS' => $kelasMurid->ID_KELAS])->pluck('ID_HISTORY_KELAS');
+        $cekBayar = CatatanSpp::where(['BULAN' => $input['BULAN']])
+            ->whereIn('ID_HISTORY_KELAS', $historyKelasMurid)
+            ->with(['historyKelas.murid:NIS,NAMA'])->get();
+        if ($cekBayar->isNotEmpty()) {
+            Flash::error('Gagal menyimpan karena murid : ' . $cekBayar->first()->historyKelas->murid->NAMA  . ' kelas ' . $kelasMurid->kelas->tingkat->TINGKAT . ' pada bulan ' . $input['BULAN'] . ' sudah tercatat membayar.');
+            return redirect(route('catatanSpps.index'));
+        }
+
         $catatanSpp = $this->catatanSppRepository->create($input);
 
-        Flash::success('Catatan Spp saved successfully.');
+        Flash::success('Catatan Spp Murid saved successfully.');
 
         return redirect(route('catatanSpps.index'));
     }
@@ -97,7 +151,13 @@ class CatatanSppController extends AppBaseController
             return redirect(route('catatanSpps.index'));
         }
 
-        return view('catatan_spps.edit')->with('catatanSpp', $catatanSpp);
+        $murid = HistoryKelas::orderByDesc('created_at')
+            ->whereHas('murid', function ($q) {
+                $q->where('STATUS_AKTIF', 1);
+            })
+            ->get()
+            ->pluck('full_name_spp', 'ID_HISTORY_KELAS');
+        return view('catatan_spps.edit')->with(compact('catatanSpp', 'murid'));
     }
 
     /**
