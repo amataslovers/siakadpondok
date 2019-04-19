@@ -44,7 +44,7 @@
         $digit = new \NumberFormatter("id", \NumberFormatter::SPELLOUT);
         $total = 0;
         foreach ($murid->nilaiAkademik as $key => $value) {
-            $total += $value->NILAI_UAS;
+            $total += ( (float)$value->NILAI_UTS + (float)$value->NILAI_UAS ) / 2;
         }
         $rata2 = $total / $murid->nilaiAkademik->count('NILAI_UAS');
     @endphp
@@ -62,7 +62,7 @@
             </tr>
         </table>
     </div>
-    <div class="text-center row" style="font-size: 18pt"><strong>Buku Nilai</strong></div>
+    <div class="text-center row" style="font-size: 18pt;margin-top: 1cm"><strong>Buku Nilai</strong></div>
     <div class="row">
         <div style="font-size: 11pt">
             <table style="width: 100%">
@@ -95,7 +95,7 @@
         </div>
     </div>
 
-    <div>
+    <div style="margin-top: 1cm">
         <div style="float: left; width: 70%;">
             <table class="tepi-utama-tabel" style="width: 100%;">
                 <thead>
@@ -110,23 +110,34 @@
                 </thead>
                 <tbody>
                     @foreach ($murid->nilaiAkademik as $key => $item)
+                        @php
+                            $nilai = ( (float)$item->NILAI_UTS + (float)$item->NILAI_UAS ) / 2;
+                        @endphp
                         <tr>
                             <td class="tepi-tabel text-center" style="width: 5%; height: 40px">{{++$key}}</td>
                             <td class="tepi-tabel text-center"><strong>{{$item->pengampu->mataPelajaran->NAMA}}</strong></td>
-                            <td class="tepi-tabel text-center" style="width: 10%">{{$item->NILAI_UAS}}</td>
-                            <td class="tepi-tabel text-center text-capitalize" style="font-size: 10pt">{{$digit->format($item->NILAI_UAS)}}</td>
+                            <td class="tepi-tabel text-center" style="width: 10%">{{number_format($nilai, 2, ",", ".")}}</td>
+                            <td class="tepi-tabel text-center text-capitalize" style="font-size: 10pt">{{$digit->format($nilai)}}</td>
                         </tr>
+                        @if ($key == 10 && $murid->kelas->tingkat->SETARA == 3)
+                            <tr>
+                                <td class="tepi-tabel text-center" style="width: 5%; height: 40px"> </td>
+                                <td class="tepi-tabel text-center"><strong> </strong></td>
+                                <td class="tepi-tabel text-center" style="width: 10%"> </td>
+                                <td class="tepi-tabel text-center text-capitalize" style="font-size: 10pt"> </td>
+                            </tr>
+                        @endif
                     @endforeach
 
                     <tr>
                         <td colspan="2" class="tepi-tabel text-center" style="height: 40px"><strong>Total</strong></td>
-                        <td class="tepi-tabel text-center" style="height: 40px">{{ $total }}</td>
-                        <td class="tepi-tabel text-center text-capitalize" style="font-size: 10pt"> </td>
+                        <td class="tepi-tabel text-center" style="height: 40px">{{ number_format($total, 2, ",", ".") }}</td>
+                        <td class="tepi-tabel text-center text-capitalize" style="font-size: 10pt">{{ $digit->format(number_format($total, 2, ",", "")) }} </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="tepi-tabel text-center" style="height: 40px"><strong>Rata - rata</strong></td>
-                        <td class="tepi-tabel text-center" style="height: 40px">{{ $rata2 }}</td>
-                        <td class="tepi-tabel text-center text-capitalize" style="font-size: 10pt"> </td>
+                        <td class="tepi-tabel text-center" style="height: 40px">{{ number_format($rata2, 2, ",", ".") }}</td>
+                        <td class="tepi-tabel text-center text-capitalize" style="font-size: 10pt"> {{ $digit->format(number_format($rata2, 2, ",", "")) }} </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="tepi-tabel text-center" style="height: 40px;font-size: 10pt">
@@ -153,7 +164,14 @@
                         <td colspan="2" class="tepi-tabel text-center" style="height: 40px;font-size: 10pt">
                             <table style="width: 100%">
                                 <tr>
-                                    <td class="text-left">Tidak Naik / Naik Kelas </td>
+                                    <td class="text-left">
+                                            @if ($murid->STATUS_NAIK)
+                                            <span>Tidak Naik / </span>
+                                            <span><s>Naik Kelas</s></span>
+                                            @else
+                                            <span><s>Tidak Naik / </s></span>
+                                            <span>Naik Kelas</span>
+                                            @endif </td>
                                     <td class="text-center"></td>
                                     <td class="text-right"></td>
                                 </tr>

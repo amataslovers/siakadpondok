@@ -39,7 +39,8 @@ class HistoryKelas extends Model
     public $fillable = [
         'ID_KELAS',
         'ID_SEMESTER',
-        'NIS'
+        'NIS',
+        'STATUS_NAIK'
     ];
 
     /**
@@ -51,7 +52,8 @@ class HistoryKelas extends Model
         'ID_HISTORY_KELAS' => 'integer',
         'ID_KELAS' => 'integer',
         'ID_SEMESTER' => 'integer',
-        'NIS' => 'string'
+        'NIS' => 'string',
+        'STATUS_NAIK' => 'boolean'
     ];
 
     /**

@@ -275,6 +275,9 @@ class KenaikanKelasController extends Controller
                     } else {
                         Murid::where('NIS', $value->NIS)->update(['STATUS_AKTIF' => 0]);
                     }
+                    //ubah status naik true
+                    $value->STATUS_NAIK = 1;
+                    $value->save();
                 } else {
                     $dataKelasMurid = Kelas::where('TAHUN_ANGKATAN', (int)--$value->kelas->TAHUN_ANGKATAN)
                         ->where('ID_TAHUN_AJARAN', $dataTahunAjaranBaru->ID_TAHUN_AJARAN)
@@ -288,6 +291,8 @@ class KenaikanKelasController extends Controller
                             'NIS' => $value->NIS
                         ]
                     );
+                    $value->STATUS_NAIK = 0;
+                    $value->save();
                 }
             }
             $updateTahunAjaranLama = TahunAjaran::where('ID_TAHUN_AJARAN', $dataTahunAjaranLama->ID_TAHUN_AJARAN)
