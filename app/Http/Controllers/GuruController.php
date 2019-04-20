@@ -79,6 +79,7 @@ class GuruController extends AppBaseController
                 'email' => $input['EMAIL'],
                 'password' => bcrypt('gurupondok')
             ]);
+            $buatUser->assignRole('guru');
 
             if ($request->file('FOTO')) {
                 $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();

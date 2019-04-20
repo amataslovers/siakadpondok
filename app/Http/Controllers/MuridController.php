@@ -105,6 +105,7 @@ class MuridController extends AppBaseController
                 'email' => $input['EMAIL'],
                 'password' => bcrypt('pondok')
             ]);
+            $buatUser->assignRole('murid');
 
             $semester = Semester::where('STATUS', '1')->first();
             $historyKelas = new HistoryKelas();

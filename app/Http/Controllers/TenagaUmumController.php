@@ -69,6 +69,7 @@ class TenagaUmumController extends AppBaseController
                 'email' => $input['EMAIL'],
                 'password' => bcrypt('tupondok')
             ]);
+            $buatUser->assignRole('tenaga-umum');
 
             if ($request->file('FOTO')) {
                 $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
