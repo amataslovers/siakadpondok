@@ -19,6 +19,10 @@ class JenisKeluargaController extends AppBaseController
     public function __construct(JenisKeluargaRepository $jenisKeluargaRepo)
     {
         $this->jenisKeluargaRepository = $jenisKeluargaRepo;
+        $this->middleware('permission:jenis-keluarga-view');
+        $this->middleware('permission:jenis-keluarga-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:jenis-keluarga-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:jenis-keluarga-delete', ['only' => ['destroy']]);
     }
 
     /**

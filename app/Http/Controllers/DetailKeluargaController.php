@@ -20,6 +20,10 @@ class DetailKeluargaController extends AppBaseController
     public function __construct(DetailKeluargaRepository $detailKeluargaRepo)
     {
         $this->detailKeluargaRepository = $detailKeluargaRepo;
+        $this->middleware('permission:detail-keluarga-view');
+        $this->middleware('permission:detail-keluarga-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:detail-keluarga-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:detail-keluarga-delete', ['only' => ['destroy']]);
     }
 
     /**

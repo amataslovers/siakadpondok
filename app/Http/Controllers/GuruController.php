@@ -23,6 +23,10 @@ class GuruController extends AppBaseController
     public function __construct(GuruRepository $guruRepo)
     {
         $this->guruRepository = $guruRepo;
+        $this->middleware('permission:guru-view');
+        $this->middleware('permission:guru-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:guru-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:guru-delete', ['only' => ['destroy']]);
     }
 
     /**

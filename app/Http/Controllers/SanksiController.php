@@ -19,6 +19,10 @@ class SanksiController extends AppBaseController
     public function __construct(SanksiRepository $sanksiRepo)
     {
         $this->sanksiRepository = $sanksiRepo;
+        $this->middleware('permission:sanksi-view');
+        $this->middleware('permission:sanksi-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:sanksi-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:sanksi-delete', ['only' => ['destroy']]);
     }
 
     /**

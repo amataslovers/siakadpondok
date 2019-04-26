@@ -46,6 +46,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+            abort(403, 'Maaf !!! Anda tidak berhak mengakses.');
+        }
         return parent::render($request, $exception);
     }
 }

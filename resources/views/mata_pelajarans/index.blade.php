@@ -4,7 +4,9 @@
     <section class="content-header">
         <h1 class="pull-left">Mata Pelajaran</h1>
         <h1 class="pull-right">
+            @can('mata-pelajaran-create')
            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('mataPelajarans.create') !!}"><i class="fa fa-plus-square"></i> Tambah Baru</a>
+           @endcan
         </h1>
     </section>
     <div class="content">

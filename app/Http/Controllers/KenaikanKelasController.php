@@ -17,6 +17,11 @@ use App\Models\Murid;
 
 class KenaikanKelasController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['role:tenaga-umum|administrator']);
+    }
+
     public function index(Request $request)
     {
 

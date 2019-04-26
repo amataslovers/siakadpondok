@@ -23,6 +23,10 @@ class HistoryKelasController extends AppBaseController
     public function __construct(HistoryKelasRepository $historyKelasRepo)
     {
         $this->historyKelasRepository = $historyKelasRepo;
+        $this->middleware('permission:history-kelas-view');
+        $this->middleware('permission:history-kelas-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:history-kelas-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:history-kelas-delete', ['only' => ['destroy']]);
     }
 
     /**

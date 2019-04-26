@@ -21,6 +21,10 @@ class PerizinanMuridController extends AppBaseController
     public function __construct(PerizinanMuridRepository $perizinanMuridRepo)
     {
         $this->perizinanMuridRepository = $perizinanMuridRepo;
+        $this->middleware('permission:perizinan-murid-view');
+        $this->middleware('permission:perizinan-murid-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:perizinan-murid-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:perizinan-murid-delete', ['only' => ['destroy']]);
     }
 
     /**

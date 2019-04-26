@@ -29,6 +29,10 @@ class NilaiAkademikController extends AppBaseController
     public function __construct(NilaiAkademikRepository $nilaiAkademikRepo)
     {
         $this->nilaiAkademikRepository = $nilaiAkademikRepo;
+        $this->middleware('permission:nilai-akademik-view');
+        $this->middleware('permission:nilai-akademik-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:nilai-akademik-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:nilai-akademik-delete', ['only' => ['destroy']]);
     }
 
     /**

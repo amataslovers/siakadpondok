@@ -70,7 +70,7 @@
                                          class="img-circle" alt="User Image"/> --}}
                                     <p>
                                         {!! Auth::user()->full_name !!}
-                                        <small>Member since {!! Auth::user()->created_at->format('M. Y') !!}</small>
+                                        <small>Anggota sejak {!! Auth::user()->created_at->format('M. Y') !!}</small>
                                     </p>
                                 </li>
                                 <!-- Menu Footer-->

@@ -20,6 +20,10 @@ class PeraturanController extends AppBaseController
     public function __construct(PeraturanRepository $peraturanRepo)
     {
         $this->peraturanRepository = $peraturanRepo;
+        $this->middleware('permission:peraturan-view');
+        $this->middleware('permission:peraturan-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:peraturan-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:peraturan-delete', ['only' => ['destroy']]);
     }
 
     /**

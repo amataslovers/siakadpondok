@@ -4,7 +4,9 @@
     <section class="content-header">
         <h1 class="pull-left">Tenaga Umums</h1>
         <h1 class="pull-right">
+            @can('tenaga-umum-create')
            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('tenagaUmums.create') !!}"><i class="fa fa-plus-square"></i> Tambah Baru</a>
+           @endcan
         </h1>
     </section>
     <div class="content">

@@ -19,6 +19,10 @@ class MataPelajaranController extends AppBaseController
     public function __construct(MataPelajaranRepository $mataPelajaranRepo)
     {
         $this->mataPelajaranRepository = $mataPelajaranRepo;
+        $this->middleware('permission:mata-pelajaran-view');
+        $this->middleware('permission:mata-pelajaran-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:mata-pelajaran-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:mata-pelajaran-delete', ['only' => ['destroy']]);
     }
 
     /**

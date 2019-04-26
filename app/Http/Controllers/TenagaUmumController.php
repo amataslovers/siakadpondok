@@ -23,6 +23,10 @@ class TenagaUmumController extends AppBaseController
     public function __construct(TenagaUmumRepository $tenagaUmumRepo)
     {
         $this->tenagaUmumRepository = $tenagaUmumRepo;
+        $this->middleware('permission:tenaga-umum-view');
+        $this->middleware('permission:tenaga-umum-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:tenaga-umum-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:tenaga-umum-delete', ['only' => ['destroy']]);
     }
 
     /**

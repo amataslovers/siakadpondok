@@ -24,7 +24,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(['auth'])->group(function () {
 
     Route::resource('roles', 'RoleController');
-    Route::resource('users', 'UserController');
 
     Route::resource('agamas', 'AgamaController');
 
@@ -62,10 +61,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('gurus', 'GuruController');
 
+    Route::resource('perizinanMurids', 'PerizinanMuridController');
+
     Route::get('api/keluarga/{id}', 'KeluargaMuridController@getDetailKeluargaById')->name('get-detail-keluarga');
     Route::get('api/peraturan/{id}', 'PelanggaranMuridController@getPeraturanByIdSanksi')->name('get-peraturan');
     Route::delete('api/keluarga/{id}/{nis}', 'KeluargaMuridController@deleteKeluargaViaAjax');
     Route::get('api/infopelanggaran/{id}', 'PelanggaranMuridController@getInfoPelanggaranMurid');
+
     Route::post('nilaiAkademiks/form-nilai', 'NilaiAkademikController@formNilai')->name('form-isi-nilai-akademik');
     Route::resource('nilaiAkademiks', 'NilaiAkademikController');
 
@@ -81,10 +83,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cetak/rapot/{id}', 'CetakController@downloadRapot')->name('cetakRapotDownload');
     Route::get('cetak/ijazah/', 'CetakController@lihatIjazah')->name('cetakIjazahIndex');
     Route::get('cetak/ijazah/{id}', 'CetakController@downloadIjazah')->name('cetakIjazahDownload');
-    // Route::post('users/ganti-password', );
+
+    Route::post('users/ganti-password', 'UserController@gantiPassword')->name('ganti-password');
+    Route::resource('users', 'UserController');
 });
-
-
-
-
-Route::resource('perizinanMurids', 'PerizinanMuridController');

@@ -19,6 +19,10 @@ class TahunAjaranController extends AppBaseController
     public function __construct(TahunAjaranRepository $tahunAjaranRepo)
     {
         $this->tahunAjaranRepository = $tahunAjaranRepo;
+        $this->middleware('permission:tahun-ajaran-view');
+        $this->middleware('permission:tahun-ajaran-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:tahun-ajaran-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:tahun-ajaran-delete', ['only' => ['destroy']]);
     }
 
     /**

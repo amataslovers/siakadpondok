@@ -31,6 +31,10 @@ class MuridController extends AppBaseController
     public function __construct(MuridRepository $muridRepo)
     {
         $this->muridRepository = $muridRepo;
+        $this->middleware('permission:murid-view');
+        $this->middleware('permission:murid-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:murid-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:murid-delete', ['only' => ['destroy']]);
     }
 
     /**

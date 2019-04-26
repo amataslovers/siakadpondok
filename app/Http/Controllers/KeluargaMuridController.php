@@ -25,6 +25,10 @@ class KeluargaMuridController extends AppBaseController
     public function __construct(KeluargaMuridRepository $keluargaMuridRepo)
     {
         $this->keluargaMuridRepository = $keluargaMuridRepo;
+        $this->middleware('permission:keluarga-murid-view');
+        $this->middleware('permission:keluarga-murid-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:keluarga-murid-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:keluarga-murid-delete', ['only' => ['destroy']]);
     }
 
     /**

@@ -22,6 +22,10 @@ class CatatanSppController extends AppBaseController
     public function __construct(CatatanSppRepository $catatanSppRepo)
     {
         $this->catatanSppRepository = $catatanSppRepo;
+        $this->middleware('permission:catatan-spp-view');
+        $this->middleware('permission:catatan-spp-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:catatan-spp-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:catatan-spp-delete', ['only' => ['destroy']]);
     }
 
     /**

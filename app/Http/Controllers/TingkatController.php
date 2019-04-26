@@ -20,6 +20,10 @@ class TingkatController extends AppBaseController
     public function __construct(TingkatRepository $tingkatRepo)
     {
         $this->tingkatRepository = $tingkatRepo;
+        $this->middleware('permission:tingkat-view');
+        $this->middleware('permission:tingkat-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:tingkat-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:tingkat-delete', ['only' => ['destroy']]);
     }
 
     /**

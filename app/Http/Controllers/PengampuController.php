@@ -25,6 +25,10 @@ class PengampuController extends AppBaseController
     public function __construct(PengampuRepository $pengampuRepo)
     {
         $this->pengampuRepository = $pengampuRepo;
+        $this->middleware('permission:pengampu-view');
+        $this->middleware('permission:pengampu-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:pengampu-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:pengampu-delete', ['only' => ['destroy']]);
     }
 
     /**

@@ -26,6 +26,10 @@ class NilaiKarakterController extends AppBaseController
     public function __construct(NilaiKarakterRepository $nilaiKarakterRepo)
     {
         $this->nilaiKarakterRepository = $nilaiKarakterRepo;
+        $this->middleware('permission:nilai-karakter-view');
+        $this->middleware('permission:nilai-karakter-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:nilai-karakter-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:nilai-karakter-delete', ['only' => ['destroy']]);
     }
 
     /**

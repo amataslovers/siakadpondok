@@ -17,6 +17,7 @@
         @include('flash::message')
 
         <div class="clearfix"></div>
+        @can('nilai-karakter-create')
         <div class="box box-success">
             <a data-toggle="collapse" href="#collapse1">
                 <div class="box-header with-border">
@@ -29,6 +30,7 @@
                 </div>
             </div>
         </div>
+        @endcan
         <div class="box box-primary">
             <div class="box-body">
                     @include('nilai_karakters.table')

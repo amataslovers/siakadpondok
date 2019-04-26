@@ -5,7 +5,9 @@
 <section class="content-header">
     <h1 class="pull-left">Role Management</h1>
     <h1 class="pull-right">
+        @can('role-create')
         <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('roles.create') }}"><i class="fa fa-plus-square"></i> Tambah Baru</a>
+        @endcan
     </h1>
 </section>
 
@@ -31,11 +33,11 @@
                         @can('role-edit')
                             <a class="btn btn-primary" href="{{ route('roles.edit',$role->id) }}">Edit</a>
                         @endcan
-                        @can('role-delete')
+                        {{-- @can('role-delete')
                             {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
-                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"]) !!}
                             {!! Form::close() !!}
-                        @endcan
+                        @endcan --}}
                     </td>
                 </tr>
                 @endforeach

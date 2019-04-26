@@ -12,9 +12,17 @@ use DB;
 use Hash;
 use Yajra\DataTables\DataTables;
 use Flash;
+use Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:user-view');
+        $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -159,6 +167,32 @@ class UserController extends Controller
 
         Flash::success('User sukses di update');
         return redirect()->route('users.index');
+    }
+
+    public function gantiPassword(Request $request)
+    {
+        $this->validate($request, [
+            'password' => 'same:confirm-password'
+        ]);
+
+
+        $input = $request->all();
+        if (!empty($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        } else {
+            $input = array_except($input, array('password'));
+        }
+
+
+        $user = User::find(Auth::user()->id);
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('roles.index'));
+        }
+        $user->update($input);
+
+        return back();
     }
 
 

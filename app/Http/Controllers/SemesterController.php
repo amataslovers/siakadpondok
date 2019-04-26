@@ -20,6 +20,10 @@ class SemesterController extends AppBaseController
     public function __construct(SemesterRepository $semesterRepo)
     {
         $this->semesterRepository = $semesterRepo;
+        $this->middleware('permission:semester-view');
+        $this->middleware('permission:semester-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:semester-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:semester-delete', ['only' => ['destroy']]);
     }
 
     /**

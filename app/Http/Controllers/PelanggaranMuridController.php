@@ -25,6 +25,10 @@ class PelanggaranMuridController extends AppBaseController
     public function __construct(PelanggaranMuridRepository $pelanggaranMuridRepo)
     {
         $this->pelanggaranMuridRepository = $pelanggaranMuridRepo;
+        $this->middleware('permission:pelanggaran-murid-view');
+        $this->middleware('permission:pelanggaran-murid-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:pelanggaran-murid-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:pelanggaran-murid-delete', ['only' => ['destroy']]);
     }
 
     /**

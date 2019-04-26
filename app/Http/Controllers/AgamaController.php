@@ -19,6 +19,10 @@ class AgamaController extends AppBaseController
     public function __construct(AgamaRepository $agamaRepo)
     {
         $this->agamaRepository = $agamaRepo;
+        $this->middleware('permission:agama-view');
+        $this->middleware('permission:agama-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:agama-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:agama-delete', ['only' => ['destroy']]);
     }
 
     /**

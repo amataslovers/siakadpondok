@@ -23,6 +23,10 @@ class KelasController extends AppBaseController
     public function __construct(KelasRepository $kelasRepo)
     {
         $this->kelasRepository = $kelasRepo;
+        $this->middleware('permission:kelas-view');
+        $this->middleware('permission:kelas-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:kelas-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:kelas-delete', ['only' => ['destroy']]);
     }
 
     /**

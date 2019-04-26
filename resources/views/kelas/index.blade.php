@@ -4,7 +4,9 @@
     <section class="content-header">
         <h1 class="pull-left">Kelas</h1>
         <h1 class="pull-right">
-           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('kelas.create') !!}"><i class="fa fa-plus-square"></i> Tambah Baru</a>
+            @can('kelas-create')
+                <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('kelas.create') !!}"><i class="fa fa-plus-square"></i> Tambah Baru</a>
+            @endcan
         </h1>
     </section>
     <div class="content">
