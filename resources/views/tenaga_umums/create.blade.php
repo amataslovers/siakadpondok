@@ -28,16 +28,12 @@
     </div>
 @endsection
 @section('scripts')
-
     <script type="text/javascript">
-
         $(document).ready(function(){
             $('#TANGGAL_LAHIR').datepicker({
                 autoclose : true,
                 format: 'dd/mm/yyyy'
             });
         });
-
-
     </script>
 @endsection

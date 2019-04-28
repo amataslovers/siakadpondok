@@ -14,6 +14,7 @@ use App\Models\Agama;
 use App\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Models\Guru;
 
 class GuruController extends AppBaseController
 {
@@ -38,7 +39,9 @@ class GuruController extends AppBaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $guru = $this->guruRepository->all();
+            $guru = Guru::when(auth()->user()->hasRole('guru'), function ($q) {
+                $q->where('NIP_GURU', auth()->user()->name);
+            })->get();
             return DataTables::of($guru)
                 ->addColumn('action', 'gurus.datatables_actions')
                 ->addIndexColumn()

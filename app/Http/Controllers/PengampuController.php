@@ -41,10 +41,13 @@ class PengampuController extends AppBaseController
     {
         // return $pengampuDataTable->render('pengampus.index');
         if ($request->ajax()) {
-            $pengampu = $this->pengampuRepository->with(['mataPelajaran', 'guru', 'kelas', 'tahunAjaran'])->all();
+            $pengampu = $this->pengampuRepository->with(['mataPelajaran', 'guru', 'kelas.tingkat', 'tahunAjaran'])->all();
             return DataTables::of($pengampu)
                 ->addIndexColumn()
                 ->addColumn('action', 'pengampus.datatables_actions')
+                ->addColumn('namaKelas', function ($pengampu) {
+                    return $pengampu->kelas->tingkat->TINGKAT . ' ' . $pengampu->kelas->NAMA;
+                })
                 ->make();
         }
         return view('pengampus.index');

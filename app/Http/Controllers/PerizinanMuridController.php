@@ -12,6 +12,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 use App\Models\HistoryKelas;
 use Yajra\DataTables\DataTables;
+use App\Models\PerizinanMurid;
 
 class PerizinanMuridController extends AppBaseController
 {
@@ -36,12 +37,16 @@ class PerizinanMuridController extends AppBaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $perizinanMurid = $this->perizinanMuridRepository
-                ->with([
-                    'historyKelas.murid:NIS,NAMA',
-                    'historyKelas.kelas.tingkat:ID_TINGKAT,TINGKAT',
-                    'historyKelas.semester.tahunAjaran'
-                ])
+            $perizinanMurid = PerizinanMurid::with([
+                'historyKelas.murid:NIS,NAMA',
+                'historyKelas.kelas.tingkat:ID_TINGKAT,TINGKAT',
+                'historyKelas.semester.tahunAjaran'
+            ])
+                ->when(auth()->user()->hasRole('murid'), function ($q) {
+                    $q->whereHas('historyKelas', function ($query) {
+                        $query->where('NIS', auth()->user()->name);
+                    });
+                })
                 ->get();
             return DataTables::of($perizinanMurid)
                 ->addIndexColumn()

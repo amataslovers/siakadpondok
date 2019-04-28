@@ -5,10 +5,13 @@
         </span>
     </a>
     <ul class="treeview-menu">
+        @can('murid-view')
         <li class="{{ Request::is('murids*') ? 'active' : '' }}">
             <a href="{!! route('murids.index') !!}"><i class="fa fa-child"></i><span>Data Murid</span></a>
         </li>
+        @endcan
 
+        @hasanyrole('tenaga-umum|administrator')
         <li>
             <a href="{!! url('murids?status=0') !!}"><i class="fa fa-child"></i><span>Data Murid Nonaktif</span></a>
         </li>
@@ -16,14 +19,19 @@
         <li class="{{ Request::is('detailKeluargas*') ? 'active' : '' }}">
             <a href="{!! route('detailKeluargas.index') !!}"><i class="fa fa-columns"></i><span>Penghubung Keluarga Murid</span></a>
         </li>
+        @endhasanyrole
 
+        @can('history-kelas-view')
         <li class="{{ Request::is('historyKelas*') ? 'active' : '' }}">
             <a href="{!! route('historyKelas.index') !!}"><i class="fa fa-history"></i><span>History Kelas Murid</span></a>
         </li>
+        @endcan
 
+        @can('keluarga-murid-view')
         <li class="{{ Request::is('keluargaMurids*') ? 'active' : '' }}">
             <a href="{!! route('keluargaMurids.index') !!}"><i class="fa fa-users"></i><span>Keluarga Murid</span></a>
         </li>
+        @endcan
     </ul>
 </li>
 
@@ -34,16 +42,21 @@
         </span>
     </a>
     <ul class="treeview-menu">
+        @can('mata-pelajaran-view')
         <li class="{{ Request::is('mataPelajarans*') ? 'active' : '' }}">
             <a href="{!! route('mataPelajarans.index') !!}"><i class="fa fa-book"></i><span>Mata Pelajaran</span></a>
         </li>
+        @endcan
 
+        @can('pengampu-view')
         <li class="{{ Request::is('pengampus*') ? 'active' : '' }}">
             <a href="{!! route('pengampus.index') !!}"><i class="fa fa-book"></i><span>Pengampu</span></a>
         </li>
+        @endcan
     </ul>
 </li>
 
+@can('kelas-view', 'tingkat-view')
 <li class="treeview {{ Request::is('kelas*') || Request::is('kenaikanKelas*') || Request::is('tengah-semester*') || Request::is('tingkats*') ? 'active' : '' }}">
     <a href="#"><i class="fa fa-dot-circle-o"></i> <span>Kelas</span>
         <span class="pull-right-container">
@@ -51,10 +64,13 @@
         </span>
     </a>
     <ul class="treeview-menu">
+        @can('kelas-view')
         <li class="{{ Request::is('kelas*') ? 'active' : '' }}">
             <a href="{!! route('kelas.index') !!}"><i class="fa fa-dot-circle-o"></i><span>Kelas</span></a>
         </li>
+        @endcan
 
+        @hasanyrole('tenaga-umum|administrator')
         <li class="{{ Request::is('kenaikanKelas*') ? 'active' : '' }}">
             <a href="{!! route('index-kenaikan-kelas') !!}"><i class="fa fa-square"></i><span>Kenaikan Kelas</span></a>
         </li>
@@ -62,12 +78,16 @@
         <li class="{{ Request::is('tengah-semester*') ? 'active' : '' }}">
             <a href="{!! route('index-tengah-semester') !!}"><i class="fa fa-square"></i><span>Tengah Semester</span></a>
         </li>
+        @endhasanyrole
 
+        @can('tingkat-view')
         <li class="{{ Request::is('tingkats*') ? 'active' : '' }}">
             <a href="{!! route('tingkats.index') !!}"><i class="fa fa-level-up"></i><span>Tingkat</span></a>
         </li>
+        @endcan
     </ul>
 </li>
+@endcan
 
 <li class="treeview {{ Request::is('nilaiAkademiks*') || Request::is('nilaiKarakters*') ? 'active' : '' }}">
     <a href="#"><i class="fa fa-list"></i> <span>Nilai</span>
@@ -76,16 +96,21 @@
         </span>
     </a>
     <ul class="treeview-menu">
+        @can('nilai-akademik-view')
         <li class="{{ Request::is('nilaiAkademiks*') ? 'active' : '' }}">
             <a href="{!! route('nilaiAkademiks.index') !!}"><i class="fa fa-list"></i><span>Nilai Akademik</span></a>
         </li>
-        
+        @endcan
+
+        @can('nilai-karakter-view')
         <li class="{{ Request::is('nilaiKarakters*') ? 'active' : '' }}">
             <a href="{!! route('nilaiKarakters.index') !!}"><i class="fa fa-list"></i><span>Nilai Karakter</span></a>
         </li>
+        @endcan
     </ul>
 </li>
 
+@hasanyrole('guru|tenaga-umum|administrator')
 <li class="treeview {{ Request::is('gurus*') || Request::is('tenagaUmums*') ? 'active' : '' }}">
     <a href="#"><i class="fa fa-user-md"></i> <span>Kepegawaian</span>
         <span class="pull-right-container">
@@ -93,16 +118,22 @@
         </span>
     </a>
     <ul class="treeview-menu">
+        @can('guru-view')
         <li class="{{ Request::is('gurus*') ? 'active' : '' }}">
             <a href="{!! route('gurus.index') !!}"><i class="fa fa-user-md"></i><span>Guru</span></a>
         </li>
+        @endcan
 
+        @can('tenaga-umum-view')
         <li class="{{ Request::is('tenagaUmums*') ? 'active' : '' }}">
             <a href="{!! route('tenagaUmums.index') !!}"><i class="fa fa-user-md"></i><span>Tenaga Umum</span></a>
         </li>
+        @endcan
     </ul>
 </li>
+@endhasanyrole
 
+@can('perizinan-murid-view', 'pelanggaran-murid-view', 'peraturan-view', 'sanksi-view')
 <li class="treeview {{ Request::is('perizinanMurids*') || Request::is('pelanggaranMurids*') || Request::is('peraturans*') || Request::is('sanksis*') ? 'active' : '' }}">
     <a href="#"><i class="fa fa-clipboard"></i> <span>Perizinan & Pelanggaran</span>
         <span class="pull-right-container">
@@ -110,23 +141,32 @@
         </span>
     </a>
     <ul class="treeview-menu">
+        @can('perizinan-murid-view')
         <li class="{{ Request::is('perizinanMurids*') ? 'active' : '' }}">
             <a href="{!! route('perizinanMurids.index') !!}"><i class="fa fa-clipboard"></i><span>Perizinan Murids</span></a>
         </li>
+        @endcan
 
+        @can('pelanggaran-murid-view')
         <li class="{{ Request::is('pelanggaranMurids*') ? 'active' : '' }}">
             <a href="{!! route('pelanggaranMurids.index') !!}"><i class="fa fa-clipboard"></i><span>Pelanggaran Murid</span></a>
         </li>
+        @endcan
         
+        @can('peraturan-view')
         <li class="{{ Request::is('peraturans*') ? 'active' : '' }}">
             <a href="{!! route('peraturans.index') !!}"><i class="fa fa-clipboard"></i><span>Peraturan</span></a>
         </li>
+        @endcan
         
+        @can('sanksi-view')
         <li class="{{ Request::is('sanksis*') ? 'active' : '' }}">
             <a href="{!! route('sanksis.index') !!}"><i class="fa fa-clipboard"></i><span>Sanksi</span></a>
         </li>
+        @endcan
     </ul>
 </li>
+@endcan
 
 <li class="treeview {{ Request::is('cetak/rapot*') || Request::is('cetak/ijazah*') ? 'active' : '' }}">
     <a href="#"><i class="fa fa-print"></i> <span>Rapot / Ijazah</span>
@@ -145,6 +185,7 @@
     </ul>
 </li>
 
+@can('catatan-spp-view')
 <li class="treeview {{ Request::is('catatanSpps*') ? 'active' : '' }}">
     <a href="#"><i class="fa fa-money"></i> <span>Keuangan</span>
         <span class="pull-right-container">
@@ -157,7 +198,9 @@
         </li>
     </ul>
 </li>
+@endcan
 
+@hasanyrole('tenaga-umum|administrator')
 <li class="treeview {{ Request::is('agamas*') || Request::is('semesters*') || Request::is('tahunAjarans*') || Request::is('jenisKeluargas*') ? 'active' : '' }}">
     <a href="#"><i class="fa fa-plus-circle"></i> <span>Keperluan Tambahan</span>
         <span class="pull-right-container">
@@ -182,7 +225,9 @@
         </li>
     </ul>
 </li>
+@endhasanyrole
 
+@hasrole('administrator')
 <li class="treeview {{ Request::is('roles*') || Request::is('users*') ? 'active' : '' }}">
     <a href="#"><i class="fa fa-users"></i> <span>User Management</span>
         <span class="pull-right-container">
@@ -199,5 +244,6 @@
         </li>
     </ul>
 </li>
+@endhasrole
 
 

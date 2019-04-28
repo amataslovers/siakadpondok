@@ -38,15 +38,17 @@ class HistoryKelasController extends AppBaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $historyKelas = $this->historyKelasRepository
-                ->with([
-                    'murid:NIS,NAMA',
-                    'kelas:ID_KELAS,ID_TINGKAT,NAMA,TAHUN_ANGKATAN',
-                    'kelas.tingkat:ID_TINGKAT,TINGKAT',
-                    'semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
-                    'semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA'
-                ])
-                ->all();
+            $historyKelas = HistoryKelas::with([
+                'murid:NIS,NAMA',
+                'kelas:ID_KELAS,ID_TINGKAT,NAMA,TAHUN_ANGKATAN',
+                'kelas.tingkat:ID_TINGKAT,TINGKAT',
+                'semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
+                'semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA'
+            ])
+                ->when(auth()->user()->hasRole('murid'), function ($q) {
+                    $q->where('NIS', auth()->user()->name);
+                })
+                ->get();
             return DataTables::of($historyKelas)
                 ->addColumn('action', 'history_kelas.datatables_actions')
                 ->addIndexColumn()

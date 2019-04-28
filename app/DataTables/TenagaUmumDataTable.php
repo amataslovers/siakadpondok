@@ -33,7 +33,9 @@ class TenagaUmumDataTable extends DataTable
      */
     public function query(TenagaUmum $model)
     {
-        return $model->newQuery();
+        return $model->when(auth()->user()->hasRole('tenaga-umum'), function ($q) {
+            $q->where('NIP', auth()->user()->name);
+        })->newQuery();
     }
 
     /**

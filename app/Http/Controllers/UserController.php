@@ -37,9 +37,11 @@ class UserController extends Controller
                 ->addColumn('action', 'users.datatables_actions')
                 ->addColumn('roles', function ($user) {
                     if (!empty($user->getRoleNames())) {
+                        $label = null;
                         foreach ($user->getRoleNames() as $value) {
-                            return '<label class="badge badge-success">' . $value . '</label> ';
+                            $label .= '<label class="badge badge-success">' . $value . '</label> ';
                         }
+                        return $label;
                     }
                 })
                 ->rawColumns(['roles', 'action'])

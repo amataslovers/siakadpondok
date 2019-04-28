@@ -45,6 +45,11 @@ class CatatanSppController extends AppBaseController
                     'historyKelas.semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
                     'historyKelas.semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA'
                 ])
+                ->when(auth()->user()->hasRole('murid'), function ($q) {
+                    $q->whereHas('historyKelas', function ($query) {
+                        $query->where('NIS', auth()->user()->name);
+                    });
+                })
                 ->all();
             return DataTables::of($catatanSpp)
                 ->addColumn('action', 'catatan_spps.datatables_actions')

@@ -5,17 +5,20 @@
 @endsection
 @section('content')
 <section class="content-header">
-    <h1 class="pull-left">Dashboard</h1>
 </section>
     <div class="content">
         <div class="clearfix"></div>
         <br>
+        @hasanyrole('tenaga-umum|administrator')
         <div class="row">
             <div class="col-md-3 col-md-push-1">
                 <div class="info-box bg-green">
                     <span class="info-box-icon"><i class="fa fa-user"></i></span>
                     <div class="info-box-content">
-                    <span class="info-box-text"><b>Total Murid</b></span>
+                    <span class="info-box-text">Total Murid</span>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
                     <span class="info-box-number">{{$murid}}</span>
                     <span class="progress-description">
                     </div>
@@ -23,10 +26,13 @@
             </div>
 
             <div class="col-md-3 col-md-push-3">
-                <div class="info-box bg-green">
+                <div class="info-box bg-blue">
                     <span class="info-box-icon"><i class="fa fa-user"></i></span>
                     <div class="info-box-content">
-                    <span class="info-box-text"><b>Total Guru</b></span>
+                    <span class="info-box-text">Total Guru</span>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
                     <span class="info-box-number">{{$guru}}</span>
                     <span class="progress-description">
                     </div>
@@ -36,8 +42,9 @@
 
         <div class="row">
             <h3 class="text-center">Grafik Jumlah Murid Diterima Per Tahun</h3 class="text-center">
-            <canvas id="canvas" height="180" width="600"></canvas>
+            <canvas id="canvas" style="width: 90%; height: 250px;margin-left: 20px"></canvas>
         </div>
+        @endhasanyrole
     </div>
 @endsection
 @section('scripts')

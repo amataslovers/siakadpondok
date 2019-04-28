@@ -40,17 +40,21 @@ class PelanggaranMuridController extends AppBaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $pelanggaranMurid = $this->pelanggaranMuridRepository
-                ->with([
-                    'historyKelas.murid:NIS,NAMA',
-                    'historyKelas.kelas:ID_KELAS,ID_TINGKAT,NAMA,TAHUN_ANGKATAN',
-                    'historyKelas.kelas.tingkat:ID_TINGKAT,TINGKAT',
-                    'historyKelas.semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
-                    'historyKelas.semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA',
-                    'peraturan:ID_PERATURAN,ID_SANKSI,NAMA_PERATURAN',
-                    'peraturan.sanksi:ID_SANKSI,NAMA_SANKSI'
-                ])
-                ->all();
+            $pelanggaranMurid = PelanggaranMurid::with([
+                'historyKelas.murid:NIS,NAMA',
+                'historyKelas.kelas:ID_KELAS,ID_TINGKAT,NAMA,TAHUN_ANGKATAN',
+                'historyKelas.kelas.tingkat:ID_TINGKAT,TINGKAT',
+                'historyKelas.semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
+                'historyKelas.semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA',
+                'peraturan:ID_PERATURAN,ID_SANKSI,NAMA_PERATURAN',
+                'peraturan.sanksi:ID_SANKSI,NAMA_SANKSI'
+            ])
+                ->when(auth()->user()->hasRole('murid'), function ($q) {
+                    $q->whereHas('historyKelas', function ($query) {
+                        $query->where('NIS', auth()->user()->name);
+                    });
+                })
+                ->get();
             return DataTables::of($pelanggaranMurid)
                 ->addIndexColumn()
                 ->addColumn('action', 'pelanggaran_murids.datatables_actions')

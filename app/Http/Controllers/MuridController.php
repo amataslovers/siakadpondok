@@ -46,9 +46,16 @@ class MuridController extends AppBaseController
     // public function index(MuridDataTable $muridDataTable)
     public function index(Request $request)
     {
+        if (!is_null($request->get('status')) && auth()->user()->hasRole('murid')) {
+            abort(403, 'Maaf !!! Anda tidak berhak mengakses.');
+        }
         if ($request->ajax()) {
             if (is_null($request->get('status'))) {
-                $murid = $this->muridRepository->with('agama')->all();
+                $murid = Murid::with('agama')
+                    ->when(auth()->user()->hasRole('murid'), function ($q) {
+                        $q->where('NIS', auth()->user()->name);
+                    })
+                    ->get();
             } else {
                 $murid = Murid::where('STATUS_AKTIF', 0)->get();
             }

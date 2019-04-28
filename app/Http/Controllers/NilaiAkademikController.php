@@ -45,14 +45,19 @@ class NilaiAkademikController extends AppBaseController
     {
         if ($request->ajax()) {
             // $nilai = $this->nilaiAkademikRepository->all();
-            $nilai = NilaiAkademik::select(['ID_NILAI', 'NIS', 'ID_PENGAMPU', 'ID_SEMESTER', 'NILAI_UTS', 'NILAI_UAS'])->with([
-                'murid:NIS,NAMA',
-                'pengampu:ID_PENGAMPU,ID_KELAS,ID_MATA_PELAJARAN',
-                'pengampu.mataPelajaran:ID_MATA_PELAJARAN,NAMA',
-                'pengampu.kelas:ID_KELAS,ID_TINGKAT,NAMA',
-                'pengampu.kelas.tingkat:ID_TINGKAT,TINGKAT',
-                'semester:ID_SEMESTER,SEMESTER'
-            ])->get();
+            $nilai = NilaiAkademik::select(['ID_NILAI', 'NIS', 'ID_PENGAMPU', 'ID_SEMESTER', 'NILAI_UTS', 'NILAI_UAS'])
+                ->with([
+                    'murid:NIS,NAMA',
+                    'pengampu:ID_PENGAMPU,ID_KELAS,ID_MATA_PELAJARAN',
+                    'pengampu.mataPelajaran:ID_MATA_PELAJARAN,NAMA',
+                    'pengampu.kelas:ID_KELAS,ID_TINGKAT,NAMA',
+                    'pengampu.kelas.tingkat:ID_TINGKAT,TINGKAT',
+                    'semester:ID_SEMESTER,SEMESTER'
+                ])
+                ->when(auth()->user()->hasRole('murid'), function ($q) {
+                    $q->where('NIS', auth()->user()->name);
+                })
+                ->get();
             return DataTables::of($nilai)
                 ->addColumn('action', 'nilai_akademiks.datatables_actions')
                 ->addColumn('namaMurid', function ($nilai) {
@@ -68,10 +73,24 @@ class NilaiAkademikController extends AppBaseController
                 ->make();
         }
 
-        $mapel = MataPelajaran::all()->pluck('kode_nama', 'ID_MATA_PELAJARAN');
-        $guru = Guru::all()->pluck('nama_lengkap', 'NIP_GURU');
-        $semester = Semester::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_SEMESTER');
-        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
+        $mapel = MataPelajaran::when(auth()->user()->hasRole('guru'), function ($query) {
+            $query->whereHas('pengampu', function ($q) {
+                $q->whereHas('guru', function ($w) {
+                    $w->where('NIP_GURU', auth()->user()->name);
+                });
+            });
+        })
+            ->get()->pluck('kode_nama', 'ID_MATA_PELAJARAN');
+        $guru = Guru::when(auth()->user()->hasRole('guru'), function ($query) {
+            $query->where('NIP_GURU', auth()->user()->name);
+        })
+            ->get()->pluck('nama_lengkap', 'NIP_GURU');
+        $semester = Semester::whereHas('tahunAjaran', function ($q) {
+            $q->where('STATUS', 1);
+        })->orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_SEMESTER');
+        $kelas = Kelas::whereHas('tahunAjaran', function ($q) {
+            $q->where('STATUS', 1);
+        })->orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
         return view('nilai_akademiks.index')->with(compact('mapel', 'guru', 'semester', 'kelas'));
     }
 

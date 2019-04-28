@@ -42,7 +42,7 @@
                 { data: 'guru.NAMA', name: 'guru.NAMA' },
                 { data: 'mata_pelajaran.NAMA', name: 'mata_pelajaran.NAMA' },
                 { data: 'tahun_ajaran.NAMA', name: 'tahun_ajaran.NAMA' },
-                { data: 'kelas.NAMA', name: 'kelas.NAMA' },
+                { data: 'namaKelas', name: 'namaKelas' },
                 { data: 'KKM', name: 'KKM' },
                 { data: 'action', name: 'detail_mapel.action', orderable: false, searchable: false}
 

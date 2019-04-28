@@ -41,13 +41,17 @@ class NilaiKarakterController extends AppBaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $nilai = $this->nilaiKarakterRepository
-                ->with([
-                    'historyKelas.murid:NIS,NAMA',
-                    'historyKelas.kelas.tingkat',
-                    'historyKelas.semester:ID_SEMESTER,SEMESTER'
-                ])
-                ->all();
+            $nilai = NilaiKarakter::with([
+                'historyKelas.murid:NIS,NAMA',
+                'historyKelas.kelas.tingkat',
+                'historyKelas.semester:ID_SEMESTER,SEMESTER'
+            ])
+                ->when(auth()->user()->hasRole('murid'), function ($q) {
+                    $q->whereHas('historyKelas', function ($query) {
+                        $query->where('NIS', auth()->user()->name);
+                    });
+                })
+                ->get();
             return DataTables::of($nilai)
                 ->addIndexColumn()
                 ->addColumn('action', 'nilai_karakters.datatables_actions')
