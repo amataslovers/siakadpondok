@@ -33,9 +33,10 @@ use App\User;
  */
 class Guru extends Model
 {
+    use SoftDeletes;
 
     public $table = 'guru';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -87,20 +88,23 @@ class Guru extends Model
      * @var array
      */
     public static $rules = [
-        
+        'NAMA' => 'required',
+        'TEMPAT_LAHIR' => 'required',
+        'TANGGAL_LAHIR' => 'required',
+        'ALAMAT' => 'required',
+        'email' => 'sometimes|email'
     ];
 
-    protected static function boot() 
+    protected static function boot()
     {
         parent::boot();
 
-        static::deleting(function($guru) {
+        static::deleting(function ($guru) {
             User::where('name', $guru->NIP_GURU)->delete();
         });
 
-        static::updating(function($guru)
-        {
-           User::where('name', $guru->NIP_GURU)->update(['name' => $guru->NIP_GURU, 'full_name' => $guru->NAMA]); 
+        static::updating(function ($guru) {
+            User::where('name', $guru->NIP_GURU)->update(['name' => $guru->NIP_GURU, 'full_name' => $guru->NAMA]);
         });
     }
 

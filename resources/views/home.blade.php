@@ -27,7 +27,7 @@
 
             <div class="col-md-3 col-md-push-3">
                 <div class="info-box bg-blue">
-                    <span class="info-box-icon"><i class="fa fa-user"></i></span>
+                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
                     <div class="info-box-content">
                     <span class="info-box-text">Total Guru</span>
                     <div class="progress">
@@ -45,9 +45,120 @@
             <canvas id="canvas" style="width: 90%; height: 250px;margin-left: 20px"></canvas>
         </div>
         @endhasanyrole
+
+        <div class="row">
+
+            <div class="col-lg-6">
+                <div class="info-box">
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>Mahasiswa</h3>
+                            <div class="icon">
+                                <i class="fa fa-graduation-cap">M</i>
+                            </div>  
+                        </div>
+                        <ul>
+                            <li>Melihat Data Pribadi</li>
+                            <li>Melihat Nilai Mata Pelajaran</li>
+                            <li>Melihat Nilai Karakter</li>
+                            <li>Melihat Pelanggaran Yang Di Lakukan</li>
+                            <li>Melihat Perizinan Yang di Setujui</li>
+                            <li>Melihat Catatan Pembayaran SPP</li>
+                            <li>Melihat Rapot</li>
+                            <li>Melihat Ijazah</li>
+                            <li>Melihat Kelas</li>
+                            <li>Melihat Mata Pelajaran</li>
+                            <li>Melihat Guru Pengampu Mata Pelajaran</li>
+                            <li>Cetak Rapot</li>
+                            <li>Cetak Ijazah</li>
+                            <li>Ubah Password</li>
+                        </ul>          
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-box">
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3>Guru</h3>
+                            <div class="icon">
+                                <i class="fa fa-users">G</i>
+                            </div>  
+                        </div>
+                        <ul>
+                            <li>Melihat Data Pribadi</li>
+                            <li>Melihat Data Pribadi Murid</li>
+                            <li>Melihat Nilai Karakter</li>
+                            <li>Melihat Pelanggaran Murid</li>
+                            <li>Melihat Perizinan Murid</li>
+                            <li>Melihat Kelas</li>
+                            <li>Melihat Mata Pelajaran</li>
+                            <li>Cetak Rapot</li>
+                            <li>Cetak Ijazah</li>
+                            <li>Input & Update Data Nilai Sesuai yang diajarkan</li>
+                            <li>Input & Update Perizinan Murid</li>
+                            <li>Input & Update Pelanggaran Murid</li>
+                            <li>Ubah Password</li>
+                        </ul>          
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+                <div class="col-lg-6">
+                    <div class="info-box">
+                        <div class="small-box bg-yellow">
+                            <div class="inner">
+                                <h3>Tenaga Umum</h3>
+                                <div class="icon">
+                                    <i class="fa fa-user-secret">TU</i>
+                                </div>  
+                            </div>
+                            <ul>
+                                <li>Melihat Data Pribadi</li>
+                                <li>Cetak Rapot</li>
+                                <li>Cetak Ijazah</li>
+                                <li>Manajemen Murid</li>
+                                <li>Manajemen Nilai Murid</li>
+                                <li>Manajemen Kelas</li>
+                                <li>Manajemen Mata Pelajaran</li>
+                                <li>Manajemen Guru</li>
+                                <li>Manajemen Pengampu Mata Pelajaran</li>
+                                <li>Manajemen Perizinan & Pelanggaran Murid</li>
+                                <li>Manajemen Semester</li>
+                                <li>Generate Kenaikan Kelas</li>
+                                <li>Ubah Password</li>
+                            </ul>          
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-lg-6">
+                    <div class="info-box">
+                        <div class="small-box bg-primary">
+                            <div class="inner">
+                                <h3>Administrator</h3>
+                                <div class="icon">
+                                    <i class="fa fa-gear">A</i>
+                                </div>  
+                            </div>
+                            <ul>
+                                <li>Semua Fitur</li>
+                                <li>Manajemen User</li>
+                            </ul>          
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
     </div>
 @endsection
 @section('scripts')
+    @hasanyrole('administrator|tenaga-umum')
     <script>
         var url = "{{url('/home')}}";
         var Tahun = new Array();
@@ -88,4 +199,5 @@
           });
         });
     </script>
+    @endhasanyrole
 @endsection

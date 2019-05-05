@@ -1,25 +1,25 @@
 <!-- Id Peraturan Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('ID_SANKSI', 'Sanksi:') !!}
-    {!! Form::select('ID_SANKSI', $sanksi, null, ['class' => 'form-control form-select2', 'placeholder' => 'Sanksi']) !!}
+    {!! Form::select('ID_SANKSI', $sanksi, null, ['class' => 'form-control form-select2', 'placeholder' => 'Sanksi', 'required']) !!}
 </div>
 
 <!-- Id Peraturan Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('ID_PERATURAN', 'Peraturan:') !!}
-    {!! Form::select('ID_PERATURAN', ['' => 'Peraturan'], null, ['class' => 'form-control form-select2']) !!}
+    {!! Form::select('ID_PERATURAN', ['' => 'Peraturan'], null, ['class' => 'form-control form-select2', 'required']) !!}
 </div>
 
 <!-- Id History Kelas Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('ID_HISTORY_KELAS', 'Nama Murid | Kelas | Semester:') !!}
-    {!! Form::select('ID_HISTORY_KELAS', $murid, null, ['class' => 'form-control form-select2', 'placeholder' => 'Pilih Murid']) !!}
+    {!! Form::select('ID_HISTORY_KELAS', $murid, null, ['class' => 'form-control form-select2', 'placeholder' => 'Pilih Murid', 'required']) !!}
 </div>
 
 <!-- Tanggal Melanggar Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('TANGGAL_MELANGGAR', 'Tanggal Melanggar:') !!}
-    {!! Form::text('TANGGAL_MELANGGAR', null, ['class' => 'form-control', 'required', 'autocomplete' => 'off']) !!}
+    {!! Form::text('TANGGAL_MELANGGAR', null, ['class' => 'form-control', 'required', 'autocomplete' => 'off', 'required']) !!}
 </div>
 
 <div class="form-group col-md-12" id="show-info">

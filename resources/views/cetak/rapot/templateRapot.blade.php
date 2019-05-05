@@ -165,7 +165,7 @@
                             <table style="width: 100%">
                                 <tr>
                                     <td class="text-left">
-                                            @if ($murid->STATUS_NAIK)
+                                            @if ($murid->STATUS_NAIK || $murid->STATUS_NAIK == null)
                                             <span>Tidak Naik / </span>
                                             <span><s>Naik Kelas</s></span>
                                             @else

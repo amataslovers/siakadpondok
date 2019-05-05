@@ -13,13 +13,13 @@
             <!-- NIK Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('NIK', 'NIK:') !!}
-                {!! Form::text('NIK', null, ['class' => 'form-control']) !!}
+                {!! Form::text('NIK', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
             </div>
             
             <!-- Nama Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('NAMA', 'Nama:') !!}
-                {!! Form::text('NAMA', null, ['class' => 'form-control']) !!}
+                {!! Form::text('NAMA', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
             </div>
             
             <!-- Nama Arab Field -->
@@ -43,7 +43,7 @@
             <!-- Tempat Lahir Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('TEMPAT_LAHIR', 'Tempat Lahir:') !!}
-                {!! Form::text('TEMPAT_LAHIR', null, ['class' => 'form-control']) !!}
+                {!! Form::text('TEMPAT_LAHIR', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
             </div>
 
             <!-- Tanggal Lahir Field -->
@@ -61,31 +61,31 @@
             <!-- Email Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('EMAIL', 'Email:') !!}
-                {!! Form::email('EMAIL', null, ['class' => 'form-control']) !!}
+                {!! Form::email('EMAIL', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
             </div>
 
             <!-- Notelp Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('NOTELP', 'No Telepon:') !!}
-                {!! Form::text('NOTELP', null, ['class' => 'form-control']) !!}
+                {!! Form::text('NOTELP', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
             </div>
 
             <!-- Tanggal Masuk Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('TANGGAL_MASUK', 'Tanggal Masuk:') !!}
-                {!! Form::text('TANGGAL_MASUK', null, ['class' => 'form-control tanggal']) !!}
+                {!! Form::text('TANGGAL_MASUK', null, ['class' => 'form-control tanggal', 'autocomplete' => 'off']) !!}
             </div>
             
             <!-- Tanggal Keluar Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('TANGGAL_KELUAR', 'Tanggal Keluar:') !!}
-                {!! Form::text('TANGGAL_KELUAR', null, ['class' => 'form-control tanggal']) !!}
+                {!! Form::text('TANGGAL_KELUAR', null, ['class' => 'form-control tanggal', 'autocomplete' => 'off']) !!}
             </div>
             
             <!-- Angkatan Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('ANGKATAN', 'Angkatan:') !!}
-                {!! Form::text('ANGKATAN', null, ['class' => 'form-control']) !!}
+                {!! Form::text('ANGKATAN', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
             </div>
             
             <!-- Status Aktif Field -->
@@ -131,7 +131,7 @@
             <!-- Nama Asal Sekolah Field -->
             <div class="form-group col-sm-6">
                 {!! Form::label('NAMA_ASAL_SEKOLAH', 'Nama Asal Sekolah:') !!}
-                {!! Form::text('NAMA_ASAL_SEKOLAH', null, ['class' => 'form-control']) !!}
+                {!! Form::text('NAMA_ASAL_SEKOLAH', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
             </div>
 
             <!-- Alamat Asal Sekolah Field -->

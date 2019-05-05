@@ -62,8 +62,10 @@ class PengampuController extends AppBaseController
     {
         $mapel = MataPelajaran::all()->pluck('kode_nama', 'ID_MATA_PELAJARAN');
         $guru = Guru::all()->pluck('nama_lengkap', 'NIP_GURU');
-        $tahun = TahunAjaran::orderBy('created_at', 'desc')->get()->pluck('NAMA', 'ID_TAHUN_AJARAN');
-        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
+        $tahun = TahunAjaran::where('STATUS', 1)->get()->pluck('NAMA', 'ID_TAHUN_AJARAN');
+        $kelas = Kelas::whereHas('tahunAjaran', function ($q) {
+            $q->where('STATUS', 1);
+        })->orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
         return view('pengampus.create')->with(compact('mapel', 'guru', 'tahun', 'kelas'));
     }
 

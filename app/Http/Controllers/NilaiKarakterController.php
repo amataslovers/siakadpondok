@@ -67,11 +67,59 @@ class NilaiKarakterController extends AppBaseController
                 ->addColumn('semester', function ($nilai) {
                     return $nilai->historyKelas->semester->SEMESTER;
                 })
+                ->editColumn('AKHLAQ', function ($nilai) {
+                    $kata = null;
+                    if ($nilai->AKHLAQ == 1) {
+                        $kata = 'Kurang';
+                    } else if ($nilai->AKHLAQ == 2) {
+                        $kata = 'Cukup';
+                    } else if ($nilai->AKHLAQ == 3) {
+                        $kata = 'Baik';
+                    }
+                    return $kata;
+                })
+                ->editColumn('KEBERSIHAN', function ($nilai) {
+                    $kata = null;
+                    if ($nilai->KEBERSIHAN == 1) {
+                        $kata = 'Kurang';
+                    } else if ($nilai->KEBERSIHAN == 2) {
+                        $kata = 'Cukup';
+                    } else if ($nilai->KEBERSIHAN == 3) {
+                        $kata = 'Baik';
+                    }
+                    return $kata;
+                })
+                ->editColumn('KERAJINAN', function ($nilai) {
+                    $kata = null;
+                    if ($nilai->KERAJINAN == 1) {
+                        $kata = 'Kurang';
+                    } else if ($nilai->KERAJINAN == 2) {
+                        $kata = 'Cukup';
+                    } else if ($nilai->KERAJINAN == 3) {
+                        $kata = 'Baik';
+                    }
+                    return $kata;
+                })
+                ->editColumn('KETEKUNAN', function ($nilai) {
+                    $kata = null;
+                    if ($nilai->KETEKUNAN == 1) {
+                        $kata = 'Kurang';
+                    } else if ($nilai->KETEKUNAN == 2) {
+                        $kata = 'Cukup';
+                    } else if ($nilai->KETEKUNAN == 3) {
+                        $kata = 'Baik';
+                    }
+                    return $kata;
+                })
                 ->make();
         }
 
-        $semester = Semester::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_SEMESTER');
-        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
+        $semester = Semester::whereHas('tahunAjaran', function ($q) {
+            $q->where('STATUS', 1);
+        })->orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_SEMESTER');
+        $kelas = Kelas::whereHas('tahunAjaran', function ($q) {
+            $q->where('STATUS', 1);
+        })->orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
         return view('nilai_karakters.index')->with(compact('semester', 'kelas'));
     }
 
@@ -87,10 +135,14 @@ class NilaiKarakterController extends AppBaseController
 
     public function formNilai(Request $request)
     {
-        $cekHistoryKelas = HistoryKelas::with(['pelanggaranMurid.peraturan.sanksi', 'murid:NIS,NAMA'])->where([
-            ['ID_KELAS', $request->get('ID_KELAS')],
-            ['ID_SEMESTER', $request->get('ID_SEMESTER')]
-        ])->get();
+        $cekHistoryKelas = HistoryKelas::with(['pelanggaranMurid.peraturan.sanksi', 'murid:NIS,NAMA'])
+            ->where([
+                ['ID_KELAS', $request->get('ID_KELAS')],
+                ['ID_SEMESTER', $request->get('ID_SEMESTER')]
+            ])
+            ->whereHas('murid', function ($q) {
+                $q->where('STATUS_AKTIF', 1);
+            })->get();
 
         $cekNilaiKarakter = NilaiKarakter::whereIn('ID_HISTORY_KELAS', $cekHistoryKelas->pluck('ID_HISTORY_KELAS'))->get();
 

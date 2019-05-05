@@ -51,7 +51,10 @@ class KenaikanKelasController extends Controller
             $cekHistoryKelas = HistoryKelas::select('ID_KELAS')->where([
                 ['ID_KELAS', $pengampu->first()->ID_KELAS],
                 ['ID_SEMESTER', $semester->last()->ID_SEMESTER]
-            ])->groupBy('ID_KELAS')->get();
+            ])
+                ->whereHas('murid', function ($q) {
+                    $q->where('STATUS_AKTIF', 1);
+                })->groupBy('ID_KELAS')->get();
 
             if (count($cekHistoryKelas) > 0) {
                 Flash::error('Kenaikan kelas tidak dapat dilakukan.');
@@ -79,7 +82,10 @@ class KenaikanKelasController extends Controller
         } else {
             //cek apakah nilai karakter sudah ada atau belum
             $getHistoryMurid = HistoryKelas::select('ID_HISTORY_KELAS')
-                ->where('ID_SEMESTER', $semester->last()->ID_SEMESTER)->pluck('ID_HISTORY_KELAS');
+                ->where('ID_SEMESTER', $semester->last()->ID_SEMESTER)
+                ->whereHas('murid', function ($q) {
+                    $q->where('STATUS_AKTIF', 1);
+                })->pluck('ID_HISTORY_KELAS');
             $cekNilaiKarakter = NilaiKarakter::whereIn('ID_HISTORY_KELAS', $getHistoryMurid)->get();
             if ($cekNilaiKarakter->isEmpty()) {
                 Flash::error('Nilai Karakter belum diinputkan.');
@@ -114,10 +120,14 @@ class KenaikanKelasController extends Controller
 
         if (count($semester) > 1) {
             // cek posisi semester murid sekarang ganjil / genap
-            $cekHistoryKelas = HistoryKelas::select('ID_KELAS')->where([
-                ['ID_KELAS', $pengampu->first()->ID_KELAS],
-                ['ID_SEMESTER', $semester->last()->ID_SEMESTER]
-            ])->groupBy('ID_KELAS')->get();
+            $cekHistoryKelas = HistoryKelas::select('ID_KELAS')
+                ->where([
+                    ['ID_KELAS', $pengampu->first()->ID_KELAS],
+                    ['ID_SEMESTER', $semester->last()->ID_SEMESTER]
+                ])
+                ->whereHas('murid', function ($q) {
+                    $q->where('STATUS_AKTIF', 1);
+                })->groupBy('ID_KELAS')->get();
 
             if (count($cekHistoryKelas) > 0) {
                 Flash::error('Kenaikan semester tidak dapat dilakukan.');
@@ -147,7 +157,10 @@ class KenaikanKelasController extends Controller
             } else {
                 //cek apakah nilai karakter sudah ada atau belum
                 $getHistoryMurid = HistoryKelas::select('ID_HISTORY_KELAS')
-                    ->where('ID_SEMESTER', $semester->first()->ID_SEMESTER)->pluck('ID_HISTORY_KELAS');
+                    ->where('ID_SEMESTER', $semester->first()->ID_SEMESTER)
+                    ->whereHas('murid', function ($q) {
+                        $q->where('STATUS_AKTIF', 1);
+                    })->pluck('ID_HISTORY_KELAS');
                 $cekNilaiKarakter = NilaiKarakter::whereIn('ID_HISTORY_KELAS', $getHistoryMurid)->get();
                 if ($cekNilaiKarakter->isEmpty()) {
                     Flash::error('Nilai Karakter belum diinputkan.');
@@ -162,6 +175,9 @@ class KenaikanKelasController extends Controller
             DB::beginTransaction();
             try {
                 $dataSebelumNaik = HistoryKelas::where('ID_SEMESTER', $semester->first()->ID_SEMESTER)
+                    ->whereHas('murid', function ($q) {
+                        $q->where('STATUS_AKTIF', 1);
+                    })
                     ->get();
                 if (count($semester) < 2) {
                     $semesterBaru = Semester::create([
@@ -210,10 +226,12 @@ class KenaikanKelasController extends Controller
             $dataTahunExplode = explode('/', $dataTahunAjaranLama->NAMA);
             $tahun = (int)end($dataTahunExplode);
 
+            //mmebuat tahun ajaran baru
             $dataTahunAjaranBaru = TahunAjaran::create([
                 'NAMA' => $tahun . '/' . ++$tahun,
                 'STATUS' => 0
             ]);
+            //membuat semester baru
             $dataSemesterBaru = Semester::create([
                 'ID_TAHUN_AJARAN' => $dataTahunAjaranBaru->ID_TAHUN_AJARAN,
                 'SEMESTER' => 1,
@@ -248,6 +266,9 @@ class KenaikanKelasController extends Controller
 
             $dataSebelumNaik = HistoryKelas::with(['murid:NIS', 'murid.nilaiAkademik.pengampu', 'kelas'])
                 ->where('ID_SEMESTER', $dataSemesterLama->ID_SEMESTER)
+                ->whereHas('murid', function ($q) {
+                    $q->where('STATUS_AKTIF', 1);
+                })
                 ->get();
             // $b = $dataSebelumNaik->first()->murid->nilaiAkademik->first()->pengampu->KKM;
 
@@ -257,7 +278,7 @@ class KenaikanKelasController extends Controller
                     $nilaiUas = $data->NILAI_UAS;
                     $kkm = $data->pengampu->KKM;
                     if ((int)$data->pengampu->STATUS_KKM) {
-                        if (floatval($nilaiUas) < floatval($kkm)) {
+                        if ((float)$nilaiUas < (float)$kkm) {
                             ++$jumlahNilaiDiBawahKKM;
                         }
                     }
@@ -284,7 +305,7 @@ class KenaikanKelasController extends Controller
                     $value->STATUS_NAIK = 1;
                     $value->save();
                 } else {
-                    $dataKelasMurid = Kelas::where('TAHUN_ANGKATAN', (int)--$value->kelas->TAHUN_ANGKATAN)
+                    $dataKelasMurid = Kelas::where('TAHUN_ANGKATAN', ($value->kelas->TAHUN_ANGKATAN + 1))
                         ->where('ID_TAHUN_AJARAN', $dataTahunAjaranBaru->ID_TAHUN_AJARAN)
                         ->select('ID_KELAS')
                         ->first();
@@ -299,6 +320,14 @@ class KenaikanKelasController extends Controller
                     $value->STATUS_NAIK = 0;
                     $value->save();
                 }
+
+                //update nilai akademik untuk rapot
+                $updateNilaiHistoryKelasRapot = NilaiAkademik::where(
+                    [
+                        'NIS' => $value->NIS,
+                        'ID_SEMESTER' => $value->ID_SEMESTER
+                    ]
+                )->update(['ID_HISTORY_KELAS' => $value->ID_HISTORY_KELAS]);
             }
             $updateTahunAjaranLama = TahunAjaran::where('ID_TAHUN_AJARAN', $dataTahunAjaranLama->ID_TAHUN_AJARAN)
                 ->update(['STATUS' => 0]);

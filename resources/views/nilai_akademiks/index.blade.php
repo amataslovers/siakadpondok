@@ -62,8 +62,9 @@
                 { data: 'NIS', name: 'NIS' },
                 { data: 'namaMurid', name: 'namaMurid' },
                 { data: 'namaMapel', name: 'namaMapel' },
-                { data: 'tingkatKelas', name: 'tingkatKelas', orderable: false, searchable: false },
+                { data: 'tingkatKelas', name: 'tingkatKelas', searchable: false },
                 { data: 'semester.SEMESTER', name: 'semester.SEMESTER', searchable: false },
+                { data: 'pengampu.tahun_ajaran.NAMA', name: 'pengampu.tahun_ajaran.NAMA' },
                 { data: 'NILAI_UTS', name: 'NILAI_UTS', orderable: false, searchable: false },
                 { data: 'NILAI_UAS', name: 'NILAI_UAS', orderable: false, searchable: false },
                 { data: 'action', name: 'nilai_akademik.action', orderable: false, searchable: false}
@@ -91,7 +92,7 @@
                 },
             },
             initComplete: function () {
-                this.api().columns([1,2,3]).every(function () {
+                this.api().columns([1,2,3,6]).every(function () {
                     var column = this;
                     var input = document.createElement("input");
                     $(input).appendTo($(column.footer()).empty())

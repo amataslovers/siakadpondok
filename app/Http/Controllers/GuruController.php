@@ -73,6 +73,9 @@ class GuruController extends AppBaseController
      */
     public function store(CreateGuruRequest $request)
     {
+        request()->validate([
+            'NIP_GURU' => 'required|unique:guru,NIP_GURU'
+        ]);
         DB::beginTransaction();
         try {
             $input = $request->all();
@@ -157,26 +160,31 @@ class GuruController extends AppBaseController
      */
     public function update($id, UpdateGuruRequest $request)
     {
-        $guru = $this->guruRepository->findWithoutFail($id);
+        request()->validate([
+            'NIP_GURU' => 'required|unique:guru,NIP_GURU,' . $id . ',NIP_GURU'
+        ]);
+        DB::transaction(function () use ($id, $request) {
+            $guru = $this->guruRepository->findWithoutFail($id);
 
-        if (empty($guru)) {
-            Flash::error('Guru not found');
+            if (empty($guru)) {
+                Flash::error('Guru not found');
 
-            return redirect(route('gurus.index'));
-        }
-
-        $input = $request->all();
-        $nip = $input['NIP_GURU'];
-        if ($request->file('FOTO')) {
-            if (!empty($guru->FOTO)) {
-                File::delete(public_path("upload/profile/" . $guru->FOTO));
+                return redirect(route('gurus.index'));
             }
-            $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
-            $image = $request->file('FOTO');
-            $image->move(public_path('upload/profile/'), $input['FOTO']);
-        }
 
-        $guru = $this->guruRepository->update($input, $id);
+            $input = $request->all();
+            $nip = $input['NIP_GURU'];
+            if ($request->file('FOTO')) {
+                if (!empty($guru->FOTO)) {
+                    File::delete(public_path("upload/profile/" . $guru->FOTO));
+                }
+                $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
+                $image = $request->file('FOTO');
+                $image->move(public_path('upload/profile/'), $input['FOTO']);
+            }
+
+            $guru = $this->guruRepository->update($input, $id);
+        });
 
         Flash::success('Guru updated successfully.');
 
@@ -192,19 +200,21 @@ class GuruController extends AppBaseController
      */
     public function destroy($id)
     {
-        $guru = $this->guruRepository->findWithoutFail($id);
+        DB::transaction(function () use ($id) {
+            $guru = $this->guruRepository->findWithoutFail($id);
 
-        if (empty($guru)) {
-            Flash::error('Guru not found');
+            if (empty($guru)) {
+                Flash::error('Guru not found');
 
-            return redirect(route('gurus.index'));
-        }
+                return redirect(route('gurus.index'));
+            }
 
-        if (!empty($guru->FOTO)) {
-            File::delete(public_path("upload/profile/" . $guru->FOTO));
-        }
+            if (!empty($guru->FOTO)) {
+                File::delete(public_path("upload/profile/" . $guru->FOTO));
+            }
 
-        $this->guruRepository->delete($id);
+            $this->guruRepository->delete($id);
+        });
 
         Flash::success('Guru deleted successfully.');
 

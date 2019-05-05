@@ -72,14 +72,19 @@ class Pengampu extends Model
      *
      * @var array
      */
-    public static $rules = [];
+    public static $rules = [
+        'ID_MATA_PELAJARAN' => 'required',
+        'NIP_GURU' => 'required',
+        'ID_TAHUN_AJARAN' => 'required',
+        'ID_KELAS' => 'required',
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function tahunAjaran()
     {
-        return $this->belongsTo(\App\Models\TahunAjaran::class, 'ID_TAHUN_AJARAN');
+        return $this->belongsTo(\App\Models\TahunAjaran::class, 'ID_TAHUN_AJARAN')->withDefault();
     }
 
     /**
@@ -87,7 +92,7 @@ class Pengampu extends Model
      **/
     public function kelas()
     {
-        return $this->belongsTo(\App\Models\Kelas::class, 'ID_KELAS');
+        return $this->belongsTo(\App\Models\Kelas::class, 'ID_KELAS')->withDefault();
     }
 
     /**
@@ -95,7 +100,7 @@ class Pengampu extends Model
      **/
     public function guru()
     {
-        return $this->belongsTo(\App\Models\Guru::class, 'NIP_GURU');
+        return $this->belongsTo(\App\Models\Guru::class, 'NIP_GURU')->withDefault();
     }
 
     /**
@@ -103,7 +108,7 @@ class Pengampu extends Model
      **/
     public function mataPelajaran()
     {
-        return $this->belongsTo(\App\Models\MataPelajaran::class, 'ID_MATA_PELAJARAN');
+        return $this->belongsTo(\App\Models\MataPelajaran::class, 'ID_MATA_PELAJARAN')->withDefault();
     }
 
     /**

@@ -21,7 +21,7 @@ class JenisKeluarga extends Model
     use SoftDeletes;
 
     public $table = 'jenis_keluarga';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -50,7 +50,7 @@ class JenisKeluarga extends Model
      * @var array
      */
     public static $rules = [
-        
+        'NAMA' => 'required'
     ];
 
     /**

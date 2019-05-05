@@ -1,72 +1,56 @@
-<!-- Id Pengampu Field -->
-<div class="form-group">
-    {!! Form::label('ID_PENGAMPU', 'Id Pengampu:') !!}
-    <p>{!! $pengampu->ID_PENGAMPU !!}</p>
-</div>
-
-<!-- Id Mata Pelajaran Field -->
-<div class="form-group">
-    {!! Form::label('ID_MATA_PELAJARAN', 'Id Mata Pelajaran:') !!}
-    <p>{!! $pengampu->ID_MATA_PELAJARAN !!}</p>
-</div>
-
-<!-- Nip Guru Field -->
-<div class="form-group">
-    {!! Form::label('NIP_GURU', 'Nip Guru:') !!}
-    <p>{!! $pengampu->NIP_GURU !!}</p>
-</div>
-
-<!-- Id Semester Field -->
-<div class="form-group">
-    {!! Form::label('ID_TAHUN_AJARAN', 'Tahun Ajaran:') !!}
-    <p>{!! $pengampu->ID_TAHUN_AJARAN !!}</p>
-</div>
-
-<!-- Kkm Field -->
-<div class="form-group">
-    {!! Form::label('KKM', 'Kkm:') !!}
-    <p>{!! $pengampu->KKM !!}</p>
-</div>
-
-<!-- Kkm Field -->
-<div class="form-group">
-    {!! Form::label('STATUS_KKM', 'Status Kkm:') !!}
-    <p>{!! $pengampu->STATUS_KKM !!}</p>
-</div>
-
-<!-- Id Kelas Field -->
-<div class="form-group">
-    {!! Form::label('ID_KELAS', 'Id Kelas:') !!}
-    <p>{!! $pengampu->ID_KELAS !!}</p>
-</div>
-
-<!-- Hari Field -->
-<div class="form-group">
-    {!! Form::label('HARI', 'Hari:') !!}
-    <p>{!! $pengampu->HARI !!}</p>
-</div>
-
-<!-- Jam Field -->
-<div class="form-group">
-    {!! Form::label('JAM', 'Jam:') !!}
-    <p>{!! $pengampu->JAM !!}</p>
-</div>
-
-<!-- Created At Field -->
-<div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
-    <p>{!! $pengampu->created_at !!}</p>
-</div>
-
-<!-- Updated At Field -->
-<div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
-    <p>{!! $pengampu->updated_at !!}</p>
-</div>
-
-<!-- Deleted At Field -->
-<div class="form-group">
-    {!! Form::label('deleted_at', 'Deleted At:') !!}
-    <p>{!! $pengampu->deleted_at !!}</p>
-</div>
+<table class="table table-responsive" style="width: 100%">
+    <tbody>
+        <tr>
+            <td><strong>NIP Guru</strong></td>
+            <td>:</td>
+            <td>{{ $pengampu->guru->NIP_GURU }}</td>
+        </tr>
+        <tr>
+            <td><strong>Nama Guru</strong></td>
+            <td>:</td>
+            <td>{{ $pengampu->guru->GELAR_DEPAN . '. ' . $pengampu->guru->NAMA . ' ' . $pengampu->guru->GELAR_BELAKANG }}</td>
+        </tr>
+        <tr>
+            <td><strong>Nama Mapel</strong></td>
+            <td>:</td>
+            <td>{{ $pengampu->mataPelajaran->NAMA }}</td>
+        </tr>
+        <tr>
+            <td><strong>KKM</strong></td>
+            <td>:</td>
+            <td>{{ $pengampu->KKM }}</td>
+        </tr>
+        <tr>
+            <td><strong>Status KKM</strong></td>
+            <td>:</td>
+            <td>
+                @if($pengampu->STATUS_KKM)
+                    <span class="text-danger">(Wajib)</span>
+                @else
+                    <span>(Tidak Wajib)</span>
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Kelas</strong></td>
+            <td>:</td>
+            <td>{{ $pengampu->kelas->tingkat->TINGKAT . ' ' . $pengampu->kelas->NAMA }}</td>
+        </tr>
+        <tr>
+            <td><strong>Tahun Ajaran</strong></td>
+            <td>:</td>
+            <td>{{ $pengampu->tahunAjaran->NAMA }}</td>
+        </tr>
+        <tr>
+            <td><strong>Hari</strong></td>
+            <td>:</td>
+            <td>{{ $pengampu->HARI }}</td>
+        </tr>
+        <tr>
+            <td><strong>Jam</strong></td>
+            <td>:</td>
+            <td>{{ $pengampu->JAM }}</td>
+        </tr>
+    </tbody>
+</table>
 

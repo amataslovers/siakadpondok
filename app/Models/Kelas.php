@@ -67,14 +67,20 @@ class Kelas extends Model
      *
      * @var array
      */
-    public static $rules = [];
+    public static $rules = [
+        'NIP_GURU' => 'required',
+        'ID_TINGKAT' => 'required',
+        'ID_TAHUN_AJARAN' => 'required',
+        'TAHUN_ANGKATAN' => 'required',
+        'STATUS' => 'required'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function tahunAjaran()
     {
-        return $this->belongsTo(\App\Models\TahunAjaran::class, 'ID_TAHUN_AJARAN');
+        return $this->belongsTo(\App\Models\TahunAjaran::class, 'ID_TAHUN_AJARAN')->withDefault();
     }
 
     /**
@@ -82,7 +88,7 @@ class Kelas extends Model
      **/
     public function guru()
     {
-        return $this->belongsTo(\App\Models\Guru::class, 'NIP_GURU');
+        return $this->belongsTo(\App\Models\Guru::class, 'NIP_GURU')->withDefault();
     }
 
     /**
@@ -90,7 +96,7 @@ class Kelas extends Model
      **/
     public function tingkat()
     {
-        return $this->belongsTo(\App\Models\Tingkat::class, 'ID_TINGKAT');
+        return $this->belongsTo(\App\Models\Tingkat::class, 'ID_TINGKAT')->withDefault();
     }
 
     /**

@@ -33,7 +33,7 @@
         <!-- Sidebar Menu -->
 
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">SIAKAD Pondok</li>
+            <li class="header text-center"><a href="{!! url('/home') !!}"><i class="fa fa-dashboard"></i><span>DASHBOARD</span></a></li>
             @include('layouts.menu')
         </ul>
         <!-- /.sidebar-menu -->

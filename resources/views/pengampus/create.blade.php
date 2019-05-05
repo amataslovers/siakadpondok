@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Pengampu
+            Form Pengampu Mata Pelajaran
         </h1>
     </section>
     <div class="content">

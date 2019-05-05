@@ -83,7 +83,7 @@ class KeluargaMurid extends Model
      **/
     public function jenisKeluarga()
     {
-        return $this->belongsTo(\App\Models\JenisKeluarga::class, 'ID_JENIS_KELUARGA');
+        return $this->belongsTo(\App\Models\JenisKeluarga::class, 'ID_JENIS_KELUARGA')->withDefault();
     }
 
     /**
@@ -91,7 +91,7 @@ class KeluargaMurid extends Model
      **/
     public function agama()
     {
-        return $this->belongsTo(\App\Models\Agama::class, 'ID_AGAMA');
+        return $this->belongsTo(\App\Models\Agama::class, 'ID_AGAMA')->withDefault();
     }
 
     /**

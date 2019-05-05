@@ -63,7 +63,8 @@ class PerizinanMurid extends Model
      */
     public static $rules = [
         'ID_HISTORY_KELAS' => 'required',
-        'TANGGAL' => 'required'
+        'TANGGAL' => 'required',
+        'KETERANGAN' => 'required'
     ];
 
     public function setTanggalAttribute($data)
@@ -81,6 +82,6 @@ class PerizinanMurid extends Model
      **/
     public function historyKelas()
     {
-        return $this->belongsTo(\App\Models\HistoryKelas::class, 'ID_HISTORY_KELAS');
+        return $this->belongsTo(\App\Models\HistoryKelas::class, 'ID_HISTORY_KELAS')->withDefault();
     }
 }

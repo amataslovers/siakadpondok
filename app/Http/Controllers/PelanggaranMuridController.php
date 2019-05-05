@@ -106,6 +106,19 @@ class PelanggaranMuridController extends AppBaseController
     {
         $input = $request->all();
 
+        $tglNow = Carbon::now();
+        $tglLast = Carbon::now()->addMonthNoOverflow(-1);
+        $cekPelanggaran = PelanggaranMurid::where([
+            'ID_HISTORY_KELAS' => $input['ID_HISTORY_KELAS'],
+            'ID_PERATURAN' => $input['ID_PERATURAN']
+        ])
+            ->whereBetween('TANGGAL_MELANGGAR', [$tglLast, $tglNow])
+            ->first();
+        if (!empty($cekPelanggaran)) {
+            Flash::error('Pelanggaran Murid gagal tersimpan karena murid mempunyai pelanggaran yang sama dalam 1 bulan terakhir.');
+            return back()->withInput();
+        }
+
         $pelanggaranMurid = $this->pelanggaranMuridRepository->create($input);
 
         Flash::success('Pelanggaran Murid saved successfully.');

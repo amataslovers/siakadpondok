@@ -37,20 +37,19 @@ class CatatanSppController extends AppBaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $catatanSpp = $this->catatanSppRepository
-                ->with([
-                    'historyKelas.murid:NIS,NAMA',
-                    'historyKelas.kelas:ID_KELAS,ID_TINGKAT,NAMA',
-                    'historyKelas.kelas.tingkat:ID_TINGKAT,TINGKAT',
-                    'historyKelas.semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
-                    'historyKelas.semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA'
-                ])
+            $catatanSpp = CatatanSpp::with([
+                'historyKelas.murid:NIS,NAMA',
+                'historyKelas.kelas:ID_KELAS,ID_TINGKAT,NAMA',
+                'historyKelas.kelas.tingkat:ID_TINGKAT,TINGKAT',
+                'historyKelas.semester:ID_SEMESTER,ID_TAHUN_AJARAN,SEMESTER',
+                'historyKelas.semester.tahunAjaran:ID_TAHUN_AJARAN,NAMA'
+            ])
                 ->when(auth()->user()->hasRole('murid'), function ($q) {
                     $q->whereHas('historyKelas', function ($query) {
                         $query->where('NIS', auth()->user()->name);
                     });
                 })
-                ->all();
+                ->get();
             return DataTables::of($catatanSpp)
                 ->addColumn('action', 'catatan_spps.datatables_actions')
                 ->addIndexColumn()

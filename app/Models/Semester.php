@@ -26,7 +26,7 @@ class Semester extends Model
     use SoftDeletes;
 
     public $table = 'semester';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -58,16 +58,14 @@ class Semester extends Model
      *
      * @var array
      */
-    public static $rules = [
-        
-    ];
+    public static $rules = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function tahunAjaran()
     {
-        return $this->belongsTo(\App\Models\TahunAjaran::class, 'ID_TAHUN_AJARAN');
+        return $this->belongsTo(\App\Models\TahunAjaran::class, 'ID_TAHUN_AJARAN')->withDefault();
     }
 
     /**
@@ -88,6 +86,6 @@ class Semester extends Model
 
     public function getNamaLengkapAttribute()
     {
-        return $this->tahunAjaran->NAMA .' | Semester ' . $this->SEMESTER;
+        return $this->tahunAjaran->NAMA . ' | Semester ' . $this->SEMESTER;
     }
 }

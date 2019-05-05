@@ -68,7 +68,7 @@ class NilaiAkademik extends Model
      **/
     public function murid()
     {
-        return $this->belongsTo(\App\Models\Murid::class, 'NIS');
+        return $this->belongsTo(\App\Models\Murid::class, 'NIS')->withDefault();
     }
 
     /**
@@ -76,7 +76,7 @@ class NilaiAkademik extends Model
      **/
     public function pengampu()
     {
-        return $this->belongsTo(\App\Models\Pengampu::class, 'ID_PENGAMPU');
+        return $this->belongsTo(\App\Models\Pengampu::class, 'ID_PENGAMPU')->withDefault();
     }
 
     /**
@@ -84,11 +84,11 @@ class NilaiAkademik extends Model
      **/
     public function semester()
     {
-        return $this->belongsTo(\App\Models\Semester::class, 'ID_SEMESTER');
+        return $this->belongsTo(\App\Models\Semester::class, 'ID_SEMESTER')->withDefault();
     }
 
     public function historyKelas()
     {
-        return $this->belongsTo(\App\Models\HistoryKelas::class, 'ID_HISTORY_KELAS');
+        return $this->belongsTo(\App\Models\HistoryKelas::class, 'ID_HISTORY_KELAS')->withDefault();
     }
 }

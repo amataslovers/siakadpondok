@@ -23,7 +23,7 @@ class Peraturan extends Model
     use SoftDeletes;
 
     public $table = 'peraturan';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -54,7 +54,7 @@ class Peraturan extends Model
      * @var array
      */
     public static $rules = [
-        
+        'NAMA_PERATURAN' => 'required'
     ];
 
     /**
@@ -62,7 +62,7 @@ class Peraturan extends Model
      **/
     public function sanksi()
     {
-        return $this->belongsTo(\App\Models\Sanksi::class, 'ID_SANKSI');
+        return $this->belongsTo(\App\Models\Sanksi::class, 'ID_SANKSI')->withDefault();
     }
 
     /**

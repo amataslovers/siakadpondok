@@ -29,12 +29,28 @@
                     <tr>
                         <td>Nama Guru Pengampu</td>
                         <td>:</td>
-                        <td>{{ $nilai->pengampu->guru->GELAR_DEPAN . ' ' . $nilai->pengampu->guru->NAMA . ' ' . $nilai->pengampu->guru->GELAR_BELAKANG }}</td>
+                        <td>{{ $nilai->pengampu->guru->GELAR_DEPAN . '. ' . $nilai->pengampu->guru->NAMA . ' ' . $nilai->pengampu->guru->GELAR_BELAKANG }}</td>
+                    </tr>
+                    <tr>
+                        <td>Tahun Ajaran</td>
+                        <td>:</td>
+                        <td>{{ $nilai->pengampu->tahunAjaran->NAMA }}</td>
                     </tr>
                     <tr>
                         <td>KKM</td>
                         <td>:</td>
                         <td>{{ $nilai->pengampu->KKM }}</td>
+                    </tr>
+                    <tr>
+                        <td>Status KKM</td>
+                        <td>:</td>
+                        <td>
+                            @if($nilai->pengampu->STATUS_KKM)
+                                <span class="text-danger">(Wajib)</span>
+                            @else
+                                (Tidak Wajib)
+                            @endif
+                        </td>
                     </tr>
                 </table>
             </div>

@@ -48,8 +48,9 @@ class NilaiAkademikController extends AppBaseController
             $nilai = NilaiAkademik::select(['ID_NILAI', 'NIS', 'ID_PENGAMPU', 'ID_SEMESTER', 'NILAI_UTS', 'NILAI_UAS'])
                 ->with([
                     'murid:NIS,NAMA',
-                    'pengampu:ID_PENGAMPU,ID_KELAS,ID_MATA_PELAJARAN',
+                    'pengampu:ID_PENGAMPU,ID_KELAS,ID_MATA_PELAJARAN,ID_TAHUN_AJARAN',
                     'pengampu.mataPelajaran:ID_MATA_PELAJARAN,NAMA',
+                    'pengampu.tahunAjaran:ID_TAHUN_AJARAN,NAMA',
                     'pengampu.kelas:ID_KELAS,ID_TINGKAT,NAMA',
                     'pengampu.kelas.tingkat:ID_TINGKAT,TINGKAT',
                     'semester:ID_SEMESTER,SEMESTER'
@@ -130,7 +131,10 @@ class NilaiAkademikController extends AppBaseController
                     ['ID_KELAS', $request->get('ID_KELAS')],
                     ['ID_SEMESTER', $semester->ID_SEMESTER]
                 ]
-            )->select('NIS')
+            )
+                ->whereHas('murid', function ($q) {
+                    $q->where('STATUS_AKTIF', 1);
+                })->select('NIS')
         )->select('NIS', 'NAMA')->get();
         $idMurid = collect($murid);
 

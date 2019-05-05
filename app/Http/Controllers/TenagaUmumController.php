@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TenagaUmumDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTenagaUmumRequest;
 use App\Http\Requests\UpdateTenagaUmumRequest;
 use App\Repositories\TenagaUmumRepository;
@@ -60,6 +59,9 @@ class TenagaUmumController extends AppBaseController
      */
     public function store(CreateTenagaUmumRequest $request)
     {
+        request()->validate([
+            'NIP' => 'required|unique:tenaga_umum,NIP'
+        ]);
         DB::beginTransaction();
         try {
             $input = $request->all();
@@ -145,26 +147,31 @@ class TenagaUmumController extends AppBaseController
      */
     public function update($id, UpdateTenagaUmumRequest $request)
     {
-        $tenagaUmum = $this->tenagaUmumRepository->findWithoutFail($id);
+        request()->validate([
+            'NIP' => 'required|unique:tenaga_umum,NIP,' . $id . ',NIP'
+        ]);
+        DB::transaction(function () use ($id, $request) {
+            $tenagaUmum = $this->tenagaUmumRepository->findWithoutFail($id);
 
-        if (empty($tenagaUmum)) {
-            Flash::error('Tenaga Umum not found');
+            if (empty($tenagaUmum)) {
+                Flash::error('Tenaga Umum not found');
 
-            return redirect(route('tenagaUmums.index'));
-        }
-
-        $input = $request->all();
-        $nip = $input['NIP'];
-        if ($request->file('FOTO')) {
-            if (!empty($tenagaUmum->FOTO)) {
-                File::delete(public_path("upload/profile/" . $tenagaUmum->FOTO));
+                return redirect(route('tenagaUmums.index'));
             }
-            $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
-            $image = $request->file('FOTO');
-            $image->move(public_path('upload/profile/'), $input['FOTO']);
-        }
 
-        $tenagaUmum = $this->tenagaUmumRepository->update($input, $id);
+            $input = $request->all();
+            $nip = $input['NIP'];
+            if ($request->file('FOTO')) {
+                if (!empty($tenagaUmum->FOTO)) {
+                    File::delete(public_path("upload/profile/" . $tenagaUmum->FOTO));
+                }
+                $input['FOTO'] = $nip . '-' . date('d-m-Y') . '.' . request()->FOTO->getClientOriginalExtension();
+                $image = $request->file('FOTO');
+                $image->move(public_path('upload/profile/'), $input['FOTO']);
+            }
+
+            $tenagaUmum = $this->tenagaUmumRepository->update($input, $id);
+        });
 
         Flash::success('Tenaga Umum updated successfully.');
 
@@ -180,19 +187,21 @@ class TenagaUmumController extends AppBaseController
      */
     public function destroy($id)
     {
-        $tenagaUmum = $this->tenagaUmumRepository->findWithoutFail($id);
+        DB::transaction(function () use ($id) {
+            $tenagaUmum = $this->tenagaUmumRepository->findWithoutFail($id);
 
-        if (empty($tenagaUmum)) {
-            Flash::error('Tenaga Umum not found');
+            if (empty($tenagaUmum)) {
+                Flash::error('Tenaga Umum not found');
 
-            return redirect(route('tenagaUmums.index'));
-        }
+                return redirect(route('tenagaUmums.index'));
+            }
 
-        if (!empty($tenagaUmum->FOTO)) {
-            File::delete(public_path("upload/profile/" . $tenagaUmum->FOTO));
-        }
+            if (!empty($tenagaUmum->FOTO)) {
+                File::delete(public_path("upload/profile/" . $tenagaUmum->FOTO));
+            }
 
-        $this->tenagaUmumRepository->delete($id);
+            $this->tenagaUmumRepository->delete($id);
+        });
 
         Flash::success('Tenaga Umum deleted successfully.');
 

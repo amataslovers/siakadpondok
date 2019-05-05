@@ -62,14 +62,18 @@ class PelanggaranMurid extends Model
      *
      * @var array
      */
-    public static $rules = [];
+    public static $rules = [
+        'ID_PERATURAN' => 'required',
+        'ID_HISTORY_KELAS' => 'required',
+        'TANGGAL_MELANGGAR' => 'required'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function peraturan()
     {
-        return $this->belongsTo(\App\Models\Peraturan::class, 'ID_PERATURAN');
+        return $this->belongsTo(\App\Models\Peraturan::class, 'ID_PERATURAN')->withDefault();
     }
 
     /**
@@ -77,7 +81,7 @@ class PelanggaranMurid extends Model
      **/
     public function historyKelas()
     {
-        return $this->belongsTo(\App\Models\HistoryKelas::class, 'ID_HISTORY_KELAS');
+        return $this->belongsTo(\App\Models\HistoryKelas::class, 'ID_HISTORY_KELAS')->withDefault();
     }
 
     public function setTanggalMelanggarAttribute($data)

@@ -12,6 +12,11 @@
                         <p><strong>Kelas : </strong> {{ $detail->kelas->tingkat->TINGKAT . ' ' . $detail->kelas->NAMA }}</p>
                         <p><strong>Mata Pelajaran : </strong> {{ $detail->mataPelajaran->NAMA }}</p>
                         <p><strong>KKM : </strong> {{ $detail->KKM }}</p>
+                        <p><strong>Status KKM : </strong> @if($detail->STATUS_KKM)
+                                                                <span class="text-danger">(Wajib)</span>
+                                                            @else
+                                                                (Tidak Wajib)
+                                                            @endif</p>
                         <p><strong>Semester : </strong> {{ $semester->SEMESTER }}</p>
                         <p><strong>Tahun Ajaran : </strong> {{ $detail->tahunAjaran->NAMA }}</p>
                     </div>

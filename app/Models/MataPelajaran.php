@@ -24,7 +24,7 @@ class MataPelajaran extends Model
     use SoftDeletes;
 
     public $table = 'mata_pelajaran';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -57,7 +57,7 @@ class MataPelajaran extends Model
      * @var array
      */
     public static $rules = [
-        
+        'NAMA' => 'required'
     ];
 
     /**
@@ -70,6 +70,6 @@ class MataPelajaran extends Model
 
     public function getKodeNamaAttribute()
     {
-        return $this->KODE_MAPEL .' - '. $this->NAMA;
+        return $this->KODE_MAPEL . ' - ' . $this->NAMA;
     }
 }

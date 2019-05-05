@@ -143,7 +143,7 @@
     <ul class="treeview-menu">
         @can('perizinan-murid-view')
         <li class="{{ Request::is('perizinanMurids*') ? 'active' : '' }}">
-            <a href="{!! route('perizinanMurids.index') !!}"><i class="fa fa-clipboard"></i><span>Perizinan Murids</span></a>
+            <a href="{!! route('perizinanMurids.index') !!}"><i class="fa fa-clipboard"></i><span>Perizinan Murid</span></a>
         </li>
         @endcan
 

@@ -7,6 +7,7 @@
             <th>Mata Pelajaran</th>
             <th>Kelas</th>
             <th>Semester</th>
+            <th>Tahun Ajaran</th>
             <th>NILAI UTS</th>
             <th>NILAI UAS</th>
             <th width="120px">Action</th>
@@ -20,6 +21,7 @@
                 <th>Mata Pelajaran</th>
                 <th>Kelas</th>
                 <th>Semester</th>
+                <th>Tahun Ajaran</th>
                 <th>NILAI UTS</th>
                 <th>NILAI UAS</th>
                 <th width="120px">Action</th>

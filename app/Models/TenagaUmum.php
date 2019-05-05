@@ -77,7 +77,12 @@ class TenagaUmum extends Model
      * @var array
      */
     public static $rules = [
-        'NIP' => 'required'
+        // 'NIP' => 'required|unique:tenaga_umum,NIP',
+        'NAMA' => 'required',
+        'TEMPAT_LAHIR' => 'required',
+        'TANGGAL_LAHIR' => 'required',
+        'ALAMAT' => 'required',
+        'email' => 'sometimes|email'
     ];
 
     /**
@@ -85,7 +90,7 @@ class TenagaUmum extends Model
      **/
     public function agama()
     {
-        return $this->belongsTo(\App\Models\Agama::class, 'ID_AGAMA');
+        return $this->belongsTo(\App\Models\Agama::class, 'ID_AGAMA')->withDefault();
     }
 
     public function setTanggalLahirAttribute($data)

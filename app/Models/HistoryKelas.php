@@ -68,7 +68,7 @@ class HistoryKelas extends Model
      **/
     public function kelas()
     {
-        return $this->belongsTo(\App\Models\Kelas::class, 'ID_KELAS');
+        return $this->belongsTo(\App\Models\Kelas::class, 'ID_KELAS')->withDefault();
     }
 
     /**
@@ -76,7 +76,7 @@ class HistoryKelas extends Model
      **/
     public function murid()
     {
-        return $this->belongsTo(\App\Models\Murid::class, 'NIS');
+        return $this->belongsTo(\App\Models\Murid::class, 'NIS')->withDefault();
     }
 
     /**
@@ -84,7 +84,7 @@ class HistoryKelas extends Model
      **/
     public function semester()
     {
-        return $this->belongsTo(\App\Models\Semester::class, 'ID_SEMESTER');
+        return $this->belongsTo(\App\Models\Semester::class, 'ID_SEMESTER')->withDefault();
     }
 
     /**

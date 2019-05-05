@@ -101,6 +101,11 @@ class MuridController extends AppBaseController
      */
     public function store(CreateMuridRequest $request)
     {
+        request()->validate([
+            'ID_KELAS' => 'required',
+            'NIS' => 'required|unique:murid,NIS',
+            'NIK' => 'required|unique:murid,NIK'
+        ]);
         DB::beginTransaction();
         try {
             $dataMurid = new Murid();
@@ -218,6 +223,10 @@ class MuridController extends AppBaseController
      */
     public function update($id, UpdateMuridRequest $request)
     {
+        request()->validate([
+            'NIS' => 'required|unique:murid,NIS,' . $id . ',NIS',
+            'NIK' => 'required|unique:murid,NIK,' . $id . ',NIS'
+        ]);
         DB::beginTransaction();
         try {
             $murid = $this->muridRepository->findWithoutFail($id);
@@ -288,31 +297,33 @@ class MuridController extends AppBaseController
      */
     public function destroy($id)
     {
-        $murid = $this->muridRepository->findWithoutFail($id);
+        DB::transaction(function () use ($id) {
+            $murid = $this->muridRepository->findWithoutFail($id);
 
-        if (empty($murid)) {
-            Flash::error('Murid not found');
+            if (empty($murid)) {
+                Flash::error('Murid not found');
 
-            return redirect(route('murids.index'));
-        }
+                return redirect(route('murids.index'));
+            }
 
-        if (!empty($murid->FOTO)) {
-            File::delete(public_path("upload/profile/" . $murid->FOTO));
-        }
-        if (!empty($murid->IJAZAH_SD)) {
-            File::delete(public_path("upload/ijazah_sd/" . $murid->IJAZAH_SD));
-        }
-        if (!empty($murid->IJAZAH_SMP)) {
-            File::delete(public_path("upload/ijazah_smp/" . $murid->IJAZAH_SMP));
-        }
-        if (!empty($murid->IJAZAH_SMA)) {
-            File::delete(public_path("upload/ijazah_sma/" . $murid->IJAZAH_SMA));
-        }
-        if (!empty($murid->FOTO_AKTE_LAHIR)) {
-            File::delete(public_path("upload/akte_lahir/" . $murid->FOTO_AKTE_LAHIR));
-        }
+            if (!empty($murid->FOTO)) {
+                File::delete(public_path("upload/profile/" . $murid->FOTO));
+            }
+            if (!empty($murid->IJAZAH_SD)) {
+                File::delete(public_path("upload/ijazah_sd/" . $murid->IJAZAH_SD));
+            }
+            if (!empty($murid->IJAZAH_SMP)) {
+                File::delete(public_path("upload/ijazah_smp/" . $murid->IJAZAH_SMP));
+            }
+            if (!empty($murid->IJAZAH_SMA)) {
+                File::delete(public_path("upload/ijazah_sma/" . $murid->IJAZAH_SMA));
+            }
+            if (!empty($murid->FOTO_AKTE_LAHIR)) {
+                File::delete(public_path("upload/akte_lahir/" . $murid->FOTO_AKTE_LAHIR));
+            }
 
-        $this->muridRepository->delete($id);
+            $this->muridRepository->delete($id);
+        });
 
         Flash::success('Murid deleted successfully.');
 

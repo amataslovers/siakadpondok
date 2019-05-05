@@ -1,9 +1,3 @@
-<!-- Id Agama Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('ID_AGAMA', 'Agama:') !!}
-    {!! Form::select('ID_AGAMA', $agama, null, ['class' => 'form-control']) !!}
-</div>
-
 <!-- NIP_GURU Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('NIP_GURU', 'NIP:') !!}
@@ -14,6 +8,12 @@
 <div class="form-group col-sm-6">
     {!! Form::label('NAMA', 'Nama:') !!}
     {!! Form::text('NAMA', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Id Agama Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('ID_AGAMA', 'Agama:') !!}
+    {!! Form::select('ID_AGAMA', $agama, null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Nama Arab Field -->

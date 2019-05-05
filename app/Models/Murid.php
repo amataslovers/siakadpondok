@@ -116,9 +116,12 @@ class Murid extends Model
      * @var array
      */
     public static $rules = [
-        'NIS' => 'required',
-        'NIK' => 'required',
+        'NAMA' => 'required',
+        'TEMPAT_LAHIR' => 'required',
         'TANGGAL_LAHIR' => 'required',
+        'ALAMAT' => 'required',
+        'ANGKATAN' => 'required',
+        'EMAIL' => 'email|nullable',
         'FOTO' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:20048',
         'IJAZAH_SD' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:20048',
         'IJAZAH_SMP' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:20048',
@@ -141,7 +144,9 @@ class Murid extends Model
 
     public function setTanggalLahirAttribute($data)
     {
-        $this->attributes['TANGGAL_LAHIR'] = Carbon::createFromFormat('d/m/Y', $data);
+        if ($data) {
+            $this->attributes['TANGGAL_LAHIR'] = Carbon::createFromFormat('d/m/Y', $data);
+        }
     }
 
     public function getTanggalLahirAttribute($value)
@@ -151,7 +156,9 @@ class Murid extends Model
 
     public function setTanggalMasukAttribute($data)
     {
-        $this->attributes['TANGGAL_MASUK'] = Carbon::createFromFormat('d/m/Y', $data);
+        if ($data) {
+            $this->attributes['TANGGAL_MASUK'] = Carbon::createFromFormat('d/m/Y', $data);
+        }
     }
 
     public function getTanggalMasukAttribute($value)
@@ -161,7 +168,9 @@ class Murid extends Model
 
     public function setTanggalKeluarAttribute($data)
     {
-        $this->attributes['TANGGAL_KELUAR'] = Carbon::createFromFormat('d/m/Y', $data);
+        if ($data) {
+            $this->attributes['TANGGAL_KELUAR'] = Carbon::createFromFormat('d/m/Y', $data);
+        }
     }
 
     public function getTanggalKeluarAttribute($value)
@@ -222,7 +231,7 @@ class Murid extends Model
      **/
     public function agama()
     {
-        return $this->belongsTo(\App\Models\Agama::class, 'ID_AGAMA');
+        return $this->belongsTo(\App\Models\Agama::class, 'ID_AGAMA')->withDefault();
     }
 
     /**

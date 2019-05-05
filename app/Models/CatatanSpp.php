@@ -81,6 +81,6 @@ class CatatanSpp extends Model
      **/
     public function historyKelas()
     {
-        return $this->belongsTo(\App\Models\HistoryKelas::class, 'ID_HISTORY_KELAS');
+        return $this->belongsTo(\App\Models\HistoryKelas::class, 'ID_HISTORY_KELAS')->withDefault();
     }
 }
