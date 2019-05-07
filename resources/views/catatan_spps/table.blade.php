@@ -14,6 +14,7 @@
             <th>Semester</th>
             <th>Tanggal Bayar</th>
             <th>Bulan</th>
+            <th>Jumlah Bayar (Rp)</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -36,6 +37,7 @@
                 { data: 'semester', name: 'semester' },
                 { data: 'TANGGAL_BAYAR', name: 'TANGGAL_BAYAR' },
                 { data: 'BULAN', name: 'BULAN' },
+                { data: 'TOTAL_BAYAR', name: 'TOTAL_BAYAR' },
                 { data: 'action', name: 'catatan_spps.action', orderable: false, searchable: false}
 
             ],

@@ -104,8 +104,8 @@ class KeluargaMurid extends Model
 
     public function setTanggalLahirAttribute($data)
     {
-        $value = Carbon::parse($data)->format('d/m/Y');
-        $this->attributes['TANGGAL_LAHIR'] = Carbon::createFromFormat('d/m/Y', $value);
+        // $value = Carbon::parse($data)->format('d/m/Y');
+        $this->attributes['TANGGAL_LAHIR'] = Carbon::createFromFormat('d/m/Y', $data);
     }
 
     public function getTanggalLahirAttribute($value)

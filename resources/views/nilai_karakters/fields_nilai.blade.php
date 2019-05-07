@@ -2,7 +2,7 @@
 
     <!-- Id Kelas Field -->
     <div class="form-group col-sm-4">
-        {!! Form::label('ID_KELAS', 'Kelas:') !!}
+        {!! Form::label('ID_KELAS', 'Kelas | Tahun Ajaran | Angkatan:') !!}
         {!! Form::select('ID_KELAS', $kelas, null, ['class' => 'form-control form-select2']) !!}
     </div>
     

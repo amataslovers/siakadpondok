@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $murid = Murid::all()->count();
+        $murid = Murid::where('STATUS_AKTIF', 1)->get()->count();
         $guru = Guru::all()->count();
         if ($request->ajax()) {
             $tahun = Murid::select('ANGKATAN')->groupBy('ANGKATAN')->get();

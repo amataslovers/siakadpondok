@@ -27,31 +27,31 @@
                 </td>
 
                 <td class="col-md-1">
-                    {!! Form::number('IJIN', 1, ['class' => 'form-control', 'name' => '_IJIN[]', 'required']) !!}
+                    {!! Form::number('IJIN', 0, ['class' => 'form-control', 'name' => '_IJIN[]', 'required']) !!}
                 </td>
 
                 <td class="col-md-1">
-                    {!! Form::number('SAKIT', 1, ['class' => 'form-control', 'name' => '_SAKIT[]', 'required']) !!}
+                    {!! Form::number('SAKIT', 0, ['class' => 'form-control', 'name' => '_SAKIT[]', 'required']) !!}
                 </td>
 
                 <td class="col-md-1">
-                    {!! Form::number('ALFA', 1, ['class' => 'form-control', 'name' => '_ALFA[]', 'required']) !!}
+                    {!! Form::number('ALFA', 0, ['class' => 'form-control', 'name' => '_ALFA[]', 'required']) !!}
                 </td>
 
                 <td>
-                    {!! Form::select('AKHLAQ', [3 => 'Baik', 1 => 'Kurang', 2 => 'Cukup'] , NULL, ['class' => 'form-control', 'name' => '_AKHLAQ[]', 'required']) !!}
+                    {!! Form::select('AKHLAQ', [3 => 'Baik', 2 => 'Cukup', 1 => 'Kurang'] , NULL, ['class' => 'form-control', 'name' => '_AKHLAQ[]', 'required']) !!}
                 </td>
                 
                 <td>
-                    {!! Form::select('KEBERSIHAN', [3 => 'Baik', 1 => 'Kurang', 2 => 'Cukup'] , NULL, ['class' => 'form-control', 'name' => '_KEBERSIHAN[]', 'required']) !!}
+                    {!! Form::select('KEBERSIHAN', [3 => 'Baik', 2 => 'Cukup', 1 => 'Kurang'] , NULL, ['class' => 'form-control', 'name' => '_KEBERSIHAN[]', 'required']) !!}
                 </td>
 
                 <td>
-                    {!! Form::select('KERAJINAN', [3 => 'Baik', 1 => 'Kurang', 2 => 'Cukup'] , NULL, ['class' => 'form-control', 'name' => '_KERAJINAN[]', 'required']) !!}
+                    {!! Form::select('KERAJINAN', [3 => 'Baik', 2 => 'Cukup', 1 => 'Kurang'] , NULL, ['class' => 'form-control', 'name' => '_KERAJINAN[]', 'required']) !!}
                 </td>
 
                 <td>
-                    {!! Form::select('KETEKUNAN', [3 => 'Baik', 1 => 'Kurang', 2 => 'Cukup'] , NULL, ['class' => 'form-control', 'name' => '_KETEKUNAN[]', 'required']) !!}
+                    {!! Form::select('KETEKUNAN', [3 => 'Baik', 2 => 'Cukup', 1 => 'Kurang'] , NULL, ['class' => 'form-control', 'name' => '_KETEKUNAN[]', 'required']) !!}
                 </td>
                 
             </tr>

@@ -100,7 +100,7 @@ class Pengampu extends Model
      **/
     public function guru()
     {
-        return $this->belongsTo(\App\Models\Guru::class, 'NIP_GURU')->withDefault();
+        return $this->belongsTo(\App\Models\Guru::class, 'NIP_GURU')->withTrashed()->withDefault();
     }
 
     /**

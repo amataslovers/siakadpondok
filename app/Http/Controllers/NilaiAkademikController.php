@@ -78,20 +78,35 @@ class NilaiAkademikController extends AppBaseController
             $query->whereHas('pengampu', function ($q) {
                 $q->whereHas('guru', function ($w) {
                     $w->where('NIP_GURU', auth()->user()->name);
-                });
+                })
+                    ->whereHas('tahunAjaran', function ($w) {
+                        $w->where('STATUS', 1);
+                    });
             });
         })
             ->get()->pluck('kode_nama', 'ID_MATA_PELAJARAN');
+
         $guru = Guru::when(auth()->user()->hasRole('guru'), function ($query) {
             $query->where('NIP_GURU', auth()->user()->name);
         })
             ->get()->pluck('nama_lengkap', 'NIP_GURU');
+
         $semester = Semester::whereHas('tahunAjaran', function ($q) {
             $q->where('STATUS', 1);
         })->orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_SEMESTER');
+
         $kelas = Kelas::whereHas('tahunAjaran', function ($q) {
             $q->where('STATUS', 1);
-        })->orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
+        })
+            ->orderBy('created_at', 'desc')
+            ->when(auth()->user()->hasRole('guru'), function ($query) {
+                $query->whereHas('pengampu', function ($q) {
+                    $q->whereHas('guru', function ($w) {
+                        $w->where('NIP_GURU', auth()->user()->name);
+                    });
+                });
+            })
+            ->get()->pluck('nama_lengkap', 'ID_KELAS');
         return view('nilai_akademiks.index')->with(compact('mapel', 'guru', 'semester', 'kelas'));
     }
 

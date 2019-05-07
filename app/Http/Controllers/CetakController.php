@@ -18,6 +18,9 @@ class CetakController extends Controller
                     'kelas.tingkat:ID_TINGKAT,TINGKAT',
                     'semester.tahunAjaran'
                 ])
+                ->when(auth()->user()->hasRole('murid'), function ($query) {
+                    $query->where('NIS', auth()->user()->name);
+                })
                 ->get();
             return DataTables::of($murid)
                 ->addIndexColumn()
@@ -98,6 +101,9 @@ class CetakController extends Controller
                     'kelas.tingkat',
                     'semester.tahunAjaran'
                 ])
+                ->when(auth()->user()->hasRole('murid'), function ($query) {
+                    $query->where('NIS', auth()->user()->name);
+                })
                 ->get();
             return DataTables::of($murid)
                 ->addIndexColumn()

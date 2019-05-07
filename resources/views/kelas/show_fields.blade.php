@@ -51,4 +51,32 @@
     </div>
 </div>
 
-
+<div class="col-md-12">
+    <div class="box box-primary">
+        <div class="box-header">
+            <h4><strong>Daftar Murid</strong></h4>
+        </div>
+        <div class="box-body">
+            <table class="table table-responsive table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>NIS</th>
+                        <th>Nama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($kelas->historyKelas as $key => $item)
+                        @if($item->semester->SEMESTER == 1)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $item->NIS }}</td>
+                                <td>{{ $item->murid->NAMA }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

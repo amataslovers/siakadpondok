@@ -55,9 +55,10 @@ class MuridController extends AppBaseController
                     ->when(auth()->user()->hasRole('murid'), function ($q) {
                         $q->where('NIS', auth()->user()->name);
                     })
+                    ->orderBy('ANGKATAN', 'desc')
                     ->get();
             } else {
-                $murid = Murid::where('STATUS_AKTIF', 0)->get();
+                $murid = Murid::where('STATUS_AKTIF', 0)->orderBy('ANGKATAN', 'desc')->get();
             }
             return DataTables::of($murid)
                 ->addColumn('action', 'murids.datatables_actions')
@@ -86,7 +87,7 @@ class MuridController extends AppBaseController
     public function create()
     {
         $agama = Agama::pluck('NAMA', 'ID_AGAMA');
-        $kelas = Kelas::orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
+        $kelas = Kelas::orderBy('created_at', 'desc')->where('STATUS', 1)->get()->pluck('nama_lengkap', 'ID_KELAS');
         $dataJenisKeluarga = JenisKeluarga::pluck('NAMA', 'ID_JENIS_KELUARGA');
         $dataKeluargaAll = KeluargaMurid::all()->pluck('nama_keluarga_lengkap', 'ID_KELUARGA_MURID');
         return view('murids.create', compact('agama', 'kelas', 'dataJenisKeluarga', 'dataKeluargaAll'));
@@ -111,7 +112,7 @@ class MuridController extends AppBaseController
             $dataMurid = new Murid();
             $input = $dataMurid->uploadGambar($request);
             if (!$input['EMAIL']) {
-                $input['EMAIL'] = $input['NIS'] . '@pondok.com';
+                $input['EMAIL'] = $input['NIS'] . '@ponpesdarunnasyiien.com';
             }
 
             $murid = $this->muridRepository->create($input);
@@ -119,7 +120,7 @@ class MuridController extends AppBaseController
                 'name' => $input['NIS'],
                 'full_name' => $input['NAMA'],
                 'email' => $input['EMAIL'],
-                'password' => bcrypt('pondok')
+                'password' => bcrypt('muridpondok')
             ]);
             $buatUser->assignRole('murid');
 

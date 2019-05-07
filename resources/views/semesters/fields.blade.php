@@ -1,19 +1,19 @@
 <!-- Id Tahun Ajaran Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('ID_TAHUN_AJARAN', 'Id Tahun Ajaran:') !!}
+<div class="form-group col-sm-4">
+    {!! Form::label('ID_TAHUN_AJARAN', 'Tahun Ajaran:') !!}
     {!! Form::select('ID_TAHUN_AJARAN', $tahunAjaran, null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Semester Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('SEMESTER', 'Semester:') !!}
-    {!! Form::number('SEMESTER', null, ['class' => 'form-control']) !!}
+    {!! Form::number('SEMESTER', 1, ['class' => 'form-control', 'readonly']) !!}
 </div>
 
 <!-- Status Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-4">
     {!! Form::label('STATUS', 'Status:') !!}
-    {!! Form::number('STATUS', null, ['class' => 'form-control']) !!}
+    {!! Form::select('STATUS', [1 => 'Aktif', 0 => 'NonAktif'], null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->

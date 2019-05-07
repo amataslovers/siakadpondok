@@ -28,10 +28,10 @@
                             <td>{!! Form::text('NIS', $value->NIS, ['class' => 'form-control', 'name' => 'NIS[]', 'readonly']) !!}</td>
                             <td>{!! Form::text('NAMA', $value->NAMA, ['class' => 'form-control', 'name' => 'NAMA[]', 'readonly']) !!}</td>
                             @if ($cat == 1 || $cat == 3)
-                                <td>{!! Form::number('NILAI_UTS', 80, ['class' => 'form-control', 'name' => 'NILAI_UTS[]', 'step' => 'any', 'required']) !!}</td>
+                                <td>{!! Form::number('NILAI_UTS', mt_rand(60,95), ['class' => 'form-control', 'name' => 'NILAI_UTS[]', 'step' => 'any', 'required']) !!}</td>
                             @endif
                             @if ($cat == 2 || $cat == 3)
-                                <td>{!! Form::number('NILAI_UAS', 80, ['class' => 'form-control', 'name' => 'NILAI_UAS[]', 'step' => 'any', 'required']) !!}</td>
+                                <td>{!! Form::number('NILAI_UAS', mt_rand(59,95), ['class' => 'form-control', 'name' => 'NILAI_UAS[]', 'step' => 'any', 'required']) !!}</td>
                             @endif
                         </tr>
         

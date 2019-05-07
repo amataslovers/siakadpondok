@@ -154,28 +154,38 @@ class Murid extends Model
         return Carbon::parse($value)->format('d/m/Y');
     }
 
+    //TANGGAL MASUK
     public function setTanggalMasukAttribute($data)
     {
         if ($data) {
             $this->attributes['TANGGAL_MASUK'] = Carbon::createFromFormat('d/m/Y', $data);
+        } else {
+            $this->attributes['TANGGAL_MASUK'] = null;
         }
     }
 
     public function getTanggalMasukAttribute($value)
     {
-        return Carbon::parse($value)->format('d/m/Y');
+        if ($value) {
+            return Carbon::parse($value)->format('d/m/Y');
+        }
     }
 
+    //TANGGAL KELUAR
     public function setTanggalKeluarAttribute($data)
     {
         if ($data) {
             $this->attributes['TANGGAL_KELUAR'] = Carbon::createFromFormat('d/m/Y', $data);
+        } else {
+            $this->attributes['TANGGAL_KELUAR'] = null;
         }
     }
 
     public function getTanggalKeluarAttribute($value)
     {
-        return Carbon::parse($value)->format('d/m/Y');
+        if ($value) {
+            return Carbon::parse($value)->format('d/m/Y');
+        }
     }
 
     public function uploadGambar($request)

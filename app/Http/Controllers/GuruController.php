@@ -81,7 +81,7 @@ class GuruController extends AppBaseController
             $input = $request->all();
             $nip = $input['NIP_GURU'];
             if (!$input['EMAIL']) {
-                $input['EMAIL'] = $nip . '@pondok.com';
+                $input['EMAIL'] = $nip . '@ponpesdarunnasyiien.com';
             }
             $buatUser = User::create([
                 'name' => $nip,

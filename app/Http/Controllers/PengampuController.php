@@ -41,7 +41,7 @@ class PengampuController extends AppBaseController
     {
         // return $pengampuDataTable->render('pengampus.index');
         if ($request->ajax()) {
-            $pengampu = $this->pengampuRepository->with(['mataPelajaran', 'guru', 'kelas.tingkat', 'tahunAjaran'])->all();
+            $pengampu = Pengampu::with(['mataPelajaran', 'guru', 'kelas.tingkat', 'tahunAjaran'])->orderBy('ID_TAHUN_AJARAN', 'desc')->orderBy('ID_KELAS', 'desc')->orderBy('ID_MATA_PELAJARAN')->get();
             return DataTables::of($pengampu)
                 ->addIndexColumn()
                 ->addColumn('action', 'pengampus.datatables_actions')
@@ -65,7 +65,7 @@ class PengampuController extends AppBaseController
         $tahun = TahunAjaran::where('STATUS', 1)->get()->pluck('NAMA', 'ID_TAHUN_AJARAN');
         $kelas = Kelas::whereHas('tahunAjaran', function ($q) {
             $q->where('STATUS', 1);
-        })->orderBy('created_at', 'desc')->get()->pluck('nama_lengkap', 'ID_KELAS');
+        })->orderBy('created_at', 'desc')->where('STATUS', 1)->get()->pluck('nama_lengkap', 'ID_KELAS');
         return view('pengampus.create')->with(compact('mapel', 'guru', 'tahun', 'kelas'));
     }
 
