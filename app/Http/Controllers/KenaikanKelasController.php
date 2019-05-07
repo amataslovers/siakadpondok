@@ -251,7 +251,7 @@ class KenaikanKelasController extends Controller
                 if ((int)$dataTingkat->last()->TINGKAT == (int)$value->tingkat->TINGKAT) {
                     Kelas::where('TAHUN_ANGKATAN', $value->TAHUN_ANGKATAN)->update(['STATUS' => 0]);
                 } else {
-                    $tingkatLama = $dataTingkat->where('TINGKAT', $value->TINGKAT)->keys()->first();
+                    $tingkatLama = $dataTingkat->where('TINGKAT', $value->tingkat->TINGKAT)->keys()->first();
                     $tingkatBaru = $dataTingkat->get(++$tingkatLama)->ID_TINGKAT;
                     $buatKelasBaru = Kelas::create([
                         'NIP_GURU' => $value->NIP_GURU,

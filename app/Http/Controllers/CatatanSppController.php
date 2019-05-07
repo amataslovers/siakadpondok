@@ -49,6 +49,7 @@ class CatatanSppController extends AppBaseController
                         $query->where('NIS', auth()->user()->name);
                     });
                 })
+                ->orderBy('TANGGAL_BAYAR', 'desc')
                 ->get();
             return DataTables::of($catatanSpp)
                 ->addColumn('action', 'catatan_spps.datatables_actions')

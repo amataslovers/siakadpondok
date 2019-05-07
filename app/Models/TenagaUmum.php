@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use App\User;
 
 /**
  * Class TenagaUmum
@@ -84,6 +85,19 @@ class TenagaUmum extends Model
         'ALAMAT' => 'required',
         'email' => 'sometimes|email'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($tenagaUmum) {
+            User::where('name', $tenagaUmum->NIP)->delete();
+        });
+
+        static::updating(function ($tenagaUmum) {
+            User::where('name', $tenagaUmum->original['NIP'])->update(['name' => $tenagaUmum->NIP, 'full_name' => $tenagaUmum->NAMA]);
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

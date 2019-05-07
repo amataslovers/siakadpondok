@@ -80,8 +80,18 @@ class PengampuController extends AppBaseController
     {
         $input = $request->all();
         $pengampu = Pengampu::updateOrCreate(
-            ['ID_MATA_PELAJARAN' => $input['ID_MATA_PELAJARAN'], 'ID_TAHUN_AJARAN' => $input['ID_TAHUN_AJARAN'], 'ID_KELAS' => $input['ID_KELAS']],
-            ['NIP_GURU' => $input['NIP_GURU'], 'KKM' => $input['KKM'], 'JAM' => $input['JAM'], 'HARI' => $input['HARI']]
+            [
+                'ID_MATA_PELAJARAN' => $input['ID_MATA_PELAJARAN'],
+                'ID_TAHUN_AJARAN' => $input['ID_TAHUN_AJARAN'],
+                'ID_KELAS' => $input['ID_KELAS']
+            ],
+            [
+                'NIP_GURU' => $input['NIP_GURU'],
+                'KKM' => $input['KKM'],
+                'STATUS_KKM' => $input['STATUS_KKM'],
+                'JAM' => $input['JAM'],
+                'HARI' => $input['HARI']
+            ]
         );
         // $pengampu = $this->pengampuRepository->create($input);
 

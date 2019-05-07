@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\NilaiAkademikDataTable;
 use App\Http\Requests\CreateNilaiAkademikRequest;
 use App\Http\Requests\UpdateNilaiAkademikRequest;
 use App\Repositories\NilaiAkademikRepository;
@@ -38,13 +37,25 @@ class NilaiAkademikController extends AppBaseController
     /**
      * Display a listing of the NilaiAkademik.
      *
-     * @param NilaiAkademikDataTable $nilaiAkademikDataTable
      * @return Response
      */
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            // $nilai = $this->nilaiAkademikRepository->all();
+            // $nilai = NilaiAkademik::select(['ID_NILAI', 'NIS', 'ID_PENGAMPU', 'ID_SEMESTER', 'NILAI_UTS', 'NILAI_UAS'])
+            // ->with([
+            //     'murid:NIS,NAMA',
+            //     'pengampu:ID_PENGAMPU,ID_KELAS,ID_MATA_PELAJARAN,ID_TAHUN_AJARAN',
+            //     'pengampu.mataPelajaran:ID_MATA_PELAJARAN,NAMA',
+            //     'pengampu.tahunAjaran:ID_TAHUN_AJARAN,NAMA',
+            //     'pengampu.kelas:ID_KELAS,ID_TINGKAT,NAMA',
+            //     'pengampu.kelas.tingkat:ID_TINGKAT,TINGKAT',
+            //     'semester:ID_SEMESTER,SEMESTER'
+            // ])
+            // ->when(auth()->user()->hasRole('murid'), function ($q) {
+            //     $q->where('NIS', auth()->user()->name);
+            // })
+            //     ->get();
             $nilai = NilaiAkademik::select(['ID_NILAI', 'NIS', 'ID_PENGAMPU', 'ID_SEMESTER', 'NILAI_UTS', 'NILAI_UAS'])
                 ->with([
                     'murid:NIS,NAMA',
@@ -57,8 +68,7 @@ class NilaiAkademikController extends AppBaseController
                 ])
                 ->when(auth()->user()->hasRole('murid'), function ($q) {
                     $q->where('NIS', auth()->user()->name);
-                })
-                ->get();
+                });
             return DataTables::of($nilai)
                 ->addColumn('action', 'nilai_akademiks.datatables_actions')
                 ->addColumn('namaMurid', function ($nilai) {
@@ -69,6 +79,21 @@ class NilaiAkademikController extends AppBaseController
                 })
                 ->addColumn('tingkatKelas', function ($nilai) {
                     return $nilai->pengampu->kelas->tingkat->TINGKAT . ' ' . $nilai->pengampu->kelas->NAMA;
+                })
+                ->filterColumn('pengampu.tahun_ajaran.NAMA', function ($query, $keyword) {
+                    $query->whereHas('pengampu.tahunAjaran', function ($q) use ($keyword) {
+                        $q->where('NAMA', 'like', '%' . $keyword . '%');
+                    });
+                })
+                ->filterColumn('namaMurid', function ($query, $keyword) {
+                    $query->whereHas('murid', function ($q) use ($keyword) {
+                        $q->where('NAMA', 'like', '%' . $keyword . '%');
+                    });
+                })
+                ->filterColumn('namaMapel', function ($query, $keyword) {
+                    $query->whereHas('pengampu.mataPelajaran', function ($q) use ($keyword) {
+                        $q->where('NAMA', 'like', '%' . $keyword . '%');
+                    });
                 })
                 ->addIndexColumn()
                 ->make();

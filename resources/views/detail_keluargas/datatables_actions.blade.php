@@ -14,5 +14,6 @@
         'class' => 'btn btn-danger btn-xs',
         'onclick' => "return confirm('Are you sure?')"
     ]) !!}
+    @endcan
 </div>
 {!! Form::close() !!}

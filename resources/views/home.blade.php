@@ -9,7 +9,7 @@
     <div class="content">
         <div class="clearfix"></div>
         <br>
-        @hasanyrole('tenaga-umum|administrator')
+        @hasanyrole('tenaga-umum|administrator|guru')
         <div class="row">
             <div class="col-md-3 col-md-push-1">
                 <div class="info-box bg-green">
@@ -158,7 +158,7 @@
     </div>
 @endsection
 @section('scripts')
-    @hasanyrole('administrator|tenaga-umum')
+    @hasanyrole('administrator|tenaga-umum|guru')
     <script>
         var url = "{{url('/home')}}";
         var Tahun = new Array();

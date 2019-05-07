@@ -6,6 +6,7 @@ use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use App\User;
+use Illuminate\Support\Facades\Request;
 
 /**
  * Class Guru
@@ -104,7 +105,7 @@ class Guru extends Model
         });
 
         static::updating(function ($guru) {
-            User::where('name', $guru->NIP_GURU)->update(['name' => $guru->NIP_GURU, 'full_name' => $guru->NAMA]);
+            User::where('name', $guru->original['NIP_GURU'])->update(['name' => $guru->NIP_GURU, 'full_name' => $guru->NAMA]);
         });
     }
 

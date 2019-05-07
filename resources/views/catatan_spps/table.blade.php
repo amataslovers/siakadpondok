@@ -15,6 +15,7 @@
             <th>Tanggal Bayar</th>
             <th>Bulan</th>
             <th>Jumlah Bayar (Rp)</th>
+            <th>Ket</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -38,6 +39,7 @@
                 { data: 'TANGGAL_BAYAR', name: 'TANGGAL_BAYAR' },
                 { data: 'BULAN', name: 'BULAN' },
                 { data: 'TOTAL_BAYAR', name: 'TOTAL_BAYAR' },
+                { data: 'KETERANGAN', name: 'KETERANGAN' },
                 { data: 'action', name: 'catatan_spps.action', orderable: false, searchable: false}
 
             ],

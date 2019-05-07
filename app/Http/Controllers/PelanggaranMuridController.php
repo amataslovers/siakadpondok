@@ -54,6 +54,7 @@ class PelanggaranMuridController extends AppBaseController
                         $query->where('NIS', auth()->user()->name);
                     });
                 })
+                ->orderBy('created_at', 'desc')
                 ->get();
             return DataTables::of($pelanggaranMurid)
                 ->addIndexColumn()

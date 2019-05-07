@@ -71,6 +71,8 @@ class KeluargaMurid extends Model
         'PEKERJAAN' => 'string'
     ];
 
+    protected $appends = ['TANGGAL_LAHIR'];
+
     /**
      * Validation rules
      *

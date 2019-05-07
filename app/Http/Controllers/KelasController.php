@@ -43,8 +43,9 @@ class KelasController extends AppBaseController
                 ->addColumn('action', 'kelas.datatables_actions')
                 ->addIndexColumn()
                 ->editColumn('STATUS', function ($kelas) {
-                    return (int)$kelas->STATUS == 1 ? 'Aktif' : 'NonAktif';
+                    return (int)$kelas->STATUS == 1 ? '<span class="label label-success"> Aktif </span>' : '<span class="label label-danger"> NonAktif </span>';
                 })
+                ->rawColumns(['STATUS', 'action'])
                 ->make();
         }
         return view('kelas.index');
